@@ -62,6 +62,10 @@ Vagrant.configure(2) do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
     echo "PROVISION........."
+    curl --silent --location https://rpm.nodesource.com/setup_7.x | bash -
+    yum -y install nodejs
+    yum groupinstall 'Development Tools'
+    npm install -g yarn --registry=https://registry.npm.taobao.org
     echo "PROVISION DONE."
   SHELL
 end
