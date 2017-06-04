@@ -23,7 +23,7 @@ Vagrant.configure(2) do |config|
     echo "Install Node"
     curl --silent --location https://rpm.nodesource.com/setup_7.x | bash -
     yum -y install nodejs
-    yum groupinstall 'Development Tools'
+    yum groupinstall -y 'Development Tools'
     npm install -g yarn --registry=https://registry.npm.taobao.org
     echo "Install Nginx"
     yum install -y epel-release
@@ -37,18 +37,18 @@ Vagrant.configure(2) do |config|
         php71-php-mbstring php71-php-pecl-msgpack php71-php-bcmath php71-php-fpm php71-php-pecl-zip
     ln -sf /usr/bin/php71 /bin/php
     echo "Install MariaDB and phpMyAdmin"
-    yum install -y mariadb-server mariadb
+    if [ ! -e /bin/mysql ]; then
+        yum install -y mariadb-server mariadb
+        systemctl start mariadb
+        mysqladmin -uroot password vagrant
+    fi
     yum install -y phpmyadmin
+    if [ -e /usr/share/nginx/html/phpMyAdmin ]; then rm /usr/share/nginx/html/phpMyAdmin; fi
     ln -s /usr/share/phpMyAdmin /usr/share/nginx/html
-    echo "Start services"
-    systemctl enable php71-php-fpm
-    systemctl enable nginx
-    systemctl enable mariadb
-    systemctl start php71-php-fpm
-    systemctl start nginx
-    systemctl start mariadb
-    if ! type -fp mysql; then
-        mysqladmin -u root password vagrant
+    if [ ! -e /var/lib/php/session ]; then
+        chmod 777 -R /usr/share/nginx/html/phpMyAdmin
+        mkdir -p /var/lib/php/session
+        chmod 777 -R /var/lib/php/session
     fi
     echo "Install Composer"
     if ! /usr/local/bin/composer &>/dev/null; then
@@ -56,6 +56,23 @@ Vagrant.configure(2) do |config|
         mv composer.phar /usr/local/bin/composer
         chmod +x /usr/local/bin/composer
     fi
+    echo "Nginx & PHP Setup"
+    if [ -e /etc/nginx/nginx.conf ]; then rm /etc/nginx/nginx.conf; fi
+    ln -sf /vagrant/dev/nginx.conf /etc/nginx/nginx.conf
+    if [ -e /etc/php.ini ]; then cp /etc/php.ini /etc/php.ini.bak && rm /etc/php.ini; fi
+    ln -sf /vagrant/dev/php.ini /etc/php.ini
+    if [ ! -e /var/log/php-fpm ]; then mkdir /var/log/php-fpm; fi
+    if [ -e /etc/opt/remi/php71/php-fpm.d/www.conf ]; then rm -f /etc/opt/remi/php71/php-fpm.d/www.conf; fi
+    ln -sf /vagrant/dev/php-fpm.conf /etc/opt/remi/php71/php-fpm.d/www.conf
+    echo "Start services"
+    systemctl enable php71-php-fpm
+    systemctl enable nginx
+    systemctl enable mariadb
+    systemctl start php71-php-fpm
+    systemctl start nginx
+    systemctl start mariadb
+    echo "Install Composer Packages and Perform Migrations"
+    cd /vagrant && /usr/local/bin/composer install && php artisan migrate
     echo "PROVISION DONE."
   SHELL
 end
