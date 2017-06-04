@@ -1,71 +1,61 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
 Vagrant.configure(2) do |config|
-  # The most common configuration options are documented and commented below.
-  # For a complete reference, please see the online documentation at
-  # https://docs.vagrantup.com.
-
-  # Every Vagrant development environment requires a box. You can search for
-  # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "bento/centos-7.2"
   config.vm.hostname = "exmum.dev"
-  # Disable automatic box update checking. If you disable this, then
-  # boxes will only be checked for updates when the user runs
-  # `vagrant box outdated`. This is not recommended.
-  # config.vm.box_check_update = false
+  config.vm.network "private_network", ip: "192.168.33.20"
+  config.vm.synced_folder ".", "/vagrant", create: true, nfs: true
+  config.ssh.forward_agent = true
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
-
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
-
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  # config.vm.network "public_network"
-
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
-
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
   config.vm.provider "virtualbox" do |vb|
+    vb.name = "ExMum"
     vb.memory = "1024"
+    vb.cpus = "1"
+    vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
+    vb.customize ['modifyvm', :id, '--natdnsproxy1', 'on']
   end
-  #
-  # View the documentation for the provider you are using for more
-  # information on available options.
-
-  # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
-  # such as FTP and Heroku are also available. See the documentation at
-  # https://docs.vagrantup.com/v2/push/atlas.html for more information.
-  # config.push.define "atlas" do |push|
-  #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
-  # end
-
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
+  
   config.vm.provision "shell", inline: <<-SHELL
     echo "PROVISION........."
+    echo "Install devtools"
+    yum install -y gcc gcc-c++ glibc glibc-devel glibc-headers kernel-devel
+    echo "Install Node"
     curl --silent --location https://rpm.nodesource.com/setup_7.x | bash -
     yum -y install nodejs
     yum groupinstall 'Development Tools'
     npm install -g yarn --registry=https://registry.npm.taobao.org
+    echo "Install Nginx"
+    yum install -y epel-release
+    yum install -y nginx
+    echo "Install PHP 7"
+    yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+    yum install -y --enablerepo="remi,remi-php71" php71 php71-php-cli php71-php-devel \
+        php71-php-mysqlnd php71-php-gd php71-php-mcrypt php71-php-pdo php71-php-pear \
+        php71-php-pecl-memcache php71-php-pecl-memcached \
+        php71-php-mbstring php71-php-pecl-msgpack php71-php-bcmath php71-php-fpm php71-php-pecl-zip
+    ln -sf /usr/bin/php71 /bin/php
+    echo "Install MariaDB and phpMyAdmin"
+    yum install -y mariadb-server mariadb
+    yum install -y phpmyadmin
+    ln -s /usr/share/phpMyAdmin /usr/share/nginx/html
+    echo "Start services"
+    systemctl enable php71-php-fpm
+    systemctl enable nginx
+    systemctl enable mariadb
+    systemctl start php71-php-fpm
+    systemctl start nginx
+    systemctl start mariadb
+    if ! type -fp mysql; then
+        mysqladmin -u root password vagrant
+    fi
+    echo "Install Composer"
+    if ! /usr/local/bin/composer &>/dev/null; then
+        curl -sS https://getcomposer.org/installer | php
+        mv composer.phar /usr/local/bin/composer
+        chmod +x /usr/local/bin/composer
+    fi
     echo "PROVISION DONE."
   SHELL
 end
