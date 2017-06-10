@@ -1,40 +1,11 @@
-.vagrant
-/tmp
-
-# dependencies
 /node_modules
-
-# IDEs and editors
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
 /.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
-# misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
+/.vagrant
+Homestead.json
+Homestead.yaml
 npm-debug.log
-testem.log
-/typings
-
-# e2e
-/e2e/*.js
-/e2e/*.map
-
-# System Files
-.DS_Store
-Thumbs.db
-
-vendor/
+.env
