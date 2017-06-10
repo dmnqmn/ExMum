@@ -46,6 +46,7 @@ Vagrant.configure(2) do |config|
     yum install -y phpmyadmin
     if [ -e /usr/share/nginx/html/phpMyAdmin ]; then rm /usr/share/nginx/html/phpMyAdmin; fi
     ln -s /usr/share/phpMyAdmin /usr/share/nginx/html
+    php -v
     if [ ! -e /var/lib/php/session ]; then
         chmod 777 -R /usr/share/nginx/html/phpMyAdmin
         mkdir -p /var/lib/php/session
