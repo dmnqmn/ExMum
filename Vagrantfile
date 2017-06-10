@@ -18,6 +18,9 @@ Vagrant.configure(2) do |config|
   
   config.vm.provision "shell", inline: <<-SHELL
     echo "PROVISION........."
+    cd /vagrant
+    echo "Link configurations"
+    rm .env && ln -s .env.local .env
     echo "Install devtools"
     yum install -y gcc gcc-c++ glibc glibc-devel glibc-headers kernel-devel
     echo "Install Node"
@@ -31,12 +34,16 @@ Vagrant.configure(2) do |config|
     echo "Install PHP 7"
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
     yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-    yum install -y --enablerepo="remi,remi-php71" php71 php71-php-cli php71-php-devel \
+    yum install -y --enablerepo="remi,remi-php71"\
+        php71 php71-php-cli php71-php-devel \
         php71-php-mysqlnd php71-php-gd php71-php-mcrypt php71-php-pdo php71-php-pear \
         php71-php-pecl-memcache php71-php-pecl-memcached \
         php71-php-mbstring php71-php-pecl-msgpack php71-php-bcmath php71-php-fpm php71-php-pecl-zip
     if [ -e /bin/php ]; then rm /bin/php; fi
     ln -sf /usr/bin/php71 /bin/php
+    echo "Install memcached & redis"
+    yum install -y memcached-devel libmemcached libmemcached-devel
+    yum install -y redis hiredis hiredis-devel
     echo "Install MariaDB and phpMyAdmin"
     if [ ! -e /bin/mysql ]; then
         yum install -y mariadb-server mariadb
@@ -70,9 +77,15 @@ Vagrant.configure(2) do |config|
     systemctl enable php71-php-fpm
     systemctl enable nginx
     systemctl enable mariadb
+    systemctl enable memcached
+    systemctl enable redis
     systemctl start php71-php-fpm
     systemctl start nginx
     systemctl start mariadb
+    systemctl start memcached
+    systemctl start redis
+    echo "Init Database"
+    mysql -uroot -pvagrant -e 'create database if not exists exmum'
     echo "Install Composer Packages and Perform Migrations"
     cd /vagrant && /usr/local/bin/composer install && php artisan migrate
     echo "PROVISION DONE."
