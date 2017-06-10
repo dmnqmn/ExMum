@@ -35,6 +35,7 @@ Vagrant.configure(2) do |config|
         php71-php-mysqlnd php71-php-gd php71-php-mcrypt php71-php-pdo php71-php-pear \
         php71-php-pecl-memcache php71-php-pecl-memcached \
         php71-php-mbstring php71-php-pecl-msgpack php71-php-bcmath php71-php-fpm php71-php-pecl-zip
+    if [ -e /bin/php ]; then rm /bin/php; fi
     ln -sf /usr/bin/php71 /bin/php
     echo "Install MariaDB and phpMyAdmin"
     if [ ! -e /bin/mysql ]; then
