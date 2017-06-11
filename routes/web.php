@@ -14,3 +14,10 @@
 Route::get('/', function () {
     return view('index');
 });
+
+Route::get('/laravel', function () {
+    return 'Hello Laravel!';
+});
+
+Route::get('tokens', 'UserController@tokens');
+Route::get('user/password', 'UserController@userPassword');
