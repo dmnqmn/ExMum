@@ -20,7 +20,8 @@ Vagrant.configure(2) do |config|
     echo "PROVISION........."
     cd /vagrant
     echo "Link configurations"
-    rm .env && ln -s .env.local .env
+    if [ -e .env ]; then rm .env; fi
+    ln -s .env.local .env
     echo "Install devtools"
     yum install -y gcc gcc-c++ glibc glibc-devel glibc-headers kernel-devel
     echo "Install Node"
