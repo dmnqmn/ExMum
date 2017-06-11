@@ -87,7 +87,11 @@ Vagrant.configure(2) do |config|
     echo "Init Database"
     mysql -uroot -pvagrant -e 'create database if not exists exmum'
     echo "Install Composer Packages and Perform Migrations"
+  SHELL
+  config.vm.provision "shell", privileged: false, inline: <<-SHELL
     cd /vagrant && /usr/local/bin/composer install && php artisan migrate
+    echo "Install frontend depencencies and build"
+    cd /vagrant/frontend && npm install --registry=https://registry.npm.taobao.org; npm run build
     echo "PROVISION DONE."
   SHELL
 end

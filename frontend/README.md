@@ -1,6 +1,6 @@
-# exmum-frontend
+# exmum
 
-> ExMum frontend
+> Exmum project.
 
 ## Build Setup
 

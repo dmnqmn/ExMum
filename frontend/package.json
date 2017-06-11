@@ -1,7 +1,7 @@
 {
-  "name": "exmum-frontend",
+  "name": "exmum",
   "version": "1.0.0",
-  "description": "ExMum frontend",
+  "description": "ExMum project.",
   "author": "chenan <chen-an@outlook.com>",
   "private": true,
   "scripts": {
