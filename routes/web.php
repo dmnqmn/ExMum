@@ -19,5 +19,6 @@ Route::get('/laravel', function () {
     return 'Hello Laravel!';
 });
 
+Route::post('/login','UserController@login');
 Route::get('tokens', 'UserController@tokens');
 Route::get('user/password', 'UserController@userPassword');

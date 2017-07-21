@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
 {
-    protected $table = 'User';
+    protected $table = 'user';
 
     public static function exist($account) {
-        return User::where('account', $account)->exists();
+        return User::where('name', $account)->exists();
     }
 
     public static function create($account, $password) {
