@@ -15,7 +15,6 @@ class UserController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-
     public function login(Request $request) {
         $account = $request->input('account');
         $password = $request->input('password');
