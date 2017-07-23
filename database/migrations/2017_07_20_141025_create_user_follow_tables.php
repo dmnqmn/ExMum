@@ -16,10 +16,10 @@ class CreateUserFollowTables extends Migration
          Schema::create('user', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 20);
-            $table->string('password', 50);
-            $table->integer('phone');
-            $table->string('email', 50)->nullable();
-            $table->unsignedTinyInteger('status');
+            $table->string('password', 255);
+            $table->integer('phone')->nullable()->unique();
+            $table->string('email', 50)->nullable()->unique();
+            $table->unsignedTinyInteger('status')->default(0);
             $table->string('avatar', 50)->nullable();
             $table->string('infomation', 50)->nullable();
             $table->string('tags', 50)->nullable();

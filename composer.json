@@ -17,13 +17,15 @@
     },
     "autoload": {
         "classmap": [
-            "database"
+            "database",
+            "app/Lib/Const"
         ],
         "psr-4": {
             "App\\": "app/"
         },
         "files": [
-            "app/Lib/lib.php"
+            "app/Lib/lib.php",
+            "app/Lib/Globals.php"
         ]
     },
     "autoload-dev": {

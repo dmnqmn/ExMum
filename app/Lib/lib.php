@@ -1,4 +1,6 @@
 <?php
+use Cookie;
+
 function getManifest()
 {
   $key = 'manifest.json';
@@ -39,4 +41,9 @@ function js($file)
 function css($file)
 {
   echo '<link rel="stylesheet" href="'.getResourcePath($file).'"></link>';
+}
+
+function makeCookie($name, $value, $age)
+{
+  return Cookie::make($name, $value, $age, '/', '.'.config('app.base_domain'));
 }

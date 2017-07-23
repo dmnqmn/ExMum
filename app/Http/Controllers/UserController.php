@@ -9,50 +9,39 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\AccessToken;
+use App\Models\Helper;
+
+use General;
+use Config;
 use Validator;
 
 class UserController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+  use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function login(Request $request) {
-        $account = $request->input('account');
-        $password = $request->input('password');
-        $phone = $request->input('phone');
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:20',
-            'password' => 'required|max:50',
-            'phone' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return "信息不对！";
-        }
-        return "ok";
+  public function postRegister(Request $request)
+  {
+    if (empty($request->input('email'))) {
+      return response()->json(['error' => 'REGISTER_EMAIL_NEEDED'], 400);
     }
 
-    public function tokens(Request $request) {
-        $account = $request->input('account');
-        $password = $request->input('password');
-        if (User::exist($account) == false) {
-            $authToken = User::create($account, $password);
-        } else {
-            $record = User::checkUserPwd($account, $password);
-            if ($record == false) {
-                return 'Pwd is wrong';
-            }
-            $authToken = Token::get($record->uid);
-        }
-        return $authToken;
+    if (empty($request->input('password'))) {
+      return response()->json(['error' => 'REGISTER_PASSWORD_NEEDED'], 400);
     }
 
-    public function userPassword(Request $request) {
-        $authToken = $request->input('authToken');
-        $oldPassword = $request->input('oldPassword');
-        $newPassword = $request->input('newPassword');
-        $uid = Token::getUid($authToken);
-        if (User::changePwd($uid, $oldPassword, $newPassword) == false) {
-            return 'Pwd is wrong';
-        }
-        return 'Ok';
+    $email = trim($request->input('email'));
+    $password = $request->input('password');
+
+    if (User::emailExisted($email)) {
+      return response()->json(['error' => 'REGISTER_EMAIL_EXISTED'], 403);
     }
+
+    $user = User::create($email, $password);
+
+    $token = AccessToken::create($user->id);
+
+    $cookie = makeCookie('EXMUM_U', $token, General::ACCESS_TOKEN_MAX_AGE);
+    return response()->json(null)->withCookie($cookie);
+  }
 }
