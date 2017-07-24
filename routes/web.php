@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 
 Route::post('/register', 'UserController@postRegister');
+Route::get('/activation', 'UserController@getActivation');

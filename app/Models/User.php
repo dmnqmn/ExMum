@@ -18,14 +18,33 @@ class User extends Model
   // Relationships end
 
   public static function create($email, $password) {
-    $user = new User();
-    $user->name = static::generateUsername($email);
-    $user->password = '';
-    $user->email = $email;
-    $user->save();
-    $user->password = User::createPwd($user, $password);
-    $user->save();
-    return $user;
+      $subject = '激活邮件';
+      $html = static::generateLink($email);
+      if (User::where('email', $email)->where('status', 0)->exists()) {
+          Mail::send($email, $subject, $html);
+      } else {
+        $user = new User();
+        $user->name = static::generateUsername($email);
+        $user->password = User::createPwd($user, $password);
+        $user->email = $email;
+        $user->phone = 1512456574; // TODO
+        $user->status = 0;
+        $user->save();
+        Mail::send($email, $subject, $html);
+      }
+      return true;
+  }
+
+  public static function generateLink($email) {
+      $link = 'email=' . $email . '&activation=' . md5(md5($email));
+      return 'http://192.168.33.20/activation?' . $link;
+  }
+
+  public static function checkLink($email, $activation) {
+      if ($activation == md5(md5($email))) {
+          return true;
+      }
+      return false;
   }
 
   public static function checkPwd($email, $password) {
@@ -51,12 +70,11 @@ class User extends Model
   }
 
   public static function emailExisted($email) {
-    $record = User::where('email', $email)->first();
-
-    return !empty($record);
+    return User::where('email', $email)->where('status', 1)->exists();
   }
 
   private static function createPwd($user, $password) {
+    return $password;
     if (!isset($user->salt)) {
       $salt = Salt::create($user->id);
     }
