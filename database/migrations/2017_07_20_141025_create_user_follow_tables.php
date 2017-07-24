@@ -17,8 +17,8 @@ class CreateUserFollowTables extends Migration
             $table->increments('id');
             $table->string('name', 20);
             $table->string('password', 255);
-            $table->integer('phone')->nullable()->unique();
-            $table->string('email', 50)->nullable()->unique();
+            $table->string('phone', 12)->unique();
+            $table->string('email', 50)->unique();
             $table->unsignedTinyInteger('status')->default(0);
             $table->string('avatar', 50)->nullable();
             $table->string('infomation', 50)->nullable();
