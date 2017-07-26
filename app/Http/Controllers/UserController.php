@@ -48,4 +48,46 @@ class UserController extends BaseController
         }
         return response()->json(['error' => 'REGISTERS_WRONG_MESSAGE'], 400);
     }
+
+    public function postLogin(Request $request) {
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $validate = Validator::make($request->all(),[
+            'email' => 'required|email',
+            'password' =>  'required|max:50',
+            ]); 
+        if ($validate->fails()) {
+            return response()->json(['error' => 'REGISTERS_WRONG_MESSAGE'], 400);
+        }
+        $res = User::checkEmailpwd($email, $password);
+        if ($res === true) {
+            return response()->json();
+        }
+        return response()->json(['error' => $res], 403);
+    }
+
+    public function postChangePwd(Request $request) {
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $validate = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|max:50',
+            ]);
+        if ($validate->fails()) {
+            return response()->json(['error' => 'REGISTERS_WRONG_MESSAGE'], 400);
+        }
+        $res = User::changePwd($email, $password);
+        if ($res === true) {
+            return response()->json();
+        }
+        return response()->json(['error' => $res], 403);       
+    }
 }
+
+
+
+
+
+
+
+

@@ -27,7 +27,7 @@ class User extends Model
         $user->name = static::generateUsername($email);
         $user->password = User::createPwd($user, $password);
         $user->email = $email;
-        $user->phone = 1512456574; // TODO
+        $user->phone = 151245657; // TODO
         $user->status = 0;
         $user->save();
         Mail::send($email, $subject, $html);
@@ -57,18 +57,6 @@ class User extends Model
     return $record;
   }
 
-  public static function changePwd($uid, $oldPassword, $newPassword) {
-    $record = User::where('uid', $uid)
-                  ->where('password', User::getPwd($oldPassword))
-                  ->get()
-                  ->toArray();
-    if (empty($record)) {
-        return false;
-    } else {
-        return User::where('uid', $uid)->update(['password' => User::createPwd($record, $newPassword)]);
-    }
-  }
-
   public static function emailExisted($email) {
     return User::where('email', $email)->where('status', 1)->exists();
   }
@@ -94,5 +82,32 @@ class User extends Model
       return explode('@', $email)[0];
     }
     return '用户'.substr(base_convert(rand(1, 9).time().rand(1, 9), 10, 16), 0, 10);
+  }
+
+  public static function checkEmailpwd($email, $password) {
+      $res = User::where('email', $email)
+                 ->where('status', 1)
+                 ->get()
+                 ->toArray();
+      if (empty($res)) {
+        return 'NOT_EXISTS';
+      }
+      if ($res[0]['password'] == $password) {
+        return true;
+      }
+      return 'PASSWORD_WRONG';
+  }
+
+  public static function changePwd($email, $password) {
+    $record = User::where('email', $email)
+                  ->get()
+                  ->toArray();
+    if(empty($record)) {
+      return 'NOT_EXISTS';
+    }
+    if ($record[0]['password'] !== $password) {
+      return 'PASSWORD_WRONG';
+    }
+    return true;
   }
 }
