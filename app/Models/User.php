@@ -78,11 +78,10 @@ class User extends Model
   }
 
   private static function generateUsername($email) {
-      $first = config('name.first');
-      $last = config('name.last');
-      shuffle($first);
-      shuffle($last);
-      return head($first) . head($last);
+    if (isset($email)) {
+      return explode('@', $email)[0];
+    }
+    return '用户'.substr(base_convert(rand(1, 9).time().rand(1, 9), 10, 16), 0, 10);
   }
 
   public static function checkEmailpwd($email, $password) {
