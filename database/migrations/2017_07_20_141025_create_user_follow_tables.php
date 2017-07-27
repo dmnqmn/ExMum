@@ -28,7 +28,59 @@ class CreateUserFollowTables extends Migration
             $table->string('tags', 50)->nullable();
             $table->timestamps();
         });
+
+         Schema::create('user_follow', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('uid');
+            $table->integer('follow_uid');
+            $table->timestamps();
+         });
+
+        Schema::create('photo', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('url', 50);
+            $table->integer('uid');
+            $table->unsignedTinyInteger('tag1')->nullable();
+            $table->unsignedTinyInteger('tag2')->nullable();
+            $table->unsignedTinyInteger('tag3')->nullable();
+            $table->unsignedTinyInteger('tag4')->nullable();
+            $table->unsignedTinyInteger('tag5')->nullable();
+            $table->unsignedTinyInteger('tag6')->nullable();
+            $table->unsignedTinyInteger('tag7')->nullable();
+            $table->unsignedTinyInteger('tag8')->nullable();
+            $table->unsignedTinyInteger('tag9')->nullable();
+            $table->unsignedTinyInteger('tag10')->nullable();
+            $table->unsignedTinyInteger('tag11')->nullable();
+            $table->unsignedTinyInteger('tag12')->nullable();
+            $table->unsignedTinyInteger('tag13')->nullable();
+            $table->unsignedTinyInteger('tag14')->nullable();
+            $table->unsignedTinyInteger('tag15')->nullable();
+            $table->unsignedTinyInteger('tag16')->nullable();
+            $table->unsignedTinyInteger('tag17')->nullable();
+            $table->unsignedTinyInteger('tag18')->nullable();
+            $table->unsignedTinyInteger('tag19')->nullable();
+            $table->unsignedTinyInteger('tag20')->nullable();
+            $table->unsignedTinyInteger('tag21')->nullable();
+            $table->unsignedTinyInteger('tag22')->nullable();
+            $table->timestamps();
+         });
+
+        Schema::create('copy_photo', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('uid');
+            $table->integer('photo_id');
+            $table->integer('photo_book_id');
+            $table->timestamps();
+        });
+
+        Schema::create('photo_book', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('uid');
+            $table->string('name');
+            $table->timestamps();
+        });
     }
+
 
     /**
      * Reverse the migrations.
