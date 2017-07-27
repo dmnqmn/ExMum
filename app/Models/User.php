@@ -89,12 +89,12 @@ class User extends Model
                  ->get()
                  ->toArray();
       if (empty($res)) {
-        return 'NOT_EXISTS';
+        return 'LOGIN_USER_NOT_FOUND';
       }
       if ($res[0]['password'] == $password) {
         return true;
       }
-      return 'PASSWORD_WRONG';
+      return 'LOGIN_WRONG_PASSWORD';
   }
 
   public static function changePwd($email, $password, $newPassword) {
@@ -106,7 +106,7 @@ class User extends Model
     }
     $user = head($record);
     if ($user['password'] !== $password) {
-      return 'PASSWORD_WRONG';
+      return 'PASSWORD_UNAUTHORIZED';
     }
     User::where('id', $user['id'])->update(['password' => $newPassword]);
     return true;

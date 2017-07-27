@@ -26,12 +26,17 @@ class UserController extends BaseController
         $validate = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|max:50',
+        ], [
+            'email.required' => 'REGISTER_EMAIL_NEEDED',
+            'email.email' => 'REGISTER_EMAIL_ILLEGAL',
+            'password.required' => 'REGISTER_PASSWORD_NEEDED',
+            'password.max' => 'REGISTER_PASSWORD_NEEDED',
         ]);
         if ($validate->fails()) {
-            return response()->json(['error' => 'REGISTERS_WRONG_MESSAGE'], 400);
+            return response()->json(['error' => $validate->messages()->first()], 400);
         }
         if (User::emailExisted($email)) {
-            return response()->json(['error' => 'EMAIL_EXISTED'], 403);
+            return response()->json(['error' => 'REGISTER_EMAIL_EXISTED'], 403);
         }
         User::create($email, $password);
         return response()->json();
@@ -52,12 +57,17 @@ class UserController extends BaseController
     public function postLogin(Request $request) {
         $email = $request->input('email');
         $password = $request->input('password');
-        $validate = Validator::make($request->all(),[
+        $validate = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' =>  'required|max:50',
-            ]); 
+        ], [
+            'email.required' => 'EMAIL_NEEDED',
+            'email.email' => 'EMAIL_ILLEGAL',
+            'password.required' => 'PASSWORD_NEEDED',
+            'password.max' => 'PASSWORD_NEEDED',
+        ]); 
         if ($validate->fails()) {
-            return response()->json(['error' => 'REGISTERS_WRONG_MESSAGE'], 400);
+            return response()->json(['error' => $validate->messages()->first()], 400);
         }
         $res = User::checkEmailpwd($email, $password);
         if ($res === true) {
@@ -69,14 +79,21 @@ class UserController extends BaseController
     public function postChangePwd(Request $request) {
         $email = $request->input('email');
         $password = $request->input('password');
-        $newPassword = $request->input('newpassword');
+        $newPassword = $request->input('newPassword');
         $validate = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|max:50',
             'newpassword' => 'required|max:50',
-            ]);
+        ], [
+            'email.required' => 'EMAIL_NEEDED',
+            'email.email' => 'EMAIL_ILLEGAL',
+            'password.required' => 'PASSWORD_PASSWORD_NEEDED',
+            'password.max' => 'PASSWORD_PASSWORD_NEEDED',
+            'newPassword.required' => 'PASSWORD_NEW_PASSWORD_NEEDED',
+            'newPassword.max' => 'PASSWORD_NEW_PASSWORD_NEEDED',
+        ]);
         if ($validate->fails()) {
-            return response()->json(['error' => 'REGISTERS_WRONG_MESSAGE'], 400);
+            return response()->json(['error' => $validate->messages()->first()], 400);
         }
         $res = User::changePwd($email, $password, $newPassword);
         if ($res === true) {

@@ -15,8 +15,7 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::post('/register', 'UserController@postRegister');
 Route::get('/activation', 'UserController@getActivation');
-
+Route::post('/register', 'UserController@postRegister');
 Route::post('/login', 'UserController@postLogin');
 Route::post('/changePwd', 'UserController@postChangePwd');
