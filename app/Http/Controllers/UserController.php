@@ -69,7 +69,7 @@ class UserController extends BaseController
     public function postChangePwd(Request $request) {
         $email = $request->input('email');
         $password = $request->input('password');
-        $newpassword = $request->input('newpassword');
+        $newPassword = $request->input('newpassword');
         $validate = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|max:50',
@@ -78,7 +78,7 @@ class UserController extends BaseController
         if ($validate->fails()) {
             return response()->json(['error' => 'REGISTERS_WRONG_MESSAGE'], 400);
         }
-        $res = User::changePwd($email, $password, $newpassword);
+        $res = User::changePwd($email, $password, $newPassword);
         if ($res === true) {
             return response()->json();
         }

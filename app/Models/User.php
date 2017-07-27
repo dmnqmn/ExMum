@@ -27,7 +27,6 @@ class User extends Model
         $user->name = static::generateUsername($email);
         $user->password = User::createPwd($user, $password);
         $user->email = $email;
-        $user->phone = 151245657; // TODO
         $user->status = 0;
         $user->save();
         Mail::send($email, $subject, $html);
@@ -98,16 +97,18 @@ class User extends Model
       return 'PASSWORD_WRONG';
   }
 
-  public static function changePwd($email, $password) {
+  public static function changePwd($email, $password, $newPassword) {
     $record = User::where('email', $email)
                   ->get()
                   ->toArray();
     if(empty($record)) {
       return 'NOT_EXISTS';
     }
-    if ($record[0]['password'] !== $password) {
+    $user = head($record);
+    if ($user['password'] !== $password) {
       return 'PASSWORD_WRONG';
     }
+    User::where('id', $user['id'])->update(['password' => $newPassword]);
     return true;
   }
 }
