@@ -7,9 +7,11 @@ const { providePlugin, envPlugin } = require('./commonPlugins.js')
 const path = require('path')
 const readdir = require('readdir')
 
+const alias = require('./commonAlias.js')
 const {
   assetsPath, jsEntryPath, publicPath, publicJsPath,
-  publicCssPath, resolvedPublicPath, resolvedDllInfo
+  publicCssPath, resolvedPublicPath, resolvedDllInfo,
+  resolvedAssetsPath
 } = require('./config.js')
 
 let cssFilename = 'css/dll.[contenthash].css'
@@ -104,7 +106,8 @@ module.exports = {
     rules
   },
   resolve: {
-    extensions: ['.js', '.json', '.vue', '.less', '.css', '*']
+    extensions: ['.js', '.json', '.vue', '.less', '.css', '*'],
+    alias
   },
   plugins: [
     extractLess,

@@ -8,6 +8,7 @@ const readdir = require('readdir')
 const { rules, extractLess } = require('./webpack.rules.js')
 const { providePlugin, envPlugin } = require('./commonPlugins.js')
 
+const alias = require('./commonAlias.js')
 const {
   assetsPath, jsEntryPath, publicPath, publicJsPath,
   publicCssPath, resolvedPublicPath, resolvedDllInfo,
@@ -45,10 +46,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.json', '.vue', '.less', '.css', '*'],
-    alias: {
-        '@js': `${resolvedAssetsPath}/js/`,
-        '@css': `${resolvedAssetsPath}/css/`
-    }
+    alias: alias
   },
   module: {
     rules

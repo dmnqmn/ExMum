@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', 'HomeController@getHome')->name('home');
 
 Route::get('/settings', 'UserController@getSettings');
 Route::get('/activation', 'UserController@getActivation');

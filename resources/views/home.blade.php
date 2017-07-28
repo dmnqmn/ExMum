@@ -3,17 +3,16 @@
 @section('title', '首页')
 
 @section('css')
-@php
-css('index.css')
-@endphp
+@php css('home.css') @endphp
+@endsection
+
+@section('header')
+    @parent
 @endsection
 
 @section('main')
-
 @endsection
 
 @section('js')
-@php
-js('index.js')
-@endphp
+@php js('home.js') @endphp
 @endsection

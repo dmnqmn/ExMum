@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        View::share('hotSearch', '热门搜索');
     }
 
     /**

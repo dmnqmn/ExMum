@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     @php dllCss() @endphp
     @section('css')
     @show
@@ -9,6 +10,8 @@
 </head>
 <body>
 @section('header')
+@component('components.header')
+@endcomponent
 @show
 
 <div class="container">
