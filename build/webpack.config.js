@@ -6,6 +6,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const path = require('path')
 const readdir = require('readdir')
 const { rules, extractLess } = require('./webpack.rules.js')
+const { providePlugin, envPlugin } = require('./commonPlugins.js')
 
 const {
   assetsPath, jsEntryPath, publicPath, publicJsPath,
@@ -57,7 +58,9 @@ module.exports = {
     new webpack.DllReferencePlugin({
       manifest: resolvedDllInfo
     }),
-    new ManifestPlugin({ fileName: 'manifest.json' })
+    new ManifestPlugin({ fileName: 'manifest.json' }),
+    providePlugin,
+    envPlugin
   ].concat(optPlugins)
 }
 

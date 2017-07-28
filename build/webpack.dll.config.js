@@ -3,6 +3,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const { providePlugin, envPlugin } = require('./commonPlugins.js')
 const path = require('path')
 const readdir = require('readdir')
 
@@ -111,6 +112,8 @@ module.exports = {
         name: 'dll_[hash]',
         path: resolvedDllInfo
     }),
-    new ManifestPlugin({ fileName: 'dll-manifest.json' })
+    new ManifestPlugin({ fileName: 'dll-manifest.json' }),
+    providePlugin,
+    envPlugin
   ].concat(optPlugins)
 }
