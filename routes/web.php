@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/settings', 'UserController@getSettings');
 Route::get('/activation', 'UserController@getActivation');
 Route::post('/register', 'UserController@postRegister');
 Route::post('/login', 'UserController@postLogin');

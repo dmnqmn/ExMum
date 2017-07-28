@@ -111,4 +111,15 @@ class User extends Model
     User::where('id', $user['id'])->update(['password' => $newPassword]);
     return true;
   }
+
+  public static function getInfoById($id) {
+    $res = User::where('id', $id)
+        ->select(['name', 'phone', 'email', 'status'])
+        ->get()
+        ->toArray();
+    if (empty($res)) {
+      return "the id not exists";
+    }
+    return $res;
+  }
 }

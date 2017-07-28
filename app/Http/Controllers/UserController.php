@@ -101,6 +101,12 @@ class UserController extends BaseController
         }
         return response()->json(['error' => $res], 403);       
     }
+
+    public function getSettings(Request $request) {
+        $id = $request->input('id');
+        $res = User::getInfoByID($id);
+        return response()->json($res);
+    }
 }
 
 
