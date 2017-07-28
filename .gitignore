@@ -10,5 +10,9 @@ Homestead.yaml
 npm-debug.log
 .env
 /public/manifest.json
+/public/dll-info.json
+/public/dll-manifest.json
 /public/css
 /public/js
+/public/fonts
+/public/images

@@ -1,49 +1,60 @@
 <?php
 use Cookie;
 
-function getManifest()
+function cacheManifest($key, $filepath)
 {
-  $key = 'manifest.json';
-
-  if (isset($GLOBALS[$key])) {
-    return $GLOBALS[$key];
-  }
-
-  $manifest = Cache::remember($key, 1, function () {
-    $manifest = file_get_contents(app_path().'/../public/manifest.json');
-    if ($manifest !== false) {
-      return json_decode($manifest);
+    if (isset($GLOBALS[$key])) {
+        return $GLOBALS[$key];
     }
-    $error = 'Resource manifest file not found.';
-    throw new Exception($error);
-  });
 
-  $GLOBALS[$key] = $manifest;
-  return $manifest;
+    $manifest = Cache::remember($key, 1, function () use ($filepath) {
+        $manifest = file_get_contents($filepath);
+        if ($manifest !== false) {
+            return json_decode($manifest);
+        }
+        $error = 'Resource manifest file not found.';
+        throw new Exception($error);
+    });
+
+    $GLOBALS[$key] = $manifest;
+    return $manifest;
 }
 
-function getResourcePath($file)
+function getManifest()
 {
-  if (App::environment('production')) {
-    $manifest = getManifest();
-    $filepath = $manifest->$file;
-    return $filepath;
-  }
+    $key = 'manifest.json';
+    return cacheManifest($key, app_path().'/../public/manifest.json');
+}
 
-  return $file;
+function getDllManifest()
+{
+    $key = 'dll-manifest.json';
+    return cacheManifest($key, app_path().'/../public/dll-manifest.json');
 }
 
 function js($file)
 {
-  echo '<script src="'.getResourcePath($file).'"></script>';
+    echo '<script src="/'.getManifest()->$file.'"></script>';
 }
 
 function css($file)
 {
-  echo '<link rel="stylesheet" href="'.getResourcePath($file).'"></link>';
+    echo '<link rel="stylesheet" href="/'.getManifest()->$file.'"></link>';
+}
+
+function dllJs()
+{
+    $file = 'main.js';
+    echo '<script src="/'.getDllManifest()->$file.'"></script>';
+}
+
+function dllCss()
+{
+    $file = 'main.css';
+    echo '<link rel="stylesheet" href="/'.getDllManifest()->$file.'"></link>';
 }
 
 function makeCookie($name, $value, $age)
 {
-  return Cookie::make($name, $value, $age, '/', '.'.config('app.base_domain'));
+    return Cookie::make($name, $value, $age, '/', '.'.config('app.base_domain'));
 }

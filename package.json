@@ -1,10 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules",
-    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules",
-    "watch-poll": "npm run watch -- --watch-poll",
-    "build": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules"
+    "clean": "rm -rf public/css public/fonts public/images public/js public/*.json",
+    "dev": "npm run clean && export NODE_ENV=development && node ./build/webpack.js",
+    "build": "npm run clean && export NODE_ENV=production && node ./build/webpack.js"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
