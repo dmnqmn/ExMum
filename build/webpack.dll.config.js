@@ -2,6 +2,7 @@ const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const path = require('path')
 const readdir = require('readdir')
 
@@ -74,6 +75,20 @@ const rules = [
   }
 ]
 
+let optPlugins
+
+switch (process.env.NODE_ENV) {
+case 'production':
+  optPlugins = [new UglifyJsPlugin({
+    test: /.js$/,
+    exclude: 'node_modules'
+  })]
+  break
+case 'development':
+default:
+  optPlugins = []
+}
+
 module.exports = {
   name: 'dll',
   entry: [
@@ -95,5 +110,5 @@ module.exports = {
       path: resolvedDllInfo
     }),
     new ManifestPlugin({ fileName: 'dll-manifest.json' })
-  ]
+  ].concat(optPlugins)
 }

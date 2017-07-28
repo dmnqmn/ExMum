@@ -1,20 +1,29 @@
 <?php
 use Cookie;
 
+function readManifestFile($filepath)
+{
+    $manifest = file_get_contents($filepath);
+    if ($manifest !== false) {
+        return json_decode($manifest);
+    }
+    $error = 'Resource manifest file not found.';
+    throw new Exception($error);
+}
+
 function cacheManifest($key, $filepath)
 {
     if (isset($GLOBALS[$key])) {
         return $GLOBALS[$key];
     }
 
-    $manifest = Cache::remember($key, 1, function () use ($filepath) {
-        $manifest = file_get_contents($filepath);
-        if ($manifest !== false) {
-            return json_decode($manifest);
-        }
-        $error = 'Resource manifest file not found.';
-        throw new Exception($error);
-    });
+    if (App::environment('APP_ENV', 'production')) {
+        $manifest = Cache::remember($key, 1, function () use ($filepath) {
+            $manifest = readManifestFile($filepath);
+        });
+    } else {
+        $manifest = readManifestFile($filepath);
+    }
 
     $GLOBALS[$key] = $manifest;
     return $manifest;

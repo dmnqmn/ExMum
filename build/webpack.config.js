@@ -2,6 +2,7 @@ const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const path = require('path')
 const readdir = require('readdir')
 const { rules, extractLess } = require('./webpack.rules.js')
@@ -20,14 +21,17 @@ readdir.readSync(jsEntryPath, ['**.js']).forEach((entry) => {
 })
 
 let jsFilename
+let optPlugins
 
 switch (process.env.NODE_ENV) {
 case 'production':
   jsFilename = 'js/[name].[hash].js'
+  optPlugins = [new UglifyJsPlugin()]
   break
 case 'development':
 default:
   jsFilename = 'js/[name].js'
+  optPlugins = []
 }
 
 module.exports = {
@@ -49,5 +53,5 @@ module.exports = {
       manifest: resolvedDllInfo
     }),
     new ManifestPlugin({ fileName: 'manifest.json' })
-  ]
+  ].concat(optPlugins)
 }
