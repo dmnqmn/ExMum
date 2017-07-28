@@ -9,7 +9,8 @@ const { rules, extractLess } = require('./webpack.rules.js')
 
 const {
   assetsPath, jsEntryPath, publicPath, publicJsPath,
-  publicCssPath, resolvedPublicPath, resolvedDllInfo
+  publicCssPath, resolvedPublicPath, resolvedDllInfo,
+  resolvedAssetsPath
 } = require('./config.js')
 
 const entries = {
@@ -42,7 +43,11 @@ module.exports = {
     path: resolvedPublicPath
   },
   resolve: {
-    extensions: ['.js', '.json', '.vue', '.less', '.css', '*']
+    extensions: ['.js', '.json', '.vue', '.less', '.css', '*'],
+    alias: {
+        '@js': `${resolvedAssetsPath}/js/`,
+        '@css': `${resolvedAssetsPath}/css/`
+    }
   },
   module: {
     rules
@@ -55,3 +60,4 @@ module.exports = {
     new ManifestPlugin({ fileName: 'manifest.json' })
   ].concat(optPlugins)
 }
+

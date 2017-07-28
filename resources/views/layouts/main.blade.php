@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <?= dllCss() ?>
+    @php dllCss() @endphp
     @section('css')
     @show
     <title>ExMum - @yield('title')</title>
@@ -15,7 +15,7 @@
     @yield('main')
 </div>
 
-<?= dllJs() ?>
+@php dllJs() @endphp
 @section('js')
 @show
 </body>

@@ -96,7 +96,8 @@ module.exports = {
   ],
   output: {
     filename: 'js/dll.[hash].js',
-    path: resolvedPublicPath
+    path: resolvedPublicPath,
+    library: 'dll_[hash]'
   },
   module: {
     rules
@@ -107,7 +108,8 @@ module.exports = {
   plugins: [
     extractLess,
     new webpack.DllPlugin({
-      path: resolvedDllInfo
+        name: 'dll_[hash]',
+        path: resolvedDllInfo
     }),
     new ManifestPlugin({ fileName: 'dll-manifest.json' })
   ].concat(optPlugins)

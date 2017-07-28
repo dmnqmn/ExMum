@@ -1,7 +1,17 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const { resolvedPublicPath } = require('./config.js')
 
-let cssFilename = 'css/[name].[contenthash].css'
+
+let cssFilename
+
+switch (process.env.NODE_ENV) {
+case 'production':
+  cssFilename = 'css/[name].[contenthash].css'
+  break
+case 'development':
+default:
+  cssFilename = 'css/[name].css'
+}
 
 const extractLess = new ExtractTextPlugin({
   filename: cssFilename
