@@ -6,74 +6,74 @@ let cssFilename
 
 switch (process.env.NODE_ENV) {
 case 'production':
-  cssFilename = 'css/[name].[contenthash].css'
-  break
+    cssFilename = 'css/[name].[contenthash].css'
+    break
 case 'development':
 default:
-  cssFilename = 'css/[name].css'
+    cssFilename = 'css/[name].css'
 }
 
 const extractLess = new ExtractTextPlugin({
-  filename: cssFilename
+    filename: cssFilename
 })
 
 module.exports = {
-  rules: [
+    rules: [
     {
-      test: /\.vue$/,
-      loader: 'vue-loader',
-      options: {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
         loaders: [
-          'vue-style-loader',
-          {
+            'vue-style-loader',
+            {
             loader: 'css-loader',
             options: {
-              minimize: process.env.NODE_ENV === 'production'
+                minimize: process.env.NODE_ENV === 'production'
             }
-          },
-          'less-loader'
+            },
+            'less-loader'
         ]
-      }
+        }
     },
     {
-      test: /\.less$/i,
-      use: extractLess.extract(['css-loader', 'less-loader'])
+        test: /\.less$/i,
+        use: extractLess.extract(['css-loader', 'less-loader'])
     },
     {
-      test: /\.css$/i,
-      use: extractLess.extract(['css-loader'])
+        test: /\.css$/i,
+        use: extractLess.extract(['css-loader'])
     },
     {
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'babel-loader'
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader'
     },
     {
-      test: /\.(woff|woff2|eot|ttf|otf)$/,
-      use: [
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: [
         {
-          loader: 'file-loader',
-          options: {
+            loader: 'file-loader',
+            options: {
             name: '[name].[hash].[ext]',
-            publicPath: resolvedPublicPath,
+            publicPath: '/',
             outputPath: 'fonts/'
-          }
+            }
         }
-      ]
+        ]
     },
     {
-      test: /\.(svg)$/,
-      use: [
+        test: /\.(svg)$/,
+        use: [
         {
-          loader: 'file-loader',
-          options: {
+            loader: 'file-loader',
+            options: {
             name: '[name].[hash].[ext]',
-            publicPath: resolvedPublicPath,
+            publicPath: '/',
             outputPath: 'images/'
-          }
+            }
         }
-      ]
+        ]
     }
-  ],
-  extractLess
+    ],
+extractLess
 }

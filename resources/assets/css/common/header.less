@@ -1,0 +1,88 @@
+@header-height: 64px;
+
+.header-navbar {
+    height: @header-height;
+
+    .header-brand {
+        display: block;
+        padding: 0;
+        float: left;
+        height: @header-height;
+        line-height: @header-height;
+        font-size: 24px;
+    }
+
+    .header-search {
+        display: block;
+        overflow: hidden;
+
+        margin: 0;
+        height: @header-height;
+
+        .input-group {
+            padding-top: 15px;
+            width: 100%;
+            font-size: 20px;
+
+            .form-control {
+                width: 100%;
+            }
+
+            .input-group-btn {
+                width: 37px;
+            }
+        }
+    }
+
+    .header-link-list {
+        display: block;
+        float: right;
+        height: @header-height;
+        line-height: @header-height;
+
+        .header-link {
+            margin: 0;
+            margin-left: 40px;
+            font-size: 18px;
+        }
+
+        .header-link:first-child {
+            margin-left: 20px;
+        }
+
+        .header-message {
+            margin: 0;
+            margin-left: 40px;
+            height: @header-height;
+            line-height: @header-height;
+
+            span {
+                font-size: 36px;
+                margin: 0;
+                margin-top: 14px;
+            }
+        }
+    }
+
+
+    @media (min-width: 768px) {
+        .navbar-brand {
+            margin-left: 0!important;
+        }
+
+        .navbar-right {
+            margin-right: 0!important;
+        }
+    }
+
+    @media(max-width: 768px) {
+        .navbar-right {
+            float: right;
+        }
+
+        .navbar-form {
+            border: 0!important;
+            padding: 0 15px!important;
+        }
+    }
+}

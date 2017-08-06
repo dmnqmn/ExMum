@@ -9,73 +9,73 @@ const readdir = require('readdir')
 
 const alias = require('./commonAlias.js')
 const {
-  assetsPath, jsEntryPath, publicPath, publicJsPath,
-  publicCssPath, resolvedPublicPath, resolvedDllInfo,
-  resolvedAssetsPath
+    assetsPath, jsEntryPath, publicPath, publicJsPath,
+    publicCssPath, resolvedPublicPath, resolvedDllInfo,
+    resolvedAssetsPath
 } = require('./config.js')
 
 let cssFilename = 'css/dll.[contenthash].css'
 
 const extractLess = new ExtractTextPlugin({
-  filename: cssFilename
+    filename: cssFilename
 })
 
 const rules = [
-  {
-    test: /\.vue$/,
-    loader: 'vue-loader',
-    options: {
-      loaders: [
-        'vue-style-loader',
-        {
-          loader: 'css-loader',
-          options: {
-            minimize: process.env.NODE_ENV === 'production'
-          }
-        },
-        'less-loader'
-      ]
+    {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+            loaders: [
+                'vue-style-loader',
+                {
+                    loader: 'css-loader',
+                    options: {
+                    minimize: process.env.NODE_ENV === 'production'
+                    }
+                },
+                'less-loader'
+            ]
+        }
+    },
+    {
+        test: /\.less$/i,
+        use: extractLess.extract(['css-loader', 'less-loader'])
+    },
+    {
+        test: /\.css$/i,
+        use: extractLess.extract(['css-loader'])
+    },
+    {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader'
+    },
+    {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: [
+            {
+            loader: 'file-loader',
+            options: {
+                name: '[name].[hash].[ext]',
+                publicPath: '/',
+                outputPath: 'fonts/'
+            }
+            }
+        ]
+    },
+    {
+        test: /\.(svg)$/,
+        use: [
+            {
+            loader: 'file-loader',
+            options: {
+                name: '[name].[hash].[ext]',
+                publicPath: '/',
+                outputPath: 'images/'
+            }
+            }
+        ]
     }
-  },
-  {
-    test: /\.less$/i,
-    use: extractLess.extract(['css-loader', 'less-loader'])
-  },
-  {
-    test: /\.css$/i,
-    use: extractLess.extract(['css-loader'])
-  },
-  {
-    test: /\.js$/,
-    exclude: /node_modules/,
-    loader: 'babel-loader'
-  },
-  {
-    test: /\.(woff|woff2|eot|ttf|otf)$/,
-    use: [
-      {
-        loader: 'file-loader',
-        options: {
-          name: '[name].[hash].[ext]',
-          publicPath: resolvedPublicPath,
-          outputPath: 'fonts/'
-        }
-      }
-    ]
-  },
-  {
-    test: /\.(svg)$/,
-    use: [
-      {
-        loader: 'file-loader',
-        options: {
-          name: '[name].[hash].[ext]',
-          publicPath: resolvedPublicPath,
-          outputPath: 'images/'
-        }
-      }
-    ]
-  }
 ]
 
 let optPlugins
