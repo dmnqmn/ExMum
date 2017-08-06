@@ -18,3 +18,4 @@ Route::get('/activation', 'UserController@getActivation');
 Route::post('/register', 'UserController@postRegister');
 Route::post('/login', 'UserController@postLogin');
 Route::post('/changePwd', 'UserController@postChangePwd');
+Route::post('/reviseProfile', 'UserController@postSettings');

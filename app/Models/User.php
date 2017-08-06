@@ -122,4 +122,21 @@ class User extends Model
     }
     return $res;
   }
+
+    public static function reviseProfile($param) {
+    $res = User::where('id', $param['id'])->update(
+      ['first_name' => $param['firstname'], 
+      'last_name'   => $param['lastname'], 
+      'user_name'   => $param['username'], 
+      'gender'      => $param['gender'], 
+      'phone'       => $param['phone'], 
+      'email'       => $param['email'], 
+      'avatar'      => $param['avatar'], 
+      'infomation'  => $param['infomation']]
+      );
+    if (empty($res)) {
+      return "false";
+    }
+    return "true";
+  }
 }
