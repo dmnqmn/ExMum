@@ -92,7 +92,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     cd /vagrant && /usr/local/bin/composer install && php artisan migrate
     echo "Install frontend depencencies and build"
-    cd /vagrant/frontend && npm install --registry=https://registry.npm.taobao.org; npm run build
+    cd /vagrant && npm install --registry=https://registry.npm.taobao.org; npm run build
     echo "PROVISION DONE."
   SHELL
 end
