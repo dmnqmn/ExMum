@@ -1,6 +1,4 @@
 <?php
-use Cookie;
-
 function readManifestFile($filepath)
 {
     $manifest = file_get_contents($filepath);
@@ -65,5 +63,5 @@ function dllCss()
 
 function makeCookie($name, $value, $age)
 {
-    return Cookie::make($name, $value, $age, '/', '.'.config('app.base_domain'));
+    return cookie($name, $value, $age, '/', '.' . config('app.base_domain'));
 }
