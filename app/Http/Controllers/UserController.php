@@ -104,7 +104,8 @@ class UserController extends BaseController
 
     public function getSettings(Request $request) {
         $id = $request->input('id');
-        $res = User::getInfoByID($id);
+        $param = ['user_name', 'first_name'];
+        $res = User::getInfoByID($id, $param);
         return response()->json($res);
     }
         public function postSettings(Request $request) {

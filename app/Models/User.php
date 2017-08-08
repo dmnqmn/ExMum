@@ -112,13 +112,13 @@ class User extends Model
     return true;
   }
 
-  public static function getInfoById($id) {
+  public static function getInfoById($id, $param) {
     $res = User::where('id', $id)
-        ->select(['name', 'phone', 'email', 'status'])
-        ->get()
-        ->toArray();
+          ->select($param)
+          ->get()
+          ->toArray();
     if (empty($res)) {
-      return "the id not exists";
+      return false;
     }
     return $res;
   }
