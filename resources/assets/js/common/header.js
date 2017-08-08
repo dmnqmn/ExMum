@@ -7,4 +7,7 @@ new Vue({
     components: {
         AccountManager
     },
+    mounted() {
+
+    }
 })

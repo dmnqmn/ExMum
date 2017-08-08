@@ -1,4 +1,5 @@
 @header-height: 64px;
+@search-height: 40px;
 
 .header-navbar {
     height: @header-height;
@@ -9,7 +10,7 @@
         float: left;
         height: @header-height;
         line-height: @header-height;
-        font-size: 24px;
+        font-size: 22px;
     }
 
     .header-search {
@@ -20,16 +21,22 @@
         height: @header-height;
 
         .input-group {
-            padding-top: 15px;
+            padding-top: 12px;
             width: 100%;
-            font-size: 20px;
 
             .form-control {
                 width: 100%;
+                height: @search-height;
+                font-size: 18px;
             }
 
             .input-group-btn {
+                padding: 0;
                 width: 37px;
+
+                button {
+                    height: @search-height;
+                }
             }
         }
     }
@@ -44,6 +51,7 @@
             margin: 0;
             margin-left: 40px;
             font-size: 18px;
+            text-decoration: none;
         }
 
         .header-link:first-child {
@@ -57,7 +65,7 @@
             line-height: @header-height;
 
             span {
-                font-size: 36px;
+                font-size: 32px;
                 margin: 0;
                 margin-top: 14px;
             }
