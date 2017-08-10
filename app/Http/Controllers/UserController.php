@@ -104,46 +104,42 @@ class UserController extends BaseController
 
     public function getSettings(Request $request) {
         $id = $request->input('id');
-        $param = ['first_name', 'last_name', 'user_name', 'gender', 'phone', 'email', 'avatar', 'infomation', 'tags'];
-        $res = User::getInfoByID($id, $param);
+        $param = ['first_name', 'last_name', 'user_name', 'gender', 'phone', 'email', 'avatar', 'information', 'tags'];
+        $res = User::getInfoById($id, $param);
         return response()->json($res);
     }
-        public function postSettings(Request $request) {
+
+    public function postSettings(Request $request) {
         $id = $request->input('id');
-        $firstname = $request->input('firstname');
-        $lastname = $request->input('lastname');
-        $username = $request->input('username');
+        $firstName = $request->input('firstName');
+        $lastName = $request->input('lastName');
+        $userName = $request->input('userName');
         $gender = $request->input('gender');
         $phone = $request->input('phone');
-        $email = $request->input('email');
         $avatar = $request->input('avatar');
-        $infomation = $request->input('infomation');
+        $information = $request->input('information');
         $validate = Validator::make($request->all(), [ 
-            'firstname'  => 'required|max:10',
-            'lastname'   => 'required|max:10',
-            'username'   => 'required|max:50',
-            'gender'     => 'required|max:20',
-            'phone'      => 'unique:user|max:12',
-            'email'      => 'required|email|max:50',
-            'avatar'     => 'max:50',
-            'infomation' => 'max:50',
+            'firstName'   => 'required|max:10',
+            'lastName'    => 'required|max:10',
+            'userName'    => 'required|max:50',
+            'gender'      => 'required|max:20',
+            'information' => 'max:50',
         ]); 
         if ($validate->fails()) {
             return response()->json(['error' => "wrong messages!"], 400);
         }
         $param = [
-            'id'         => $id,
-            'firstname'  => $firstname,
-            'lastname'   => $lastname,
-            'username'   => $username,
-            'gender'     => $gender,
-            'phone'      => $phone,
-            'email'      => $email,
-            'avatar'     => $avatar,
-            'infomation' => $infomation,
+            'first_name'  => $firstName,
+            'last_name'   => $lastName,
+            'user_name'   => $userName,
+            'gender'      => $gender,
+            'information' => $information,
         ];
-        $res = User::reviseProfile($param);
-        return $res;
+        $res = User::updateInfoById($id, $param);
+        if ($res !== 0) {
+            return response()->json();
+        }
+        return response()->json(['error' => "Update failed"], 403);
     }
 }
 

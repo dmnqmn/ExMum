@@ -117,26 +117,12 @@ class User extends Model
           ->select($param)
           ->get()
           ->toArray();
-    if (empty($res)) {
-      return false;
-    }
-    return $res;
+    return current($res);
   }
 
-    public static function reviseProfile($param) {
-    $res = User::where('id', $param['id'])->update(
-      ['first_name' => $param['firstname'], 
-      'last_name'   => $param['lastname'], 
-      'user_name'   => $param['username'], 
-      'gender'      => $param['gender'], 
-      'phone'       => $param['phone'], 
-      'email'       => $param['email'], 
-      'avatar'      => $param['avatar'], 
-      'infomation'  => $param['infomation']]
-      );
-    if (empty($res)) {
-      return "false";
-    }
-    return "true";
+  public static function updateInfoById($id, $param) {
+    $res = User::where('id', $id)
+               ->update($param);
+    return $res;
   }
 }
