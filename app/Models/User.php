@@ -18,20 +18,42 @@ class User extends Model
   // Relationships end
 
   public static function create($email, $password) {
-      $subject = '激活邮件';
-      $html = static::generateLink($email);
-      if (User::where('email', $email)->where('status', 0)->exists()) {
-          Mail::send($email, $subject, $html);
-      } else {
-        $user = new User();
-        $user->name = static::generateUsername($email);
-        $user->password = User::createPwd($user, $password);
-        $user->email = $email;
-        $user->status = 0;
-        $user->save();
-        Mail::send($email, $subject, $html);
-      }
+
+      // $subject = '激活邮件';
+      // $html = static::generateLink($email);
+      // if (User::where('email', $email)->where('status', 0)->exists()) {
+      //     Mail::send($email, $subject, $html);
+      // } else {
+      //   $user = new User();
+      //   $user->name = static::generateUsername($email);
+      //   $user->password = User::createPwd($user, $password);
+      //   $user->email = $email;
+      //   $user->status = 0;
+      //   $user->save();
+      //   Mail::send($email, $subject, $html);
+      // }
+      list($firstName, $lastName) = self::gennerateName();
+      $user = new User();
+      $user->email = $email;
+      $user->password = $password;
+      $user->first_name = $firstName;
+      $user->last_name = $lastName;
+      $user->user_name = $firstName . $lastName;
+      $user->gender = 'custom';
+      $user->save();
       return true;
+  }
+
+  public static function gennerateName() {
+      $firstName = array(
+          '欧阳', '上官', '东方', '南宫', '诸葛', '宇文', '令狐', '轩辕', '慕容', '独孤'
+        );
+      $lastName = array(
+          '炳武', '筱鸢', '幕霖', '佩瞳', '冉升', '樱雪', '天龙', '月瑶', '江山', '梦心'
+        );
+      shuffle($firstName);
+      shuffle($lastName);
+      return [current($firstName), current($lastName)];
   }
 
   public static function generateLink($email) {
@@ -47,40 +69,40 @@ class User extends Model
   }
 
   public static function checkPwd($email, $password) {
-    $record = User::where('email', $email)
-        ->where('password', User::getPwd($password))
-        ->first();
-    if (empty($record)) {
-        return false;
-    }
-    return $record;
+      $record = User::where('email', $email)
+             ->where('password', User::getPwd($password))
+             ->first();
+      if (empty($record)) {
+          return false;
+      }
+      return $record;
   }
 
   public static function emailExisted($email) {
-    return User::where('email', $email)->where('status', 1)->exists();
+      return User::where('email', $email)->where('status', 1)->exists();
   }
 
   private static function createPwd($user, $password) {
-    return $password;
-    if (!isset($user->salt)) {
-      $salt = Salt::create($user->id);
-    }
-    return static::hashPwd($password, $salt->salt);
+      return $password;
+      if (!isset($user->salt)) {
+        $salt = Salt::create($user->id);
+      }
+      return static::hashPwd($password, $salt->salt);
   }
 
   private static function getPwd($user, $password) {
-    return static::hashPwd($password, $user->salt->salt);
+      return static::hashPwd($password, $user->salt->salt);
   }
 
   private static function hashPwd($password, $salt) {
-    return hash('sha256', $password.$salt);
+      return hash('sha256', $password.$salt);
   }
 
   private static function generateUsername($email) {
-    if (isset($email)) {
-      return explode('@', $email)[0];
-    }
-    return '用户'.substr(base_convert(rand(1, 9).time().rand(1, 9), 10, 16), 0, 10);
+      if (isset($email)) {
+        return explode('@', $email)[0];
+      }
+      return '用户'.substr(base_convert(rand(1, 9).time().rand(1, 9), 10, 16), 0, 10);
   }
 
   public static function checkEmailpwd($email, $password) {
@@ -98,31 +120,31 @@ class User extends Model
   }
 
   public static function changePwd($email, $password, $newPassword) {
-    $record = User::where('email', $email)
+      $record = User::where('email', $email)
                   ->get()
                   ->toArray();
-    if(empty($record)) {
-      return 'NOT_EXISTS';
-    }
-    $user = head($record);
-    if ($user['password'] !== $password) {
-      return 'PASSWORD_UNAUTHORIZED';
-    }
-    User::where('id', $user['id'])->update(['password' => $newPassword]);
-    return true;
+      if(empty($record)) {
+          return 'NOT_EXISTS';
+      }
+      $user = head($record);
+      if ($user['password'] !== $password) {
+          return 'PASSWORD_UNAUTHORIZED';
+      }
+      User::where('id', $user['id'])->update(['password' => $newPassword]);
+          return true;
   }
 
   public static function getInfoById($id, $param) {
-    $res = User::where('id', $id)
-          ->select($param)
-          ->get()
-          ->toArray();
-    return current($res);
+      $res = User::where('id', $id)
+                 ->select($param)
+                 ->get()
+                 ->toArray();
+      return current($res);
   }
 
   public static function updateInfoById($id, $param) {
-    $res = User::where('id', $id)
-               ->update($param);
-    return $res;
+      $res = User::where('id', $id)
+                 ->update($param);
+      return $res;
   }
 }
