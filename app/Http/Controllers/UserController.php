@@ -44,6 +44,11 @@ class UserController extends BaseController
 
     public function getActivation(Request $request) {
         $email = $request->input('email');
+        $validate = $request->input('validate');
+        if (md5(md5($email)) == $validate) {
+            return 'ok';
+        }
+        return 'wrong';exit;
         $activation = $request->input('activation');
         if (User::checkLink($email, $activation) == true) {
             return response()->json();

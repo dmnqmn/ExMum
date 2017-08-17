@@ -12,53 +12,54 @@ class User extends Model
   // Relationships
 
   public function salt() {
-    return $this->hasOne('App\Models\Salt', 'uid', 'id');
+      return $this->hasOne('App\Models\Salt', 'uid', 'id');
   }
 
   // Relationships end
 
-  public static function create($email, $password) {
+  public static function sendMail($email) {
+      $link = self::generateLink($email);
+      $html = 
+      '<html>
+      <body>
+        <a href = "http://' . $link . '">请点击此处您激活您的账户</a> 
+      </body>
+      </html>';
+      Mail::send($email, '请您激活您的账户', $html);
+  }
 
-      // $subject = '激活邮件';
-      // $html = static::generateLink($email);
-      // if (User::where('email', $email)->where('status', 0)->exists()) {
-      //     Mail::send($email, $subject, $html);
-      // } else {
-      //   $user = new User();
-      //   $user->name = static::generateUsername($email);
-      //   $user->password = User::createPwd($user, $password);
-      //   $user->email = $email;
-      //   $user->status = 0;
-      //   $user->save();
-      //   Mail::send($email, $subject, $html);
-      // }
-      list($firstName, $lastName) = self::gennerateName();
-      $user = new User();
-      $user->email = $email;
-      $user->password = $password;
-      $user->first_name = $firstName;
-      $user->last_name = $lastName;
-      $user->user_name = $firstName . $lastName;
-      $user->gender = 'custom';
-      $user->save();
+  public static function create($email, $password) {
+      if (! User::where('email', $email)->where('status', 0)->exists()) {
+        list($firstName, $lastName) = self::gennerateName();
+        $user = new User();
+        $user->email = $email;
+        $user->password = $password;
+        $user->first_name = $firstName;
+        $user->last_name = $lastName;
+        $user->user_name = $firstName . $lastName;
+        $user->gender = 'custom';
+        $user->save();
+      }
+      self::sendMail($email);
       return true;
   }
 
+  public static function generateLink($email) {
+      $validate = md5(md5($email));
+      $link = '192.168.33.20' . '/activation' . '?email=' .  $email . '&validate=' . $validate;
+      return $link;
+  }
+
   public static function gennerateName() {
-      $firstName = array(
-          '欧阳', '上官', '东方', '南宫', '诸葛', '宇文', '令狐', '轩辕', '慕容', '独孤'
-        );
-      $lastName = array(
-          '炳武', '筱鸢', '幕霖', '佩瞳', '冉升', '樱雪', '天龙', '月瑶', '江山', '梦心'
-        );
+      $firstName = [
+          '欧阳', '上官', '东方', '南宫', '诸葛', '宇文', '令狐', '轩辕', '慕容', '独孤',
+        ];
+      $lastName = [
+          '炳武', '筱鸢', '幕霖', '佩瞳', '冉升', '樱雪', '天龙', '月瑶', '江山', '梦心',
+        ];
       shuffle($firstName);
       shuffle($lastName);
       return [current($firstName), current($lastName)];
-  }
-
-  public static function generateLink($email) {
-      $link = 'email=' . $email . '&activation=' . md5(md5($email));
-      return 'http://192.168.33.20/activation?' . $link;
   }
 
   public static function checkLink($email, $activation) {
