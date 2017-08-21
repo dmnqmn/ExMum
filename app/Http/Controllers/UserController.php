@@ -46,17 +46,10 @@ class UserController extends BaseController
         $email = $request->input('email');
         $validate = $request->input('validate');
         if (md5(md5($email)) == $validate) {
-            return 'ok';
-        }
-        return 'wrong';exit;
-        $activation = $request->input('activation');
-        if (User::checkLink($email, $activation) == true) {
+            User::changeStatus($email);
             return response()->json();
-            // $token = AccessToken::create($user->id);
-            // $cookie = makeCookie('EXMUM_U', $token, General::ACCESS_TOKEN_MAX_AGE);
-            // return response()->json(null)->withCookie($cookie);
         }
-        return response()->json(['error' => 'REGISTERS_WRONG_MESSAGE'], 400);
+        return response()->json(['error' => 'Invalid authentication address'], 403);
     }
 
     public function postLogin(Request $request) {
