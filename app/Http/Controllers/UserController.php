@@ -81,7 +81,7 @@ class UserController extends BaseController
         $validate = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|max:50',
-            'newpassword' => 'required|max:50',
+            'newPassword' => 'required|max:50',
         ], [
             'email.required' => 'EMAIL_NEEDED',
             'email.email' => 'EMAIL_ILLEGAL',
