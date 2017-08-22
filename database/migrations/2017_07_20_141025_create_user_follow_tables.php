@@ -13,7 +13,7 @@ class CreateUserFollowTables extends Migration
      */
     public function up()
     {
-         Schema::create('user', function (Blueprint $table) {
+        Schema::create('user', function (Blueprint $table) {
             $table->increments('id');
             $table->string('first_name', 10);
             $table->string('last_name', 10);
@@ -29,41 +29,41 @@ class CreateUserFollowTables extends Migration
             $table->timestamps();
         });
 
-    //      Schema::create('user_follow', function (Blueprint $table) {
-    //         $table->increments('id');
-    //         $table->integer('uid');
-    //         $table->integer('follow_uid');
-    //         $table->timestamps();
-    //      });
+        // Schema::create('user_follow', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->integer('uid');
+        //     $table->integer('follow_uid');
+        //     $table->timestamps();
+        //  });
 
-    //     Schema::create('photo', function (Blueprint $table) {
-    //         $table->increments('id');
-    //         $table->string('url', 50);
-    //         $table->integer('uid');
-    //         $table->unsignedTinyInteger('tag1')->nullable();
-    //         $table->unsignedTinyInteger('tag2')->nullable();
-    //         $table->unsignedTinyInteger('tag3')->nullable();
-    //         $table->unsignedTinyInteger('tag4')->nullable();
-    //         $table->unsignedTinyInteger('tag5')->nullable();
-    //         $table->unsignedTinyInteger('tag6')->nullable();
-    //         $table->unsignedTinyInteger('tag7')->nullable();
-    //         $table->unsignedTinyInteger('tag8')->nullable();
-    //         $table->unsignedTinyInteger('tag9')->nullable();
-    //         $table->unsignedTinyInteger('tag10')->nullable();
-    //         $table->unsignedTinyInteger('tag11')->nullable();
-    //         $table->unsignedTinyInteger('tag12')->nullable();
-    //         $table->unsignedTinyInteger('tag13')->nullable();
-    //         $table->unsignedTinyInteger('tag14')->nullable();
-    //         $table->unsignedTinyInteger('tag15')->nullable();
-    //         $table->unsignedTinyInteger('tag16')->nullable();
-    //         $table->unsignedTinyInteger('tag17')->nullable();
-    //         $table->unsignedTinyInteger('tag18')->nullable();
-    //         $table->unsignedTinyInteger('tag19')->nullable();
-    //         $table->unsignedTinyInteger('tag20')->nullable();
-    //         $table->unsignedTinyInteger('tag21')->nullable();
-    //         $table->unsignedTinyInteger('tag22')->nullable();
-    //         $table->timestamps();
-    //      });
+        Schema::create('photo', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('url', 200);
+            $table->integer('uid');
+            $table->unsignedTinyInteger('tag1')->nullable()->comment('Home feed');
+            $table->unsignedTinyInteger('tag2')->nullable()->comment('Popular');
+            $table->unsignedTinyInteger('tag3')->nullable()->comment('Everything');
+            $table->unsignedTinyInteger('tag4')->nullable()->comment('Gifts');
+            $table->unsignedTinyInteger('tag5')->nullable()->comment('Videos');
+            $table->unsignedTinyInteger('tag6')->nullable()->comment('Animals and pets');
+            $table->unsignedTinyInteger('tag7')->nullable()->comment('Architecture');
+            $table->unsignedTinyInteger('tag8')->nullable()->comment('Art');
+            $table->unsignedTinyInteger('tag9')->nullable()->comment('Cars and motocyles');
+            $table->unsignedTinyInteger('tag10')->nullable()->comment('Celebrities');
+            $table->unsignedTinyInteger('tag11')->nullable()->comment('DIY and crafts');
+            $table->unsignedTinyInteger('tag12')->nullable()->comment('Design');
+            $table->unsignedTinyInteger('tag13')->nullable()->comment('Education');
+            $table->unsignedTinyInteger('tag14')->nullable()->comment('Entertainment');
+            $table->unsignedTinyInteger('tag15')->nullable()->comment('Food and drink');
+            $table->unsignedTinyInteger('tag16')->nullable()->comment('Gardening');
+            $table->unsignedTinyInteger('tag17')->nullable()->comment('Geek');
+            $table->unsignedTinyInteger('tag18')->nullable()->comment('Hair and beauty');
+            $table->unsignedTinyInteger('tag19')->nullable()->comment('Health and fitness');
+            $table->unsignedTinyInteger('tag20')->nullable()->comment('History');
+            $table->unsignedTinyInteger('tag21')->nullable()->comment('Holidays and events');
+            $table->unsignedTinyInteger('tag22')->nullable()->comment('Humor');
+            $table->timestamps();
+         });
 
     //     Schema::create('copy_photo', function (Blueprint $table) {
     //         $table->increments('id');
