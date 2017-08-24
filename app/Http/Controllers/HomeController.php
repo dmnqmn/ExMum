@@ -14,6 +14,12 @@ use Validator;
 class HomeController extends BaseController
 {
     public function getHome(Request $request) {
-        return view('home')->with('hotSearch', '热门');
+        $jsVars = [
+            ['user', \Globals::$user]
+        ];
+
+        return view('home')
+                ->with('jsVars', $jsVars)
+                ->with('hotSearch', '热门');
     }
 }

@@ -1,57 +1,108 @@
 <template>
-<div class="account-manager">
-<div class="dropdown">
-    <a class="btn btn-primary" role="button" data-toggle="dropdown">我</a>
-    <ul class="dropdown-menu" role="menu">
-    </ul>
-</div>
-<div class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">{{ title }}</h4>
-      </div>
-      <div class="modal-body">
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">{{ footerButtonText }}</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-</div>
+<Modal
+    v-model="showModal"
+    :footer-hide="true"
+    :closable="false"
+    title="注册/登录"
+>
+    <Form>
+        <Form-item>
+            <Input v-model="formItems.account" placeholder="请输入您的邮箱账号"></Input>
+        </Form-item>
+        <Form-item>
+            <Input v-model="formItems.password" placeholder="请输入您的密码" type="password"></Input>
+        </Form-item>
+        <Form-item>
+            <Button type="primary" @click="register">注册</Button>
+            <Button type="info" @click="login">直接登录</Button>
+        </Form-item>
+    </Form>
+</Modal>
 </template>
 
 <script>
 import $ from 'jquery'
-import 'bootstrap'
+import axios from 'axios'
+import crypto from 'crypto-js'
 
 export default {
-    props: {
-        loggedIn: {
-            type: Boolean,
-            default: false
-        }
-    },
     data() {
         return {
-            title: '登录',
-            footerButtonText: '登录'
+            showModal: !window.user,
+            formItems: {
+                account: '',
+                password: '',
+                repeatPassword: ''
+            }
         }
     },
-    mounted() {
-        if (!this.loggedIn) {
-            // $(this.$el).find('.modal').modal({ show: true })
+
+    methods: {
+        register() {
+            if (this.formItems.account.trim().length < 0) {
+                return this.$Message.error('请输入邮箱账号')
+            }
+
+            if (this.formItems.account.trim().length < 6) {
+                return this.$Message.error('密码应大于 6 位且不包含空格')
+            }
+
+            axios.post('/register', {
+                email: this.formItems.account,
+                password: crypto.SHA256(this.formItems.password).toString(crypto.enc.Hex).slice(0, 50)
+            })
+            .then(() => {
+                window.location.reload()
+            })
+            .catch((reason) => {
+                let error = reason.response.data.error
+                switch (error) {
+                    case 'REGISTER_EMAIL_NEEDED':
+                        return this.$Message.error('请输入邮箱账号')
+                    case 'REGISTER_EMAIL_ILLEGAL':
+                        return this.$Message.error('请输入合法的邮箱账号')
+                    case 'REGISTER_EMAIL_NEEDED':
+                        return this.$Message.error('请输入合适的密码');
+                }
+            })
+        },
+
+        login() {
+            if (this.formItems.account.trim().length < 0) {
+                return this.$Message.error('请输入邮箱账号')
+            }
+
+            if (this.formItems.account.trim().length < 0) {
+                return this.$Message.error('请输入密码')
+            }
+
+            axios.post('/login', {
+                email: this.formItems.account,
+                password: crypto.SHA256(this.formItems.password).toString(crypto.enc.Hex).slice(0, 50)
+            })
+            .then(() => {
+                window.location.reload()
+            })
+            .catch((reason) => {
+                let error = reason.response.data.error
+                switch (error) {
+                    case 'LOGIN_EMAIL_NEEDED':
+                        return this.$Message.error('请输入邮箱账号')
+                    case 'LOGIN_EMAIL_ILLEGAL':
+                        return this.$Message.error('请输入合法的邮箱账号')
+                    case 'LOGIN_PASSWORD_NEEDED':
+                        return this.$Message.error('请输入密码');
+                    case 'LOGIN_USER_NOT_FOUND':
+                        return this.$Message.error('该账号不存在');
+                    case 'LOGIN_WRONG_PASSWORD':
+                        return this.$Message.error('账号或密码错误');
+                }
+            })
         }
-        $(this.$el).find('.dropdown btn').dropdown()
     }
 }
 </script>
 
-<style scoped>
-.account-manager {
-    display: inline;
-}
+<style scoped lang="less">
+
 </style>

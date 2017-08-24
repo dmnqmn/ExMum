@@ -38,8 +38,9 @@ class UserController extends BaseController
         if (User::emailExisted($email)) {
             return response()->json(['error' => 'REGISTER_EMAIL_EXISTED'], 403);
         }
-        User::create($email, $password);
-        return response()->json();
+        $user = User::create($email, $password);
+        $token = AccessToken::create($user->id);
+        return response()->json()->withCookie(makeCookie('EXMUM_U', $token));
     }
 
     public function getActivation(Request $request) {
@@ -47,7 +48,7 @@ class UserController extends BaseController
         $validate = $request->input('validate');
         if (md5(md5($email)) == $validate) {
             User::changeStatus($email);
-            return response()->json();
+            return redirect()->route('home');
         }
         return response()->json(['error' => 'Invalid authentication address'], 403);
     }
@@ -59,19 +60,24 @@ class UserController extends BaseController
             'email' => 'required|email',
             'password' =>  'required|max:50',
         ], [
-            'email.required' => 'EMAIL_NEEDED',
-            'email.email' => 'EMAIL_ILLEGAL',
-            'password.required' => 'PASSWORD_NEEDED',
-            'password.max' => 'PASSWORD_NEEDED',
-        ]); 
+            'email.required' => 'LOGIN_EMAIL_NEEDED',
+            'email.email' => 'LOGIN_EMAIL_ILLEGAL',
+            'password.required' => 'LOGIN_PASSWORD_NEEDED',
+            'password.max' => 'LOGIN_PASSWORD_NEEDED',
+        ]);
         if ($validate->fails()) {
             return response()->json(['error' => $validate->messages()->first()], 400);
         }
-        $res = User::checkEmailpwd($email, $password);
-        if ($res === true) {
-            return response()->json();
+        $user = User::where('email', $email)->first();
+        if (!$user) {
+            return response()->json(['error' => 'LOGIN_USER_NOT_FOUND'], 404);
         }
-        return response()->json(['error' => $res], 403);
+        $res = User::checkUserPwd($user, $password);
+        if ($res) {
+            $token = AccessToken::create($user->id);
+            return response()->json()->withCookie('EXMUM_U', $token);
+        }
+        return response()->json(['error' => 'LOGIN_WRONG_PASSWORD'], 403);
     }
 
     public function postChangePwd(Request $request) {
@@ -97,7 +103,7 @@ class UserController extends BaseController
         if ($res === true) {
             return response()->json();
         }
-        return response()->json(['error' => $res], 403);       
+        return response()->json(['error' => $res], 403);
     }
 
     public function getSettings(Request $request) {
@@ -116,13 +122,13 @@ class UserController extends BaseController
         $phone = $request->input('phone');
         $avatar = $request->input('avatar');
         $information = $request->input('information');
-        $validate = Validator::make($request->all(), [ 
+        $validate = Validator::make($request->all(), [
             'firstName'   => 'required|max:10',
             'lastName'    => 'required|max:10',
             'userName'    => 'required|max:50',
             'gender'      => 'required|max:20',
             'information' => 'max:50',
-        ]); 
+        ]);
         if ($validate->fails()) {
             return response()->json(['error' => 'wrong messages!'], 400);
         }
