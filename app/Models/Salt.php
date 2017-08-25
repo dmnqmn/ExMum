@@ -12,7 +12,7 @@ class Salt extends Model
     {
         $salt = new Salt;
         $salt->uid = $uid;
-        $salt->salt = $uid.hash('sha1', uniqid(($uid + 351104).rand()));
+        $salt->salt = $uid . hash('sha1', uniqid(($uid + 351104) . rand()));
         $salt->save();
         return $salt;
     }

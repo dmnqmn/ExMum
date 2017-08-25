@@ -19,4 +19,5 @@
             </form>
         </div>
     </nav>
+    <account-manager></account-manager>
 </header>

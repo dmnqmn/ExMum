@@ -17,31 +17,31 @@ class User extends Model
 
     // Relationships end
 
-    public static function sendMail($email) {
-        $link = self::generateLink($email);
-        $html = 
+    public static function sendActivationMail($user) {
+        $link = self::generateLink($user->email, $user->salt->salt);
+        $html =
         '<html>
         <body>
-            <a href = "http://' . $link . '">请点击此处您激活您的账户</a> 
+            <a href = "http://' . $link . '">请点击此处您激活您的账户</a>
         </body>
         </html>';
-        Mail::send($email, '请您激活您的账户', $html);
+        Mail::send($user->email, '请您激活您的账户', $html);
     }
 
     public static function create($email, $password) {
-        if (! User::where('email', $email)->where('status', 0)->exists()) {
-          list($firstName, $lastName) = self::gennerateName();
-          $user = new User();
-          $user->email = $email;
-          $user->password = $password;
-          $user->first_name = $firstName;
-          $user->last_name = $lastName;
-          $user->user_name = $firstName . $lastName;
-          $user->gender = 'custom';
-          $user->save();
-        }
-        self::sendMail($email);
-        return true;
+        list($firstName, $lastName) = self::gennerateName();
+        $user = new User();
+        $user->email = $email;
+        $user->first_name = $firstName;
+        $user->last_name = $lastName;
+        $user->user_name = $firstName . $lastName;
+        $user->gender = 'custom';
+        $user->password = '';
+        $user->save();
+        $user->password = self::createPwd($user, $password);
+        $user->save();
+        self::sendActivationMail($user);
+        return $user;
     }
 
     public static function changeStatus($email) {
@@ -50,9 +50,9 @@ class User extends Model
         return $res;
     }
 
-    public static function generateLink($email) {
-        $validate = md5(md5($email));
-        $link = '192.168.33.20' . '/activation' . '?email=' .  $email . '&validate=' . $validate;
+    public static function generateLink($email, $salt) {
+        $validate = md5(md5($email . $salt));
+        $link = env('APP_BASE_DOMAIN') . '/activation' . '?email=' . $email . '&validate=' . $validate;
         return $link;
     }
 
@@ -69,8 +69,10 @@ class User extends Model
     }
 
     public static function checkLink($email, $activation) {
-        if ($activation == md5(md5($email))) {
-            return true;
+        if ($user = User::where('email', $email)->first()) {
+            if ($activation == md5(md5($email . $user->salt->salt))) {
+                return true;
+            }
         }
         return false;
     }
@@ -86,11 +88,10 @@ class User extends Model
     }
 
     public static function emailExisted($email) {
-        return User::where('email', $email)->where('status', 1)->exists();
+        return User::where('email', $email)->exists();
     }
 
     private static function createPwd($user, $password) {
-        return $password;
         if (!isset($user->salt)) {
             $salt = Salt::create($user->id);
         }
@@ -102,28 +103,11 @@ class User extends Model
     }
 
     private static function hashPwd($password, $salt) {
-        return hash('sha256', $password.$salt);
+        return hash('sha256', $password . $salt);
     }
 
-    private static function generateUsername($email) {
-        if (isset($email)) {
-            return explode('@', $email)[0];
-        }
-        return '用户'.substr(base_convert(rand(1, 9).time().rand(1, 9), 10, 16), 0, 10);
-    }
-
-    public static function checkEmailpwd($email, $password) {
-        $res = User::where('email', $email)
-                   ->where('status', 1)
-                   ->get()
-                   ->toArray();
-        if (empty($res)) {
-            return 'LOGIN_USER_NOT_FOUND';
-        }
-        if ($res[0]['password'] == $password) {
-            return true;
-        }
-        return 'LOGIN_WRONG_PASSWORD';
+    public static function checkUserPwd($user, $password) {
+        return $user->password === self::hashPwd($password, $user->salt->salt);
     }
 
     public static function changePwd($email, $password, $newPassword) {

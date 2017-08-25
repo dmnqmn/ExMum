@@ -61,7 +61,14 @@ function dllCss()
     echo '<link rel="stylesheet" href="/'.getDllManifest()->$file.'"></link>';
 }
 
-function makeCookie($name, $value, $age)
+function makeCookie($name, $value, $age = 30 * 24 * 60 * 60)
 {
     return cookie($name, $value, $age, '/', '.' . config('app.base_domain'));
+}
+
+function jsVars($pairs)
+{
+    echo '<script>' . implode(array_map(function ($pair) {
+        return "window['" . $pair[0] . "'] =" . json_encode($pair[1]);
+    }, $pairs), ';') . ';</script>';
 }
