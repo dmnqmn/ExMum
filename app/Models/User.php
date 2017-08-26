@@ -18,7 +18,7 @@ class User extends Model
     // Relationships end
 
     public static function sendActivationMail($user) {
-        $link = self::generateLink($user->email, $user->salt->salt);
+        $link = self::generateLink($user->email, $user->salt);
         $html =
         '<html>
         <body>
@@ -137,5 +137,15 @@ class User extends Model
         $res = User::where('id', $id)
                    ->update($param);
         return $res;
+    }
+
+    public static function selectTagsById($uid) {
+        $res = User::where('id', $uid)
+                   ->select('tags')
+                   ->get()
+                   ->toArray();
+        $data = current($res);
+        $tags = $data['tags'];
+        return $tags;
     }
 }
