@@ -19,14 +19,22 @@ class HomeController extends BaseController
         $jsVars = [
             ['user', \Globals::$user]
         ];
-     //    $uid = \Globals::$user['id'];
-   		// $tags = User::selectTagsById($uid);
-    	// $tags_arr = json_decode($tags, true);
-    	// $aa = $tags_arr[0];
-    	// $page = 1;
-    	// $num = 5;
-    	// $rr = Photo::getPhotoByTags($aa, $page, $num);
-    	// return $rr;
+        // $page = $request->input('page');
+        // $pagesize = $request->input('pagesize');
+        // $validate = Validator::make($request->all(), [
+        //     'page'   => 'required',
+        //     'pagesize' => 'required',
+        //     ]);
+        
+        // $jsVars = [
+        //     ['user', \Globals::$user]
+        // ];
+        // $uid = \Globals::$user['id'];
+        // $tags = User::selectTagsById($uid);
+        // $tags_arr = json_decode($tags, true);
+        // $tag = $tags_arr[0];
+        // $url = Photo::getPhotoByTags($tag, $page, $pagesize = 2);
+        // return $url;
 
         return view('home')
         ->with('jsVars', $jsVars)
