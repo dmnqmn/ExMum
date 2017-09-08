@@ -23,8 +23,11 @@ class HomeController extends BaseController
         //若要显示首页，将此处至return $url处注释即可；
         $page = $request->input('page');
         $validate = Validator::make($request->all(), [
-            'page'   => 'required',
+            'page' => 'required',
             ]);
+        if ($validate->fails()) {
+            return response()->json(['error' => 'wrong messages!'], 400);
+        }
         $uid = \Globals::$user['id'];
         $tags = User::selectTagsById($uid);
         $tags_arr = json_decode($tags, true);
@@ -35,5 +38,26 @@ class HomeController extends BaseController
         return view('home')
             ->with('jsVars', $jsVars)
             ->with('hotSearch', '热门');
+    }
+
+    public function showPhotos(Request $request) {
+        $tag = $request->input('tag');
+        $page = $request->input('page');
+        $num = 1;
+        $validate = Validator::make($request->all(), [
+            'tag' => 'required', 
+            ]);
+        if ($validate->fails()) {
+            return response()->json(['error' => 'TAG_NEEDED!'], 400);
+        }
+        $url = Photo::showPhotoByTag($tag, $page, $pagesize = 8);
+        $resUrl = [];
+        foreach ($url as $key => $value) {
+            $resUrl[] = $value['url'];
+        }
+        return [
+            'url' => $resUrl,
+            'isFollow' => $num,
+        ];
     }
 }

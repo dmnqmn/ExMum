@@ -22,15 +22,33 @@ class Photo extends Model
             $pagesize = self::PAGESIZE;
         }
         $res = static::where($tag, 1)
-                            ->skip($skip)
-                            ->take($pagesize)
-                            ->select('url')
-                            ->get()
-                            ->toArray();
+                     ->skip($skip)
+                     ->take($pagesize)
+                     ->select('url')
+                     ->get()
+                     ->toArray();
         if (! $res) {
             return [];
         }
         return $res;
     }
 
+    public static function showPhotoByTag($tag, $page, $pagesize) {
+        $skip = 0;
+        if ($page < 1) {
+            return false;
+        }
+        if ($page >= self::PAGE) {
+            $skip = self::DEFAULTSIZE + self::PAGESIZE * ($page - self::PAGE);
+            $pagesize = self::PAGESIZE;
+        }
+        $res = static::where('tag'.$tag, 1)
+                     ->skip($skip)
+                     ->take($pagesize)
+                     ->select('url')
+                     ->get()
+                     ->toArray();
+        return $res;
+
+    }
 }
