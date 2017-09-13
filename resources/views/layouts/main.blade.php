@@ -14,7 +14,7 @@
 @endcomponent
 @show
 
-<div class="container">
+<div class="main">
     @yield('main')
 </div>
 
