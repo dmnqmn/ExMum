@@ -12,7 +12,7 @@
 */
 
 Route::get('/', 'HomeController@getHome')->name('home');
-Route::get('/photos', 'HomeController@showPhotos');
+Route::get('/photos', 'PhotoController@showPhotos');
 
 Route::get('/settings', 'UserController@getSettings');
 Route::get('/activation', 'UserController@getActivation');

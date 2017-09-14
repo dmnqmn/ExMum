@@ -148,4 +148,19 @@ class User extends Model
         $tags = $data['tags'];
         return $tags;
     }
+
+    public static function isFollowed($tags, $uid = 1) {
+        $userInfo = User::where('id', $uid)
+                        ->select('tags')
+                        ->get()
+                        ->toArray();
+        $tag = $userInfo[0]['tags'];
+        $res = json_decode($tag);
+        if (in_array($tags, $res)) {
+            return 1;
+        }
+        return 0;
+        
+
+    }
 }
