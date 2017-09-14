@@ -12,8 +12,7 @@ $(() => {
     let photoMasonry = new masonry('#photo-masonry', {
         columnWidth: '#photo-sizer',
         itemSelector: '.photo-wrapper',
-        percentPosition: true,
-        gutter: 0
+        gutter: 8
     })
 
     imagesLoaded('#photo-masonry').on('progress', () => {
