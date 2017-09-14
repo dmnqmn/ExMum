@@ -1,2 +1,35 @@
 @import '../common/entry-common.less';
 @import '../common/header';
+@import '../common/main';
+
+.home-container {
+    width: 100%;
+    padding: 28px;
+    background-color: #ccc;
+}
+
+.photo-masonry {
+    width: 100%;
+
+    .photo-sizer {
+        width: 25%;
+    }
+
+    .photo-wrapper {
+        float: left;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #37c;
+        width: 25%;
+    }
+
+    img {
+        width: 100%;
+    }
+
+    &::after {
+        content: ' ';
+        display: block;
+        clear: both;
+    }
+}
