@@ -12,7 +12,7 @@ use Validator;
 class photoController extends BaseController
 {
     const SIZE = 8;
-    const LASTUPDATEID = 0;
+    const LAST_UPDATE_ID = 0;
     const TAG = 'Home feed';
     
 	public function getPhotos(Request $request) {
@@ -46,7 +46,7 @@ class photoController extends BaseController
             return response()->json(['error' => $validate->messages()], 400);
         }
         $size = is_null($size) ? self::SIZE : $size;
-        $lastUpdateId = is_null($lastUpdateId) ? self::LASTUPDATEID : $lastUpdateId;
+        $lastUpdateId = is_null($lastUpdateId) ? self::LAST_UPDATE_ID : $lastUpdateId;
         $tag = is_null($tag) ? self::TAG : $tag;
         $tags = explode(',', $tag);
         $photos = Photo::getPhotosByTags($tags, $lastUpdateId, $size);

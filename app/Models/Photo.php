@@ -9,10 +9,10 @@ class Photo extends Model
     protected $table = 'photo';
 
     const PAGE = 2;
-    const PAGESIZE = 10;
-    const DEFAULTSIZE = 8;
+    const PAGE_SIZE = 10;
+    const DEFAULT_SIZE = 8;
 
-    const TAGSCONF  = [
+    const TAGS_CONF  = [
             'tag1'  => 'Home feed',
             'tag2'  => 'Popular',
             'tag3'  => 'Everything',
@@ -43,8 +43,8 @@ class Photo extends Model
         	return false;
         }
         if ($page >= self::PAGE) {
-            $skip = self::DEFAULTSIZE + self::PAGESIZE * ($page - self::PAGE);
-            $pagesize = self::PAGESIZE;
+            $skip = self::DEFAULT_SIZE + self::PAGE_SIZE * ($page - self::PAGE);
+            $pagesize = self::PAGE_SIZE;
         }
         $res = static::where($tag, 1)
                      ->skip($skip)
@@ -64,8 +64,8 @@ class Photo extends Model
             return false;
         }
         if ($page >= self::PAGE) {
-            $skip = self::DEFAULTSIZE + self::PAGESIZE * ($page - self::PAGE);
-            $pagesize = self::PAGESIZE;
+            $skip = self::DEFAULT_SIZE + self::PAGE_SIZE * ($page - self::PAGE);
+            $pagesize = self::PAGE_SIZE;
         }
         $res = static::where('tag'.$tag, 1)
                      ->skip($skip)
@@ -78,7 +78,7 @@ class Photo extends Model
     }
 
     public static function getPhotosByTags($tags, $lastUpdateId, $size) {
-        $tag = array_search(head($tags), self::TAGSCONF);
+        $tag = array_search(head($tags), self::TAGS_CONF);
         $photos = static::where($tag, 1)
                     ->take($size)
                     ->orderBy('id', 'desc')
@@ -92,13 +92,13 @@ class Photo extends Model
         $userInfo = User::where('id', $uid)->first();
         $res = [];
         if (is_null($userInfo)) {
-            foreach (self::TAGSCONF as $v) {
+            foreach (self::TAGS_CONF as $v) {
                 $res[] = ['tag' => $v, 'followed' => false];
             }
         } else {
             $tags = $userInfo->tags;
             $tagsArr = explode(',', $tags);
-            foreach (self::TAGSCONF as $k => $v) {
+            foreach (self::TAGS_CONF as $k => $v) {
                 $followed = false;
                 if (in_array($k, $tagsArr)) {
                     $followed = true;

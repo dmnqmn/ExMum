@@ -130,7 +130,7 @@ class UserController extends BaseController
             'information' => 'max:50',
         ]);
         if ($validate->fails()) {
-            return response()->json(['error' => 'wrong messages!'], 400);
+            return response()->json(['error' => $validate->messages()], 400);
         }
         $param = [
             'first_name'  => $firstName,
