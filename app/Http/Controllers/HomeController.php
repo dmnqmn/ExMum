@@ -41,25 +41,4 @@ class HomeController extends BaseController
                     ['url' => 'http://img2.imgtn.bdimg.com/it/u=1035436093,3470577695&fm=27&gp=0.jpg']
                 ]);
     }
-
-    public function showPhotos(Request $request) {
-        $tag = $request->input('tag');
-        $page = $request->input('page');
-        $num = 1;
-        $validate = Validator::make($request->all(), [
-            'tag' => 'required',
-            ]);
-        if ($validate->fails()) {
-            return response()->json(['error' => 'TAG_NEEDED!'], 400);
-        }
-        $url = Photo::showPhotoByTag($tag, $page, $pagesize = 8);
-        $resUrl = [];
-        foreach ($url as $key => $value) {
-            $resUrl[] = $value['url'];
-        }
-        return [
-            'url' => $resUrl,
-            'isFollow' => $num,
-        ];
-    }
 }
