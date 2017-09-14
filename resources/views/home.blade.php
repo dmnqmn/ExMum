@@ -14,6 +14,7 @@
 <div class="home-container">
     <div class="photo-masonry" id="photo-masonry">
         <div class="photo-sizer" id="photo-sizer"></div>
+        <div class="photo-gutter" id="photo-gutter"></div>
     @foreach ($photos as $photo)
         <div class="photo-wrapper">
             <img class="photo" src="{{ $photo['url'] }}">
