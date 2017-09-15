@@ -5,7 +5,7 @@
             <div class="navbar-right header-link-list">
                 <a href="{{ route('home') }}" class="navbar-text header-link">首页</a>
                 <a href="{{ route('home') }}" class="navbar-text header-link">热门</a>
-                <a href="javascript:void(0);" class="navbar-text header-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="{{ \Globals::$user->user_name }}">我</a>
+                <a href="javascript:void(0);" class="navbar-text header-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="{{ \Globals::$user ? \Globals::$user->user_name : '' }}">我</a>
                 <a href="javascript:void(0);" class="dropdown navbar-right dropdown header-message">
                     <span class="navbar-text fa fa-commenting-o" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="button"></span>
                     <div class="dropdown-menu"></div>
