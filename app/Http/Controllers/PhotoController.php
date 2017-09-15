@@ -35,27 +35,25 @@ class photoController extends BaseController
 	}
 
     public function showPhotos(Request $request) {
-        $tag = $request->input('tag');
-        $size = $request->input('size');
         $lastUpdateId = $request->input('lastUpdateId');
+        $size = $request->input('size');
+        $tag = $request ->input('tag');
         $validate = Validator::make($request->all(), [
-            'size' => 'integer', 
             'lastUpdateId' => 'integer',
+            'size' => 'integer',
         ]);
         if ($validate->fails()) {
             return response()->json(['error' => $validate->messages()], 400);
         }
-        $size = is_null($size) ? self::SIZE : $size;
         $lastUpdateId = is_null($lastUpdateId) ? self::LAST_UPDATE_ID : $lastUpdateId;
+        $size = is_null($size) ? self::SIZE : $size;
         $tag = is_null($tag) ? self::TAG : $tag;
-        $tags = explode(',', $tag);
-        $photos = Photo::getPhotosByTags($tags, $lastUpdateId, $size);
-        $lastPhoto = end($photos);
-        $userFollow = Photo::userFollowed(1);
+        $tags = explode(',' , $tag);
+        $photos = Photo::takePhotoByTags($tags, $size, $lastUpdateId);
         return [
-            'lastUpdateId' => $lastPhoto['id'],
+            'lastUpdateId' => $lastUpdateId,
             'photos' => $photos,
-            'tags' => $userFollow,
-        ];
+            ];
+
     }
 }
