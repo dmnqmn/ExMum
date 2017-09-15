@@ -9,26 +9,33 @@
 }
 
 .photo-masonry {
+    margin: 0 auto;
     width: 100%;
 
     .photo-sizer {
-        width: 22%;
+        width: 236px;
     }
 
     .photo-gutter {
-        width: 3%;
+        width: 24px;
     }
 
     .photo-wrapper {
         float: left;
+        margin-bottom: 7px;
+        width: 236px;
+        padding: 8px;
+        overflow: hidden;
         border-radius: 5px;
-        box-shadow: 0 0 4px 4px rgba(200, 187, 187, 0.7);
-        width: 22%;
-        margin-bottom: 20px;
+
+        &:hover {
+            background-color: rgb(233, 233, 233);
+        }
     }
 
     img {
         width: 100%;
+        border-radius: 5px;
     }
 
     &::after {
