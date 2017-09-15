@@ -18,7 +18,7 @@
     @foreach ($photos as $photo)
         <div class="photo-wrapper">
             <img class="photo" src="{{ $photo['url'] }}">
-            <p>图的名字，暂时还没有</p>
+            <p>A fantasy picture</p>
         </div>
     @endforeach
     </div>
