@@ -108,4 +108,31 @@ class Photo extends Model
         }
         return $res;
     }
+
+    public static function getPhotoById($id) {
+        $photo = Photo::where('id', $id)
+                      ->get()
+                      ->toArray();
+        return $photo;
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -58,4 +58,12 @@ class photoController extends BaseController
             'tags' => $userFollow,
         ];
     }
+
+    public function getPhotoById($id) {
+        $photo = Photo::getPhotoById($id);
+        if (empty($photo)) {
+            return response()->json(['error' => 'NOT_FOUND'], 404);
+        }
+        return $photo;
+    }
 }
