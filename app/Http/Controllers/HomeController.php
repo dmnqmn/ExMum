@@ -20,6 +20,6 @@ class HomeController extends BaseController
         return view('home')
             ->with('jsVars', $jsVars)
             ->with('hotSearch', '热门')
-            ->with('photos', Photo::getPhotoByTags('tag1', 1, 20));
+            ->with('photos', Photo::takePhotoByTags(['Home feed'], 20, 0));
     }
 }
