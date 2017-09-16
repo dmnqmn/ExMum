@@ -114,25 +114,5 @@ class Photo extends Model
                       ->get()
                       ->toArray();
         return $photo;
-
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
