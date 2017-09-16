@@ -60,7 +60,10 @@ class Photo extends Model
 
     public static function takePhotoByTags($tags, $size, $lastUpdateId) {
         foreach ($tags as $v) {
-            $tag[] = array_search($v, self::TAGS_CONF);
+            if (!in_array($v, self::TAGS_CONF)) {
+                return [];  
+            }
+            $tag[] = array_search($v, self::TAGS_CONF); 
         }
         $photos = static::take($size);
         if ($lastUpdateId > 0) {
