@@ -39,4 +39,12 @@ class photoController extends BaseController
             ];
 
     }
+
+    public function getPhotoById($id) {
+        $photo = Photo::getPhotoById($id);
+        if (empty($photo)) {
+            return response()->json(['error' => 'PHOTO_NOT_FOUND'], 404);
+        }
+        return $photo;
+    }
 }
