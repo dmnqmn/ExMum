@@ -12,7 +12,9 @@
 */
 
 Route::get('/', 'HomeController@getHome')->name('home');
+
 Route::get('/photos', 'PhotoController@showPhotos');
+Route::get('/photo/{id}', 'PhotoController@getPhotoById');
 
 Route::get('/settings', 'UserController@getSettings');
 Route::get('/activation', 'UserController@getActivation');
