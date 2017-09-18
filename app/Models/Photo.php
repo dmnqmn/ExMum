@@ -58,52 +58,46 @@ class Photo extends Model
         return $res;
     }
 
-    public static function showPhotoByTag($tag, $page, $pagesize) {
-        $skip = 0;
-        if ($page < 1) {
-            return false;
-        }
-        if ($page >= self::PAGE) {
-            $skip = self::DEFAULT_SIZE + self::PAGE_SIZE * ($page - self::PAGE);
-            $pagesize = self::PAGE_SIZE;
-        }
-        $res = static::where('tag'.$tag, 1)
-                     ->skip($skip)
-                     ->take($pagesize)
-                     ->select('url')
-                     ->get()
-                     ->toArray();
-        return $res;
-
-    }
-
-    public static function getPhotosByTags($tags, $lastUpdateId, $size) {
-        $tag = array_search(head($tags), self::TAGS_CONF);
-        $photos = static::where($tag, 1)
-                    ->take($size)
-                    ->orderBy('id', 'desc')
-                    ->select('url', 'id', 'created_at as createTime')
-                    ->get()
-                    ->toArray();
-        return $photos;
-    }
-
-    public static function userFollowed($uid) {
-        $userInfo = User::where('id', $uid)->first();
-        $res = [];
-        if (is_null($userInfo)) {
-            foreach (self::TAGS_CONF as $v) {
-                $res[] = ['tag' => $v, 'followed' => false];
+    public static function takePhotoByTags($tags, $size, $lastUpdateId) {
+        foreach ($tags as $v) {
+            if (!in_array($v, self::TAGS_CONF)) {
+                return [];  
             }
-        } else {
-            $tags = $userInfo->tags;
-            $tagsArr = explode(',', $tags);
-            foreach (self::TAGS_CONF as $k => $v) {
-                $followed = false;
-                if (in_array($k, $tagsArr)) {
-                    $followed = true;
-                }
-                $res[] = ['tag' => $v, 'followed' => $followed];
+            $tag[] = array_search($v, self::TAGS_CONF); 
+        }
+        $photos = static::take($size);
+        if ($lastUpdateId > 0) {
+            $photos = $photos->where('id', '<', $lastUpdateId);
+        }
+        $photos = $photos->where(function ($query) use ($tag) {
+                            foreach ($tag as $k => $v) {
+                                if ($k == 0) {
+                                    $query->where($v, 1);
+                                } else {
+                                    $query->orWhere($v, 1);
+                                }
+                            }
+                        }, $tag)->orderBy('id', 'desc')
+                                ->get()
+                                ->toArray();
+        if (empty($photos)) {
+            return [];
+        }
+        $res = [];
+        foreach ($photos as $k => $photo) { 
+            $res[$k]['createTime'] = $photo['created_at'];
+            $res[$k]['id'] = $photo['id'];
+            $res[$k]['url'] = $photo['url'];
+            $res[$k]['tags'] = self::handleTags($photo);
+        }
+        return $res;
+    }
+
+    public static function handleTags($photo) {
+        $res = [];
+        foreach ($photo as $k => $v) {
+            if (array_key_exists($k, self::TAGS_CONF) && $v === 1) {
+                $res[] = self::TAGS_CONF[$k];
             }
         }
         return $res;
