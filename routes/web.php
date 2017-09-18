@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'HomeController@getHome')->name('home');
+
 Route::get('/photos', 'PhotoController@showPhotos');
 
 Route::get('/settings', 'UserController@getSettings');

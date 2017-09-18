@@ -96,7 +96,7 @@ class Photo extends Model
     public static function handleTags($photo) {
         $res = [];
         foreach ($photo as $k => $v) {
-            if (array_key_exists($k, self::TAGS_CONF) && $v == 1) {
+            if (array_key_exists($k, self::TAGS_CONF) && $v === 1) {
                 $res[] = self::TAGS_CONF[$k];
             }
         }
