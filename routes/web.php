@@ -17,13 +17,13 @@ $mainRoutes = function () {
     Route::get('/photos', 'PhotoController@showPhotos');
     Route::get('/photo/{id}', 'PhotoController@getPhotoById');
 
-    Route::get('/settings', 'UserController@getSettings');
-    Route::get('/activation', 'UserController@getActivation');
+    Route::get('/user/info', 'UserController@getInfoByUid');
+    Route::post('/user/info', 'UserController@postUserInfo');
 
+    Route::get('/activation', 'UserController@getActivation');
     Route::post('/register', 'UserController@postRegister');
     Route::post('/login', 'UserController@postLogin');
     Route::post('/changePwd', 'UserController@postChangePwd');
-    Route::post('/user/set', 'UserController@postSettings');
 };
 
 Route::domain(env('APP_BASE_DOMAIN'))->group($mainRoutes);
