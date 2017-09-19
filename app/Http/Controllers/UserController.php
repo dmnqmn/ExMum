@@ -75,7 +75,7 @@ class UserController extends BaseController
         $res = User::checkUserPwd($user, $password);
         if ($res) {
             $token = AccessToken::create($user->id);
-            return response()->json()->withCookie('EXMUM_U', $token);
+            return response()->json()->withCookie(makeCookie('EXMUM_U', $token));
         }
         return response()->json(['error' => 'LOGIN_WRONG_PASSWORD'], 403);
     }

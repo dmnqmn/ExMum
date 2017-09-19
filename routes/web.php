@@ -11,15 +11,23 @@
 |
 */
 
-Route::get('/', 'HomeController@getHome')->name('home');
+$mainRoutes = function () {
+    Route::get('/', 'HomeController@getHome')->name('home');
 
-Route::get('/photos', 'PhotoController@showPhotos');
-Route::get('/photo/{id}', 'PhotoController@getPhotoById');
+    Route::get('/photos', 'PhotoController@showPhotos');
+    Route::get('/photo/{id}', 'PhotoController@getPhotoById');
 
-Route::get('/settings', 'UserController@getSettings');
-Route::get('/activation', 'UserController@getActivation');
+    Route::get('/settings', 'UserController@getSettings');
+    Route::get('/activation', 'UserController@getActivation');
 
-Route::post('/register', 'UserController@postRegister');
-Route::post('/login', 'UserController@postLogin');
-Route::post('/changePwd', 'UserController@postChangePwd');
-Route::post('/user/set', 'UserController@postSettings');
+    Route::post('/register', 'UserController@postRegister');
+    Route::post('/login', 'UserController@postLogin');
+    Route::post('/changePwd', 'UserController@postChangePwd');
+    Route::post('/user/set', 'UserController@postSettings');
+};
+
+Route::domain(env('APP_BASE_DOMAIN'))->group($mainRoutes);
+Route::domain('www.' . env('APP_BASE_DOMAIN'))->group($mainRoutes);
+
+Route::domain('resource.' . env('APP_BASE_DOMAIN'))->group(function () {
+});

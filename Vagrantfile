@@ -18,6 +18,10 @@ Vagrant.configure(2) do |config|
   
   config.vm.provision "shell", inline: <<-SHELL
     echo "PROVISION........."
+    echo "Make init files and folders"
+    if [ ! -e /var/storage ]; then
+        mkdir /var/storage
+    fi
     cd /vagrant
     echo "Link configurations"
     if [ -e .env ]; then rm .env; fi
