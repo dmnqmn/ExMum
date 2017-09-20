@@ -16,7 +16,10 @@ class ResourceController extends BaseController
         $category = $request->category;
         $file = $request->file('file');
         $uploadFile = UploadFile::create($category, $file);
-        $file->move(config('app.storage_path') . "/$category", $uploadFile->storage_name . $uploadFile->extension);
+        $file->move(
+            config('app.storage_path'). "/$category",
+            "$uploadFile->storage_name.$uploadFile->extension"
+        );
         return response()->json();
     }
 }

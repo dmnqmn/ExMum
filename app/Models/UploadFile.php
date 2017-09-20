@@ -28,7 +28,7 @@ class UploadFile extends Model
 
     function generateStorageName() {
         $contentHash = md5_file($this->file->path());
-        $idHash = substr(md5($contentHash . $this->id . $this->create_at), 0, 39);
-        return "$idHash-" . $this->create_at;
+        $idHash = substr(md5($contentHash . $this->id . time()), 0, 39);
+        return "$idHash-" . time();
     }
 }
