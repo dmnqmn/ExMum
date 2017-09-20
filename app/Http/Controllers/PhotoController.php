@@ -17,6 +17,9 @@ class photoController extends BaseController
 
     public function showPhotos(Request $request) {
         $lastUpdateId = $request->input('lastUpdateId');
+        if (is_null($lastUpdateId)) {
+            return [];
+        }
         $size = $request->input('size');
         $tag = $request ->input('tag');
         $validate = Validator::make($request->all(), [
