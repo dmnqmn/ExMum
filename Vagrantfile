@@ -21,6 +21,8 @@ Vagrant.configure(2) do |config|
     echo "Make init files and folders"
     if [ ! -e /var/storage ]; then
         mkdir /var/storage
+        chown vagrant /var/storage
+        chmod u+w /var/storage
     fi
     cd /vagrant
     echo "Link configurations"

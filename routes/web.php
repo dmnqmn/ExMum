@@ -30,4 +30,5 @@ Route::domain(env('APP_BASE_DOMAIN'))->group($mainRoutes);
 Route::domain('www.' . env('APP_BASE_DOMAIN'))->group($mainRoutes);
 
 Route::domain('resource.' . env('APP_BASE_DOMAIN'))->group(function () {
+    Route::post('/upload', 'ResourceController@postUpload');
 });
