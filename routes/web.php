@@ -13,6 +13,7 @@
 
 $mainRoutes = function () {
     Route::get('/', 'HomeController@getHome')->name('home');
+    Route::get('/settings', 'SettingController@getSettings')->name('settings');
 
     Route::get('/photos', 'PhotoController@showPhotos');
     Route::get('/photo/{id}', 'PhotoController@getPhotoById');

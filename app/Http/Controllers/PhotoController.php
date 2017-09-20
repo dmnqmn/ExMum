@@ -9,7 +9,7 @@ use App\Models\Photo;
 
 use Validator;
 
-class photoController extends BaseController
+class PhotoController extends BaseController
 {
     const SIZE = 8;
     const LAST_UPDATE_ID = 0;
