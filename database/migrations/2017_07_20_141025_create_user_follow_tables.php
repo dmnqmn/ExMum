@@ -24,7 +24,7 @@ class CreateUserFollowTables extends Migration
             $table->string('email', 50)->unique();
             $table->unsignedTinyInteger('status')->default(0);
             $table->string('avatar', 50)->nullable();
-            $table->string('infomation', 50)->nullable();
+            $table->string('information', 50)->nullable();
             $table->string('tags', 50)->nullable();
             $table->timestamps();
         });
