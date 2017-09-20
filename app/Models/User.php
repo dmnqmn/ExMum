@@ -125,8 +125,8 @@ class User extends Model
             return true;
     }
 
-    public static function getInfoById($id, $param) {
-        $res = User::where('id', $id)
+    public static function getInfoByUid($uid, $param) {
+        $res = User::where('id', $uid)
                    ->select($param)
                    ->get()
                    ->toArray();
@@ -160,7 +160,10 @@ class User extends Model
             return 1;
         }
         return 0;
-        
+    }
 
+    public static function UpdateInfoByUid($uid, $param) {
+        return User::where('id', $uid)
+                   ->update($param);
     }
 }

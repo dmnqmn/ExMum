@@ -106,45 +106,60 @@ class UserController extends BaseController
         return response()->json(['error' => $res], 403);
     }
 
-    public function getSettings(Request $request) {
-        $id = $request->input('id');
-        $param = ['first_name', 'last_name', 'user_name', 'gender', 'phone', 'email', 'avatar', 'information', 'tags'];
-        $res = User::getInfoById($id, $param);
-        return response()->json($res);
-    }
-
-    public function postSettings(Request $request) {
-        $id = $request->input('id');
-        $firstName = $request->input('firstName');
-        $lastName = $request->input('lastName');
-        $userName = $request->input('userName');
+    public function postUserInfo(Request $request) {
+        $userInfo = \Globals::$user;
+        if (is_null($userInfo)) {
+            return response()->json(['error' => 'NOT_LOGGED'], 403);
+        }
+        $uid = $userInfo->id;
+        $firstName = $request->input('first_name');
+        $lastName = $request->input('last_name');
         $gender = $request->input('gender');
-        $phone = $request->input('phone');
-        $avatar = $request->input('avatar');
-        $information = $request->input('information');
+        $description = $request->input('description');
         $validate = Validator::make($request->all(), [
-            'firstName'   => 'required|max:10',
-            'lastName'    => 'required|max:10',
-            'userName'    => 'required|max:50',
-            'gender'      => 'required|max:20',
-            'information' => 'max:50',
+            'first_name'    => 'max:10',
+            'last_name'     => 'max:10',
+            'gender'        => 'nullable|integer|between:0,2',
+            'description'   => 'max:255',
+        ], [
+            'first_name.max'  => 'USER_INFO_FIRST_NAME_TOO_LONG',
+            'last_name.max'   => 'USER_INFO_LAST_NAME_TOO_LONG',
+            'description.max' => 'USER_INFO_DESCRIPTION_TOO_LONG',
+            'gender.between'  => 'USER_INFO_GENDER_INVALID',
         ]);
         if ($validate->fails()) {
-            return response()->json(['error' => $validate->messages()], 400);
+            return response()->json(['error' => $validate->messages()->first()], 400);
         }
         $param = [
-            'first_name'  => $firstName,
-            'last_name'   => $lastName,
-            'user_name'   => $userName,
-            'gender'      => $gender,
-            'information' => $information,
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'gender' => is_null($gender) ? 0 : $gender,
+            'description' => $description,
         ];
-        $res = User::updateInfoById($id, $param);
+        foreach ($param as $k => $v) {
+            $data = $request->input($k);
+            if (!isset($data)) {
+                unset($param[$k]);
+            }
+        }
+        $res = User::UpdateInfoByUid($uid, $param);
         if ($res !== 0) {
             return response()->json();
         }
-        return response()->json(['error' => 'Update failed'], 403);
+        return response()->json(['error' => 'UPDATE_FAILED'], 403);
     }
+
+    public function getInfoByUid(Request $request) {
+        $userInfo = \Globals::$user;
+        if (is_null($userInfo)) {
+            return response()->json(['error' => 'NOT_LOGGED'], 403);
+        }
+        $uid = $userInfo->id;
+        $param = ['first_name', 'last_name', 'gender', 'description'];
+        $res = User::getInfoByUid($uid, $param);
+        return response()->json($res);
+    }
+
 }
 
 
