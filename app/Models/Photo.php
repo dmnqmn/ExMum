@@ -37,6 +37,24 @@ class Photo extends Model
             'tag22' => 'Humor',
     ];
 
+    // Relationships
+
+    public function file() {
+        return $this->hasOne('App\Models\UploadFile', 'id', 'file_id');
+    }
+
+    // Relationships end
+
+    // Properties
+
+    public function url() {
+        $file = $this->file;
+        return 'http://resource.' . config('app.base_domain') .
+        "/static/$file->category/$file->storage_name.$file->extension";
+    }
+
+    // Properties end
+
     public static function create($uid, $file_id, $name, $description) {
         $photo = new Photo;
         $photo->uid = $uid;

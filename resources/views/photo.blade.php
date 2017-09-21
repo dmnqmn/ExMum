@@ -13,7 +13,7 @@
 @section('main')
 <div class="photo-container">
     <div class="photo-wrapper">
-        <img src="{{ $photo->url }}">
+        <img src="{{ $photo->url() }}">
     </div>
 </div>
 @endsection
