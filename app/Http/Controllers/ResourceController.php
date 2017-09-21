@@ -9,17 +9,41 @@ use App\Models\UploadFile;
 
 use General;
 use Config;
+use Validator;
 
 class ResourceController extends BaseController
 {
-    public function postUpload(Request $request) {
-        $category = $request->category;
+    public function postUploadImage(Request $request) {
+        if ($error = $this->checkError($request, 'UPLOAD_IMAGE')) {
+            return response()->json(['error' => $error], 400);
+        }
+
         $file = $request->file('file');
-        $uploadFile = UploadFile::create($category, $file);
-        $file->move(
-            config('app.storage_path'). "/$category",
-            "$uploadFile->storage_name.$uploadFile->extension"
-        );
+        UploadFile::create('image', $file)->saveFile();
         return response()->json();
+    }
+
+    public function postUploadAvatar(Request $request) {
+        if ($error = $this->checkError($request, 'UPLOAD_AVATAR')) {
+            return response()->json(['error' => $error], 400);
+        }
+
+        $file = $request->file('file');
+        UploadFile::create('avatar', $file)->saveFile();
+        return response()->json();
+    }
+
+    function checkError($request, $apiPrefix) {
+        $validate = Validator::make($request->all(), [
+            'file' => 'required|file|max:20000'
+        ], [
+            'file.size' => $apiPrefix . '_TOO_LARGE',
+            'file.required' => $apiPrefix . '_FILE_NEEDED',
+            'file.file' => $apiPrefix . '_NOT_A_FILE'
+        ]);
+
+        if ($validate->fails()) {
+            return $validate->messages()->first();
+        }
     }
 }

@@ -31,4 +31,11 @@ class UploadFile extends Model
         $idHash = substr(md5($contentHash . $this->id . time()), 0, 39);
         return "$idHash-" . time();
     }
+
+    public function saveFile() {
+        $this->file->move(
+            config('app.storage_path') . "/$this->category",
+            "$this->storage_name.$this->extension"
+        );
+    }
 }
