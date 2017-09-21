@@ -29,13 +29,6 @@ class CreateUserFollowTables extends Migration
             $table->timestamps();
         });
 
-        // Schema::create('user_follow', function (Blueprint $table) {
-        //     $table->increments('id');
-        //     $table->integer('uid');
-        //     $table->integer('follow_uid');
-        //     $table->timestamps();
-        //  });
-
         Schema::create('photo', function (Blueprint $table) {
             $table->increments('id');
             $table->string('url', 200);
@@ -64,21 +57,6 @@ class CreateUserFollowTables extends Migration
             $table->unsignedTinyInteger('tag22')->nullable()->comment('Humor');
             $table->timestamps();
          });
-
-    //     Schema::create('copy_photo', function (Blueprint $table) {
-    //         $table->increments('id');
-    //         $table->integer('uid');
-    //         $table->integer('photo_id');
-    //         $table->integer('photo_book_id');
-    //         $table->timestamps();
-    //     });
-
-    //     Schema::create('photo_book', function (Blueprint $table) {
-    //         $table->increments('id');
-    //         $table->integer('uid');
-    //         $table->string('name');
-    //         $table->timestamps();
-    //     });
     }
 
 
@@ -90,5 +68,6 @@ class CreateUserFollowTables extends Migration
     public function down()
     {
         Schema::drop('user');
+        Schema::drop('photo');
     }
 }

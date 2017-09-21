@@ -13,12 +13,17 @@ use Config;
 class HomeController extends BaseController
 {
     public function getHome(Request $request) {
+        $initPhotos = Photo::takePhotoByTags(['Home feed'], 20, 0);
+        $lastPhoto = end($initPhotos);
+        $lastUpdateId = $lastPhoto ? $lastPhoto['id'] : null;
+
         $jsVars = [
-            ['user', \Globals::$user]
+            ['user', \Globals::$user],
+            ['lastUpdateId', $lastUpdateId]
         ];
 
         return view('home')
             ->with('jsVars', $jsVars)
-            ->with('photos', Photo::takePhotoByTags(['Home feed'], 20, 0));
+            ->with('photos', $initPhotos);
     }
 }

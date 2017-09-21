@@ -37,6 +37,16 @@ class Photo extends Model
             'tag22' => 'Humor',
     ];
 
+    public static function create($uid, $file_id, $name, $description) {
+        $photo = new Photo;
+        $photo->uid = $uid;
+        $photo->file_id = $file_id;
+        $photo->name = $name;
+        $photo->description = $description;
+        $photo->save();
+        return $photo;
+    }
+
 	public static function getPhotoByTags($tag, $page, $pagesize = 1) {
         $skip = 0;
         if ($page < 1) {

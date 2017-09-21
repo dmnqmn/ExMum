@@ -19,7 +19,7 @@ class ResourceController extends BaseController
         }
 
         $file = $request->file('file');
-        UploadFile::create('image', $file)->saveFile();
+        UploadFile::create('image', \Globals::$user->id, $file)->saveFile();
         return response()->json();
     }
 
@@ -29,7 +29,7 @@ class ResourceController extends BaseController
         }
 
         $file = $request->file('file');
-        UploadFile::create('avatar', $file)->saveFile();
+        UploadFile::create('avatar', \Globals::$user->id, $file)->saveFile();
         return response()->json();
     }
 

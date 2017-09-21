@@ -6,6 +6,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Photo;
+use App\Models\UploadFile;
 
 use Validator;
 
@@ -60,5 +61,39 @@ class PhotoController extends BaseController
         return view('photo')
             ->with('jsVars', $jsVars)
             ->with('photo', Photo::getPhotoById($id));
+    }
+
+    public function postNewPhoto(Request $request) {
+        $validate = Validator::make($request->all(), [
+            'name' => 'max:20',
+            'description' => 'max:300',
+            'file_id' => 'required|integer'
+        ], [
+            'name.max' => 'PHOTO_NEW_NAME_TOO_LANG',
+            'description.max' => 'PHOTO_NEW_DESCRIPTION_TOO_LANG',
+            'file_id.required' => 'PHOTO_NEW_FILE_ID_NEEDED',
+            'file_id.integer' => 'PHOTO_NEW_FILE_ID_INTEGER'
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json(['error' => $validate->messages()->first()], 400);
+        }
+
+        $file_id = $request->input('file_id');
+        $name = $request->input('name');
+        $description = $request->input('description');
+        $uid = \Globals::$user->id;
+
+        $uploadFile = UploadFile::find($file_id);
+        if (is_null($uploadFile)) {
+            return response()->json(['error' => 'PHOTO_NEW_FILE_NOT_FOUND'], 404);
+        }
+
+        if ($uploadFile->uid !== $uid) {
+            return response()->json(['error' => 'PHOTO_NEW_FILE_FORBIDDEN'], 403);
+        }
+
+        $photo = Photo::create($uid, $file_id, $name, $description);
+        return response()->json($photo);
     }
 }

@@ -9,13 +9,14 @@ class UploadFile extends Model
     protected $file;
     protected $table = 'upload_file';
 
-    public static function create($category, $file) {
+    public static function create($category, $uid, $file) {
         $uploadFile = new UploadFile;
         $originalFullName = $file->getClientOriginalName();
         $originalExtension = $file->getClientOriginalExtension();
         $originalName = preg_replace("/\\.$originalExtension$/", '', $originalFullName);
         $uploadFile->category = $category;
         $uploadFile->file = $file;
+        $uploadFile->uid = $uid;
         $uploadFile->original_name = substr($originalName, 0, 50);
         $uploadFile->mimetype = $file->getMimeType();
         $uploadFile->extension = $file->guessExtension();

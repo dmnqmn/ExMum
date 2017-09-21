@@ -22,14 +22,20 @@ $(() => {
         hiddenStyle: { transform: 'translateY(100px)', opacity: 0 },
     })
 
-    let lastUpdateId = 0;
+    let lastUpdateId = window.lastUpdateId;
 
     imagesLoaded('#photo-masonry').on('progress', () => {
         photoMasonry.layout()
     })
 
     let infScroll = new InfiniteScroll( '#photo-masonry', {
-        path: () => `/photos?tags=${escape('Home feed')}&size=8&lastUpdateId=${lastUpdateId}`,
+        path: () => {
+            let url = `/photos?tags=${escape('Home feed')}&size=8`
+            if (lastUpdateId != null) {
+                url += `&lastUpdateId=${lastUpdateId}`
+            }
+            return url
+        },
         responseType: 'json',
         outlayer: photoMasonry,
         history: false
@@ -38,22 +44,22 @@ $(() => {
     let $imageProxy = $('<div>')
     infScroll.on('load', (response) => {
         if (!response || !response.photos) {
-            this.$Message.info('没有更多了');
+            // TODO: 没有更多了
+            return;
         }
 
-        let photos = response.photos;
-        lastUpdateId = response.lastUpdateId;
+        let photos = response.photos
+        lastUpdateId = response.lastUpdateId
         $imageProxy.html(photos.map(({ url }) => `
             <div class="photo-wrapper">
                 <img class="photo" src="${url}">
                 <p>A fantasy picture</p>
             </div>
         `).join('\n'))
-        let items = $imageProxy.children('.photo-wrapper').get();
+        let items = $imageProxy.children('.photo-wrapper').get()
         imagesLoaded(items, () => {
-            infScroll.appendItems(items);
-            photoMasonry.appended(items);
+            infScroll.appendItems(items)
+            photoMasonry.appended(items)
         });
     })
-    infScroll.loadNextPage()
 })
