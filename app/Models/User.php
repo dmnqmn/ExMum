@@ -52,7 +52,7 @@ class User extends Model
 
     public static function generateLink($email, $salt) {
         $validate = md5(md5($email . $salt));
-        $link = env('APP_BASE_DOMAIN') . '/activation' . '?email=' . $email . '&validate=' . $validate;
+        $link = 'www.' . env('APP_BASE_DOMAIN') . '/activation' . '?email=' . $email . '&validate=' . $validate;
         return $link;
     }
 
