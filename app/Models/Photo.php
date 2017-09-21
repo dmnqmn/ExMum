@@ -61,6 +61,7 @@ class Photo extends Model
         $photo->file_id = $file_id;
         $photo->title = $title;
         $photo->description = $description;
+        $photo->tag1 = 1;
         $photo->save();
         return $photo;
     }
@@ -115,7 +116,7 @@ class Photo extends Model
         foreach ($photos as $k => $photo) {
             $res[$k]['createTime'] = $photo['created_at'];
             $res[$k]['id'] = $photo['id'];
-            $res[$k]['url'] = $photo['url'];
+            $res[$k]['url'] = static::find($photo['id'])->url();
             $res[$k]['tags'] = self::handleTags($photo);
         }
         return $res;

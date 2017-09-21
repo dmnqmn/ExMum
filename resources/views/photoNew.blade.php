@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', '首页')
+@section('title', '分享')
 
 @section('css')
 @php css('photoNew.css') @endphp
