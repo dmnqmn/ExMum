@@ -1,4 +1,4 @@
-import '@css/entry/home'
+import '@css/entry/photo'
 
 import $ from 'jquery'
 import 'bootstrap'

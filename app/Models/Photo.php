@@ -61,9 +61,9 @@ class Photo extends Model
     public static function takePhotoByTags($tags, $size, $lastUpdateId) {
         foreach ($tags as $v) {
             if (!in_array($v, self::TAGS_CONF)) {
-                return [];  
+                return [];
             }
-            $tag[] = array_search($v, self::TAGS_CONF); 
+            $tag[] = array_search($v, self::TAGS_CONF);
         }
         $photos = static::take($size);
         if ($lastUpdateId > 0) {
@@ -84,7 +84,7 @@ class Photo extends Model
             return [];
         }
         $res = [];
-        foreach ($photos as $k => $photo) { 
+        foreach ($photos as $k => $photo) {
             $res[$k]['createTime'] = $photo['created_at'];
             $res[$k]['id'] = $photo['id'];
             $res[$k]['url'] = $photo['url'];
@@ -106,7 +106,7 @@ class Photo extends Model
     public static function getPhotoById($id) {
         $photo = Photo::where('id', $id)
                       ->get()
-                      ->toArray();
+                      ->first();
         return $photo;
     }
 }
