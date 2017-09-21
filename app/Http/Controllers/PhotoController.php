@@ -39,15 +39,26 @@ class PhotoController extends BaseController
         return [
             'lastUpdateId' => $lastUpdateId,
             'photos' => $photos,
-            ];
-
+        ];
     }
 
-    public function getPhotoById($id) {
-        $photo = Photo::getPhotoById($id);
-        if (empty($photo)) {
-            return response()->json(['error' => 'PHOTO_NOT_FOUND'], 404);
+    public function getPhotoById(Request $request, $id) {
+        // Ajax request get json response
+        if ($request->ajax()) {
+            $photo = Photo::getPhotoById($id);
+            if (empty($photo)) {
+                return response()->json(['error' => 'PHOTO_NOT_FOUND'], 404);
+            }
+            return $photo;
         }
-        return $photo;
+
+        // Get a html page if request is not ajax
+        $jsVars = [
+            ['user', \Globals::$user]
+        ];
+
+        return view('photo')
+            ->with('jsVars', $jsVars)
+            ->with('photo', Photo::getPhotoById($id));
     }
 }
