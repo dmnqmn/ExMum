@@ -12,6 +12,7 @@
 
 @section('main')
 <div class="photo-new-container">
+    <photo-new :domain="'{{ config('app.base_domain') }}'"></photo-new>
 </div>
 @endsection
 

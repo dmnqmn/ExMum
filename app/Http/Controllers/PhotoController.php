@@ -73,11 +73,11 @@ class PhotoController extends BaseController
 
     public function postNewPhoto(Request $request) {
         $validate = Validator::make($request->all(), [
-            'name' => 'max:20',
+            'title' => 'max:20',
             'description' => 'max:300',
             'file_id' => 'required|integer'
         ], [
-            'name.max' => 'PHOTO_NEW_NAME_TOO_LANG',
+            'title.max' => 'PHOTO_NEW_TITLE_TOO_LANG',
             'description.max' => 'PHOTO_NEW_DESCRIPTION_TOO_LANG',
             'file_id.required' => 'PHOTO_NEW_FILE_ID_NEEDED',
             'file_id.integer' => 'PHOTO_NEW_FILE_ID_INTEGER'
@@ -88,7 +88,7 @@ class PhotoController extends BaseController
         }
 
         $file_id = $request->input('file_id');
-        $name = $request->input('name');
+        $title = $request->input('title');
         $description = $request->input('description');
         $uid = \Globals::$user->id;
 
@@ -101,7 +101,7 @@ class PhotoController extends BaseController
             return response()->json(['error' => 'PHOTO_NEW_FILE_FORBIDDEN'], 403);
         }
 
-        $photo = Photo::create($uid, $file_id, $name, $description);
+        $photo = Photo::create($uid, $file_id, $title, $description);
         return response()->json($photo);
     }
 }

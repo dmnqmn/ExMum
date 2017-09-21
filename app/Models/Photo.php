@@ -55,11 +55,11 @@ class Photo extends Model
 
     // Properties end
 
-    public static function create($uid, $file_id, $name, $description) {
+    public static function create($uid, $file_id, $title, $description) {
         $photo = new Photo;
         $photo->uid = $uid;
         $photo->file_id = $file_id;
-        $photo->name = $name;
+        $photo->title = $title;
         $photo->description = $description;
         $photo->save();
         return $photo;

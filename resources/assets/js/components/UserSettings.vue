@@ -103,7 +103,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .user-settings {
     padding: 20px;
 }

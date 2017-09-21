@@ -25,6 +25,8 @@ class AddUploadFileUid extends Migration
      */
     public function down()
     {
-        $table->dropColumn(['uid']);
+        Schema::table('upload_file', function (Blueprint $table) {
+            $table->dropColumn(['uid']);
+        });
     }
 }

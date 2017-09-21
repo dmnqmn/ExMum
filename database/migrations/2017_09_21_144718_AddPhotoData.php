@@ -16,8 +16,8 @@ class AddPhotoData extends Migration
         Schema::table('photo', function (Blueprint $table) {
             $table->dropColumn(['url']);
             $table->integer('file_id');
-            $table->string('name', 20);
-            $table->string('description', 300);
+            $table->string('title', 20)->nullable();
+            $table->string('description', 300)->nullable();
         });
     }
 
@@ -30,7 +30,7 @@ class AddPhotoData extends Migration
     {
         Schema::table('photo', function (Blueprint $table) {
             $table->string('url', 200);
-            $table->dropColumn(['file_id', 'name', 'description']);
+            $table->dropColumn(['file_id', 'title', 'description']);
         });
     }
 }
