@@ -19,7 +19,7 @@ $mainRoutes = function () {
         Route::get('/settings', 'SettingController@getSettings')->name('settings');
         Route::post('/user/info', 'UserController@postUserInfo');
         Route::post('/photo/new', 'PhotoController@postNewPhoto');
-        Route::get('/photo/new', 'PhotoController@getNewPhoto');
+        Route::get('/photo/new', 'PhotoController@getNewPhoto')->name('newPhoto');
     });
 
     Route::get('/photos', 'PhotoController@showPhotos');

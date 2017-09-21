@@ -6,6 +6,7 @@
                 <a href="{{ route('home') }}" class="navbar-text header-link">首页</a>
                 <a href="{{ route('home') }}" class="navbar-text header-link">热门</a>
                 @if (\Globals::$user)
+                    <a href="{{ route('newPhoto') }}" class="navbar-text header-link">分享</a>
                     <a
                         href="{{ route('settings') }}"
                         class="navbar-text header-link"
