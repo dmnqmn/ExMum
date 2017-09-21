@@ -63,6 +63,14 @@ class PhotoController extends BaseController
             ->with('photo', Photo::getPhotoById($id));
     }
 
+    public function getNewPhoto(Request $request) {
+        $jsVars = [
+            ['user', \Globals::$user]
+        ];
+
+        return view('photoNew')->with('jsVars', $jsVars);
+    }
+
     public function postNewPhoto(Request $request) {
         $validate = Validator::make($request->all(), [
             'name' => 'max:20',

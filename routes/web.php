@@ -14,6 +14,14 @@
 $mainRoutes = function () {
     Route::get('/', 'HomeController@getHome')->name('home');
 
+    Route::group(['middleware' => ['logined']], function () {
+        Route::post('/changePwd', 'UserController@postChangePwd');
+        Route::get('/settings', 'SettingController@getSettings')->name('settings');
+        Route::post('/user/info', 'UserController@postUserInfo');
+        Route::post('/photo/new', 'PhotoController@postNewPhoto');
+        Route::get('/photo/new', 'PhotoController@getNewPhoto');
+    });
+
     Route::get('/photos', 'PhotoController@showPhotos');
     Route::get('/photo/{id}', 'PhotoController@getPhotoById');
 
@@ -23,12 +31,6 @@ $mainRoutes = function () {
     Route::post('/register', 'UserController@postRegister');
     Route::post('/login', 'UserController@postLogin');
 
-    Route::group(['middleware' => ['logined']], function () {
-        Route::post('/changePwd', 'UserController@postChangePwd');
-        Route::get('/settings', 'SettingController@getSettings')->name('settings');
-        Route::post('/user/info', 'UserController@postUserInfo');
-        Route::post('/photo/new', 'PhotoController@postNewPhoto');
-    });
 };
 
 Route::domain(env('APP_BASE_DOMAIN'))->group($mainRoutes);
