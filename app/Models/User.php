@@ -35,7 +35,7 @@ class User extends Model
         $user->first_name = $firstName;
         $user->last_name = $lastName;
         $user->user_name = $firstName . $lastName;
-        $user->gender = 'custom';
+        $user->gender = '0';
         $user->password = '';
         $user->save();
         $user->password = self::createPwd($user, $password);
