@@ -149,7 +149,7 @@ class UserController extends BaseController
         return response()->json(['error' => 'UPDATE_FAILED'], 403);
     }
 
-    public function getInfoByUid(Request $request) {
+    public function getUserInfo(Request $request) {
         $userInfo = \Globals::$user;
         if (is_null($userInfo)) {
             return response()->json(['error' => 'NOT_LOGGED'], 403);

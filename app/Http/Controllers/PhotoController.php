@@ -58,9 +58,15 @@ class PhotoController extends BaseController
             ['user', \Globals::$user]
         ];
 
+        $photo = Photo::getPhotoById($id);
+
+        if (is_null($photo)) {
+            abort(404);
+        }
+
         return view('photo')
             ->with('jsVars', $jsVars)
-            ->with('photo', Photo::getPhotoById($id));
+            ->with('photo', $photo);
     }
 
     public function getNewPhoto(Request $request) {

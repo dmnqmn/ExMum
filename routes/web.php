@@ -25,18 +25,19 @@ $mainRoutes = function () {
     Route::get('/photos', 'PhotoController@showPhotos');
     Route::get('/photo/{id}', 'PhotoController@getPhotoById');
 
-    Route::get('/user/info', 'UserController@getInfoByUid');
+    Route::get('/user/info', 'UserController@getUserInfo');
 
     Route::get('/activation', 'UserController@getActivation');
     Route::post('/register', 'UserController@postRegister');
     Route::post('/login', 'UserController@postLogin');
-
 };
 
 Route::domain(env('APP_BASE_DOMAIN'))->group($mainRoutes);
 Route::domain('www.' . env('APP_BASE_DOMAIN'))->group($mainRoutes);
 
 Route::domain('resource.' . env('APP_BASE_DOMAIN'))->group(function () {
-    Route::post('/upload/image', 'ResourceController@postUploadImage');
-    Route::post('/upload/avatar', 'ResourceController@postUploadAvatar');
+    Route::group(['middleware' => ['logined']], function () {
+        Route::post('/upload/image', 'ResourceController@postUploadImage');
+        Route::post('/upload/avatar', 'ResourceController@postUploadAvatar');
+    });
 });
