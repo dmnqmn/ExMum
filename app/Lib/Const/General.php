@@ -5,5 +5,5 @@ class General {
         'SUPER' => 0,
         'ADMIN' => 1,
         'NORMAL' => 2
-    ]
+    ];
 }

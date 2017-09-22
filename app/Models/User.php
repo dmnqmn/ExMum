@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Salt;
+use General;
 
 class User extends Model
 {
@@ -28,7 +29,7 @@ class User extends Model
         Mail::send($user->email, '请您激活您的账户', $html);
     }
 
-    public static function create($email, $password) {
+    public static function create($email, $password, $role = General::USER_ROLES['NORMAL']) {
         list($firstName, $lastName) = self::gennerateName();
         $user = new User();
         $user->email = $email;
@@ -37,6 +38,7 @@ class User extends Model
         $user->user_name = $firstName . $lastName;
         $user->gender = '0';
         $user->password = '';
+        $user->role = $role;
         $user->save();
         $user->password = self::createPwd($user, $password);
         $user->save();
