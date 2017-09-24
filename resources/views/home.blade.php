@@ -16,10 +16,13 @@
         <div class="photo-sizer" id="photo-sizer"></div>
         <div class="photo-gutter" id="photo-gutter"></div>
     @foreach ($photos as $photo)
+    <a href="/photo/{{ $photo['id'] }}">
         <div class="photo-wrapper">
             <img class="photo" src="{{ $photo['url'] }}">
-            <p>A fantasy picture</p>
+            <h3>{{ $photo['name'] }}</h3>
+            <p>{{ $photo['description'] }}</p>
         </div>
+    </a>
     @endforeach
     </div>
 </div>

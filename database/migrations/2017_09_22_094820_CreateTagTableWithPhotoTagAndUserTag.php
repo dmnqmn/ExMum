@@ -42,6 +42,7 @@ class CreateTagTableWithPhotoTagAndUserTag extends Migration
             $table->increments('id');
             $table->integer('photo_id');
             $table->integer('tag_id');
+            $table->unique(['photo_id', 'tag_id']);
             $table->timestamps();
         });
     }

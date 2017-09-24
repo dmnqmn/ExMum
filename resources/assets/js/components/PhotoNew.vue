@@ -12,6 +12,14 @@
         <FormItem label="描述" :label-width="80">
             <Input type="textarea" :maxlength="300" v-model="description"></Input>
         </FormItem>
+        <FormItem label="标签" :label-width="80">
+            <template v-for="(_, index) in tags">
+                <Select v-model="tags[index]" style="width: 120px;" placeholder="请选择标签">
+                    <Option v-for="tag in tagList" :value="tag.id" :key="tag.id">{{ tag.name }}</Option>
+                </Select><Button @click="removeTag(index)">x</Button>
+            </template>
+            <Button v-if="tags.length < 5" @click="addNewTag">新标签</Button>
+        </FormItem>
         <FormItem :label-width="80">
             <Button type="primary" @click="submit">发布</Button>
         </FormItem>
@@ -43,7 +51,9 @@ export default {
             title: '',
             description: '',
             currentFileId: null,
-            uploadedList: []
+            uploadedList: [],
+            tagList: [],
+            tags: [null]
         }
     },
 
@@ -56,10 +66,27 @@ export default {
             axios.post('/photo/new', {
                 file_id: this.currentFileId,
                 title: this.title,
-                description: this.description
+                description: this.description,
+                tags: this.tags
             }).then(({ data }) => {
                 this.uploadedList.push(data)
             })
+        },
+
+        addNewTag() {
+            this.tags.push(-1)
+        },
+
+        removeTag(index) {
+            this.tags.splice(index, 1);
+        }
+    },
+
+    async created() {
+        try {
+            this.tagList = (await axios.get('/tags')).data
+        } catch (err) {
+            this.$Message.warning('获取标签列表失败，请刷新页面重试')
         }
     }
 }

@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Support\Facades\Cache;
+
 function readManifestFile($filepath)
 {
     $manifest = file_get_contents($filepath);

@@ -22,6 +22,8 @@ $mainRoutes = function () {
         Route::get('/photo/new', 'PhotoController@getNewPhoto')->name('newPhoto');
     });
 
+    Route::get('/tags', 'TagController@getTags');
+
     Route::get('/photos', 'PhotoController@showPhotos');
     Route::get('/photo/{id}', 'PhotoController@getPhotoById');
 

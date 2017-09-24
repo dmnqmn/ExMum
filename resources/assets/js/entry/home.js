@@ -44,17 +44,20 @@ $(() => {
     let $imageProxy = $('<div>')
     infScroll.on('load', (response) => {
         if (!response || !response.photos) {
-            // TODO: 没有更多了
+            // TODO: 提示没有更多了
             return;
         }
 
         let photos = response.photos
         lastUpdateId = response.lastUpdateId
-        $imageProxy.html(photos.map(({ url }) => `
-            <div class="photo-wrapper">
-                <img class="photo" src="${url}">
-                <p>A fantasy picture</p>
-            </div>
+        $imageProxy.html(photos.map(({ id, url, name, description }) => `
+            <a href="/photo/${id}">
+                <div class="photo-wrapper">
+                    <img class="photo" src="${url}">
+                    <h3>${name ? name : ''}</h3>
+                    <p>${description ? description : ''}</p>
+                </div>
+            </a>
         `).join('\n'))
         let items = $imageProxy.children('.photo-wrapper').get()
         imagesLoaded(items, () => {

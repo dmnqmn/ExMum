@@ -14,4 +14,14 @@ class Tag extends Model
         $tag->description = $description;
         $tag->save();
     }
+
+    public static function getAllTags() {
+        if (\App::environment('APP_ENV', 'production')) {
+            return Cache::remember('global_tags', 1, function () {
+                return static::select('id', 'name', 'description')->get();
+            });
+        }
+
+        return static::select('id', 'name', 'description')->get();
+    }
 }
