@@ -51,13 +51,13 @@ $(() => {
         let photos = response.photos
         lastUpdateId = response.lastUpdateId
         $imageProxy.html(photos.map(({ id, url, name, description }) => `
-            <a href="/photo/${id}">
-                <div class="photo-wrapper">
+            <div class="photo-wrapper">
+                <a href="/photo/${id}">
                     <img class="photo" src="${url}">
                     <h3>${name ? name : ''}</h3>
                     <p>${description ? description : ''}</p>
-                </div>
-            </a>
+                </a>
+            </div>
         `).join('\n'))
         let items = $imageProxy.children('.photo-wrapper').get()
         imagesLoaded(items, () => {
