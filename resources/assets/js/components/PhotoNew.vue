@@ -15,7 +15,7 @@
         <FormItem label="标签" :label-width="80">
             <template v-for="(_, index) in tags">
                 <Select v-model="tags[index]" style="width: 120px;" placeholder="请选择标签">
-                    <Option v-for="tag in tagList" :value="tag.id" :key="tag.id">{{ tag.name }}</Option>
+                    <Option v-for="tag in tagList" :value="tag" :key="tag">{{ tag }}</Option>
                 </Select><Button @click="removeTag(index)">x</Button>
             </template>
             <Button v-if="tags.length < 5" @click="addNewTag">新标签</Button>
@@ -36,6 +36,7 @@
 import assign from 'object-assign'
 import axios from 'axios'
 import Cookie from 'js-cookie'
+import TAG_LIST from '../common/tags.js'
 
 export default {
     props: {
@@ -52,7 +53,7 @@ export default {
             description: '',
             currentFileId: null,
             uploadedList: [],
-            tagList: [],
+            tagList: TAG_LIST,
             tags: [null]
         }
     },
@@ -79,14 +80,6 @@ export default {
 
         removeTag(index) {
             this.tags.splice(index, 1);
-        }
-    },
-
-    async created() {
-        try {
-            this.tagList = (await axios.get('/tags')).data
-        } catch (err) {
-            this.$Message.warning('获取标签列表失败，请刷新页面重试')
         }
     }
 }

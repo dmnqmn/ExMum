@@ -9,6 +9,15 @@ class UploadFile extends Model
     protected $file;
     protected $table = 'upload_file';
 
+    // Properties
+
+    public function url() {
+        return 'http://resource.' . config('app.base_domain') .
+        "/static/$this->category/$this->storage_name.$this->extension";
+    }
+
+    // Properties end
+
     public static function create($category, $uid, $file) {
         $uploadFile = new UploadFile;
         $originalFullName = $file->getClientOriginalName();

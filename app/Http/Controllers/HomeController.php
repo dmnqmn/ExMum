@@ -12,11 +12,11 @@ use Config;
 
 class HomeController extends BaseController
 {
-    const HOME_TAG_ID = 1; // this value should be in an config file or database
+    const HOME_TAG_NAME = 'Home feed'; // this value should be in an config file or database
 
     public function getHome(Request $request) {
         //
-        $initPhotos = Photo::takePhotoByTags([self::HOME_TAG_ID], 20, 0);
+        $initPhotos = Photo::takePhotoByTags([self::HOME_TAG_NAME], 20, 0);
         $lastPhoto = end($initPhotos);
         $lastUpdateId = $lastPhoto ? $lastPhoto['id'] : null;
 

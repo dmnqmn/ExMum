@@ -19,7 +19,7 @@
     <div class="photo-wrapper">
         <a href="/photo/{{ $photo['id'] }}">
             <img class="photo" src="{{ $photo['url'] }}">
-            <h3>{{ $photo['name'] }}</h3>
+            <h5>{{ $photo['title'] }}</h5>
             <p>{{ $photo['description'] }}</p>
         </a>
     </div>

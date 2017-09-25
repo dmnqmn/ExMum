@@ -54,7 +54,7 @@ $(() => {
             <div class="photo-wrapper">
                 <a href="/photo/${id}">
                     <img class="photo" src="${url}">
-                    <h3>${name ? name : ''}</h3>
+                    <h5>${name ? name : ''}</h5>
                     <p>${description ? description : ''}</p>
                 </a>
             </div>
