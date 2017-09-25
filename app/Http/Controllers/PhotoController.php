@@ -69,25 +69,17 @@ class PhotoController extends BaseController
             ->with('photo', Photo::getPhotoInfo($photo));
     }
 
-    public function getNewPhoto(Request $request) {
-        $jsVars = [
-            ['user', \Globals::$user]
-        ];
-
-        return view('photoNew')->with('jsVars', $jsVars);
-    }
-
     public function postNewPhoto(Request $request) {
         $validate = Validator::make($request->all(), [
             'title' => 'max:20',
             'description' => 'max:300',
             'tags' => 'array|required|max:5',
-            'file_id' => 'required|integer'
+            'fileId' => 'required|integer'
         ], [
             'title.max' => 'PHOTO_NEW_TITLE_TOO_LANG',
             'description.max' => 'PHOTO_NEW_DESCRIPTION_TOO_LANG',
-            'file_id.required' => 'PHOTO_NEW_FILE_ID_NEEDED',
-            'file_id.integer' => 'PHOTO_NEW_FILE_ID_INTEGER',
+            'fileId.required' => 'PHOTO_NEW_FILE_ID_NEEDED',
+            'fileId.integer' => 'PHOTO_NEW_FILE_ID_INTEGER',
             'tags.required' => 'PHOTO_NEW_TAGS_NEEDED',
             'tags.array' => 'PHOTO_NEW_TAGS_SHOULD_BE_ARRAY',
             'tags.max' => 'PHOTO_NEW_TAGS_TOO_LONG',
@@ -97,13 +89,13 @@ class PhotoController extends BaseController
             return response()->json(['error' => $validate->messages()->first()], 400);
         }
 
-        $file_id = $request->input('file_id');
+        $fileId = $request->input('fileId');
         $title = $request->input('title');
         $description = $request->input('description');
         $tags = $request->input('tags');
         $uid = \Globals::$user->id;
 
-        $uploadFile = UploadFile::find($file_id);
+        $uploadFile = UploadFile::find($fileId);
         if (is_null($uploadFile)) {
             return response()->json(['error' => 'PHOTO_NEW_FILE_NOT_FOUND'], 404);
         }
@@ -112,7 +104,7 @@ class PhotoController extends BaseController
             return response()->json(['error' => 'PHOTO_NEW_FILE_FORBIDDEN'], 403);
         }
 
-        $photo = Photo::create($uid, $file_id, $title, $description, $tags);
+        $photo = Photo::create($uid, $fileId, $title, $description, $tags);
         $result = Photo::getPhotoInfo($photo);
         return response()->json($result);
     }

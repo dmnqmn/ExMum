@@ -26,6 +26,9 @@
     @endforeach
     </div>
 </div>
+<div class="new-photo-container">
+    <new-photo></new-photo>
+</div>
 @endsection
 
 @section('js')

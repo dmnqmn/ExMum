@@ -18,6 +18,7 @@
     @yield('main')
 </div>
 
+@php jsVars($sharedJsVars) @endphp
 @php jsVars($jsVars) @endphp
 @php dllJs() @endphp
 @section('js')

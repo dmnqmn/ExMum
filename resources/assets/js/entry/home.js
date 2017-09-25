@@ -9,7 +9,14 @@ import masonry from 'masonry-layout'
 import imagesLoaded from 'imagesloaded'
 import InfiniteScroll from 'infinite-scroll'
 
+import Vue from 'vue'
+import iView from 'iview'
+Vue.use(iView)
+
+import assign from 'object-assign'
 import axios from 'axios'
+
+import NewPhoto from '../components/NewPhoto'
 
 $(() => {
     let photoMasonry = new masonry('#photo-masonry', {
@@ -64,5 +71,13 @@ $(() => {
             infScroll.appendItems(items)
             photoMasonry.appended(items)
         });
+    })
+
+    new Vue({
+        el: '.new-photo-container',
+
+        components: {
+            NewPhoto
+        }
     })
 })

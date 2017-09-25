@@ -21,7 +21,7 @@ class ResourceController extends BaseController
         $file = $request->file('file');
         $uploadFile = UploadFile::create('image', \Globals::$user->id, $file);
         $uploadFile->saveFile();
-        return response()->json($uploadFile);
+        return response()->json(['id' => $uploadFile->id]);
     }
 
     public function postUploadAvatar(Request $request) {
@@ -32,7 +32,7 @@ class ResourceController extends BaseController
         $file = $request->file('file');
         $uploadFile = UploadFile::create('avatar', \Globals::$user->id, $file);
         $uploadFile->saveFile();
-        return response()->json($uploadFile);
+        return response()->json(['id' => $uploadFile->id]);
     }
 
     function checkError($request, $apiPrefix) {
