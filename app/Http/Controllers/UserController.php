@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\AccessToken;
 use App\Models\Helper;
+use App\Models\UserFollow;
 
 use General;
 use Config;
@@ -150,14 +151,49 @@ class UserController extends BaseController
     }
 
     public function getUserInfo(Request $request) {
-        $userInfo = \Globals::$user;
-        if (is_null($userInfo)) {
+        $user_info = \Globals::$user;
+        if (is_null($user_info)) {
             return response()->json(['error' => 'NOT_LOGGED'], 403);
         }
-        $uid = $userInfo->id;
+        $uid = $user_info->id;
         $param = ['first_name', 'last_name', 'gender', 'description'];
         $res = User::getInfoByUid($uid, $param);
         return response()->json($res);
     }
 
+    public function postFollow(Request $request) {
+        $follow_uid = $request->input('follow_uid');
+        $user_info = \Globals::$user;
+        if (is_null($user_info)) {
+            return response()->json(['error' => 'NOT_LOGGED'], 403);
+        }
+        $uid = $user_info->id;
+        $res = UserFollow::create($uid, $follow_uid);
+        return response()->json($res);
+    }
+
+    public function postUnFollow(Request $request) {
+        $follow_uid = $request->input('follow_uid');
+        $user_info = \Globals::$user;
+        if (is_null($user_info)) {
+            return response()->json(['error' => 'NOT_LOGGED'], 403);
+        }
+        $uid = $user_info->id;
+        $res = UserFollow::unFollow($uid, $follow_uid);
+        if ($res != 0) {
+            return response()->json($res);
+        }
+        return response()->json(['error' => 'DELETE_FAIL'], 403);
+    }
+
+    public function getFollow(Request $request) {
+        $user_info = \Globals::$user;
+        $last_id = $request->last_id;
+        if (is_null($user_info)) {
+            return response()->json(['error' => 'NOT_LOGGED'], 403);
+        }
+        $uid = $user_info->id;
+        $res = UserFollow::selectFollowByUid($uid, $last_id);
+        return $res;
+    }
 }
