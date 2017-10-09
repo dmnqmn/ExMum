@@ -29,6 +29,10 @@ $mainRoutes = function () {
     Route::get('/activation', 'UserController@getActivation');
     Route::post('/register', 'UserController@postRegister');
     Route::post('/login', 'UserController@postLogin');
+    
+    Route::post('/user/follow', 'UserController@postFollow');
+    Route::post('/user/unfollow', 'UserController@postUnFollow');
+    Route::get('/user/follow', 'UserController@getFollow');
 };
 
 Route::domain(env('APP_BASE_DOMAIN'))->group($mainRoutes);
