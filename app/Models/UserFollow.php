@@ -10,9 +10,15 @@ class UserFollow extends Model
 {
     protected $table = 'user_follow';
 
-    const DEFAULT_SIZE = 10;
+    const FOLLOW_USERS = 10;
 
 	public static function create($uid, $follow_uid) {
+        $isExist = UserFollow::where('uid', $uid)
+                            ->where('follow_uid', $follow_uid)
+                            ->exists();
+        if ($isExist == true) {
+            return $isExist;
+        }
         $user_follow = new UserFollow;
         $user_follow->uid = $uid;
         $user_follow->follow_uid = $follow_uid;
@@ -31,14 +37,14 @@ class UserFollow extends Model
                                  ->where('id', '<', $last_id)
                                  ->select('id', 'follow_uid')
                                  ->orderBy('id', 'desc')
-                                 ->limit(self::DEFAULT_SIZE)
+                                 ->limit(self::FOLLOW_USERS)
                                  ->get()
                                  ->toArray();
         $follow_uids = [];
         foreach ($user_follow as $v) {
             $follow_uids[] = $v['follow_uid'];
         }
-        $user_name = User::whereIn("id", $follow_uids)
+        $user_name = User::whereIn('id', $follow_uids)
                          ->select('id', 'user_name')
                          ->get();
         $res = [];
