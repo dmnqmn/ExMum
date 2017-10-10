@@ -108,8 +108,4 @@ class PhotoController extends BaseController
         $result = Photo::getPhotoInfo($photo);
         return response()->json($result);
     }
-
-    public function test() {
-        Photo::test();
-    }
 }
