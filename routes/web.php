@@ -33,6 +33,7 @@ $mainRoutes = function () {
     Route::post('/user/follow', 'UserController@postFollow');
     Route::post('/user/unfollow', 'UserController@postUnFollow');
     Route::get('/user/follow', 'UserController@getFollow');
+    Route::get('/test', 'PhotoController@test');
 };
 
 Route::domain(env('APP_BASE_DOMAIN'))->group($mainRoutes);

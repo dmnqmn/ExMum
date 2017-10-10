@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Salt;
+use Config;
 
 class Photo extends Model
 {
@@ -76,9 +77,9 @@ class Photo extends Model
         $photo->file_id = $file_id;
         $photo->title = $title;
         $photo->description = $description;
-
+        $tags_name_id = Config::get('tag.tags_name_id');
         foreach ($tags as $tagName) {
-            $tagId = self::TAGS_NAME_ID[$tagName];
+            $tagId = $tags_name_id[$tagName];
             if (!is_null($tagId)) {
                 $photo->$tagId = 1;
             }
@@ -110,11 +111,12 @@ class Photo extends Model
     }
 
     public static function takePhotoByTags($tags, $size, $lastUpdateId) {
+        $tags_id_name = Config::get('tag.tags_id_name');
         foreach ($tags as $v) {
-            if (!in_array($v, self::TAGS_ID_NAME)) {
+            if (!in_array($v, $tags_id_name)) {
                 return [];
             }
-            $tag[] = array_search($v, self::TAGS_ID_NAME);
+            $tag[] = array_search($v, $tags_id_name);
         }
         $photos = static::take($size);
         if ($lastUpdateId > 0) {
@@ -143,9 +145,10 @@ class Photo extends Model
     public static function handleTags($photo) {
         $res = [];
         $photo = $photo->toArray();
+        $tags_id_name = Config::get('tag.tags_id_name');
         foreach ($photo as $k => $v) {
-            if (array_key_exists($k, self::TAGS_ID_NAME) && $v === 1) {
-                $res[] = self::TAGS_ID_NAME[$k];
+            if (array_key_exists($k, $tags_id_name) && $v === 1) {
+                $res[] = $tags_id_name[$k];
             }
         }
         return $res;
@@ -167,5 +170,10 @@ class Photo extends Model
             'description' => $photo->description,
             'tags' => self::handleTags($photo)
         ];
+    }
+
+    public static function test() {
+        $res = Config::get('tag.tags_name_id');
+        var_dump($res); 
     }
 }
