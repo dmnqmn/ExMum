@@ -161,6 +161,18 @@ class UserController extends BaseController
         return response()->json($res);
     }
 
+    public function getUserPage(Request $request, $uid) {
+        $user = User::find($uid);
+
+        $jsVars = [
+            ['user', \Globals::$user]
+        ];
+
+        return view('user')
+            ->with('jsVars', $jsVars)
+            ->with('user', $user);
+    }
+
     public function postFollow(Request $request) {
         $follow_uid = $request->input('follow_uid');
         $user_info = \Globals::$user;

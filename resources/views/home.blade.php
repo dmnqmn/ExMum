@@ -19,9 +19,10 @@
     <div class="photo-wrapper">
         <a href="/photo/{{ $photo['id'] }}">
             <img class="photo" src="{{ $photo['url'] }}">
-            <h5>{{ $photo['title'] }}</h5>
-            <p>{{ $photo['description'] }}</p>
         </a>
+        <h5>{{ $photo['title'] }}</h5>
+        <a href="{{ $photo['author']->url() }}">{{ $photo['author']->user_name }}</a>
+        <p>{{ $photo['description'] }}</p>
     </div>
     @endforeach
     </div>

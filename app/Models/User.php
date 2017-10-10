@@ -18,6 +18,10 @@ class User extends Model
 
     // Relationships end
 
+    public function url() {
+        return route('user', $this->id);
+    }
+
     public static function sendActivationMail($user) {
         $link = self::generateLink($user->email, $user->salt);
         $html =

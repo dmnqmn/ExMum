@@ -68,6 +68,10 @@ class Photo extends Model
         return $this->hasOne('App\Models\UploadFile', 'id', 'file_id');
     }
 
+    public function author() {
+        return $this->hasOne('App\Models\User', 'id', 'uid');
+    }
+
     // Relationships end
 
     public static function create($uid, $file_id, $title, $description, $tags) {
@@ -165,7 +169,8 @@ class Photo extends Model
             'created_at' => $photo->created_at,
             'title' => $photo->title,
             'description' => $photo->description,
-            'tags' => self::handleTags($photo)
+            'tags' => self::handleTags($photo),
+            'author' => $photo->author
         ];
     }
 }
