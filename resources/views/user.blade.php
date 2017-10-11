@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', "$user->name - 主页")
+@section('title', "$user->user_name - 主页")
 
 @section('css')
 @php css('user.css') @endphp
