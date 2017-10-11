@@ -131,6 +131,7 @@ class UserController extends BaseController
         if ($validate->fails()) {
             return response()->json(['error' => $validate->messages()->first()], 400);
         }
+
         $param = [
             'first_name' => $firstName,
             'last_name' => $lastName,
@@ -143,6 +144,10 @@ class UserController extends BaseController
                 unset($param[$k]);
             }
         }
+        if (!is_null($firstName) || !is_null($lastName)) {
+            $user_name = "$firstName $lastName";
+        }
+        $param['user_name'] = $user_name;
         $res = User::UpdateInfoByUid($uid, $param);
         if ($res !== 0) {
             return response()->json();
