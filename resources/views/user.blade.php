@@ -12,6 +12,11 @@
 
 @section('main')
 <div class="user-container">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>{{ $user->user_name }}</h3>
+        </div>
+    </div>
 </div>
 @endsection
 

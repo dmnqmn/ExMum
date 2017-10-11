@@ -72,7 +72,7 @@ export default {
                 first_name: first_name.trim(),
                 last_name: last_name.trim(),
                 gender,
-                description: description.trim()
+                description: description ? description.trim() : ''
             }
 
             if (this.settingUserinfo.first_name.length > 10) {
