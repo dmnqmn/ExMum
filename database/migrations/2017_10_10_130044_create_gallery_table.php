@@ -17,6 +17,7 @@ class CreateGalleryTable extends Migration
             $table->increments('id');
             $table->integer('uid');
             $table->string('name', 10);
+            $table->integer('tag_id')->default(1);
             $table->string('description', 255)->nullable();
             $table->unsignedTinyInteger('secret')->default(0);
             $table->timestamps();
