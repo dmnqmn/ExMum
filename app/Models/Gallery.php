@@ -10,13 +10,13 @@ class Gallery extends Model
 {
     protected $table = 'gallery';
 
-    public static function createGallery($tag_id, $uid, $name, $description, $secret) {
+    public static function createGallery($param) {
     	$gallery = new Gallery;
-    	$gallery->tag_id = $tag_id;
-    	$gallery->uid = $uid;
-    	$gallery->name = $name;
-    	$gallery->description = $description;
-    	$gallery->secret = $secret;
+    	$gallery->uid = $param['uid'];
+    	$gallery->name = $param['name'];
+    	$gallery->tag_id = $param['tag_id'];
+    	$gallery->description = $param['description'];
+    	$gallery->secret = $param['secret'];
     	$gallery->save();
     	return $gallery;
     }
