@@ -5,12 +5,16 @@ Vue.use(iView)
 import AccountManager from '@js/components/AccountManager'
 import 'iview/dist/styles/iview.css'
 
-new Vue({
+export default new Vue({
     el: '.normal-site-header',
+
     components: {
         AccountManager
     },
-    mounted() {
 
+    methods: {
+        login() {
+            this.$refs.accountManager.showModal = true
+        }
     }
 })

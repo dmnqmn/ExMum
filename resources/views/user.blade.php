@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', "$user->user_name - 主页")
+@section('title', $visiting_user['user_name'] . ' - 主页')
 
 @section('css')
 @php css('user.css') @endphp
@@ -14,7 +14,14 @@
 <div class="user-container">
     <div class="panel panel-default">
         <div class="panel-body">
-            <h3>{{ $user->user_name }}</h3>
+            <h1 class="user-name">{{ $visiting_user['user_name'] }}</h1>
+            <div class="relationship">
+                @if ($visiting_user_rel['following'])
+                    <button class="btn btn-default follow-btn" id="follow">已关注</button>
+                @else
+                    <button class="btn btn-primary follow-btn" id="follow">关注</button>
+                @endif
+            </div>
         </div>
     </div>
 </div>

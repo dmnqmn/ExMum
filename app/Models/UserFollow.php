@@ -13,9 +13,7 @@ class UserFollow extends Model
     const FOLLOW_USERS = 10;
 
 	public static function create($uid, $follow_uid) {
-        $isExist = UserFollow::where('uid', $uid)
-                            ->where('follow_uid', $follow_uid)
-                            ->exists();
+        $isExist = static::exists($uid, $follow_uid);
         if ($isExist == true) {
             return $isExist;
         }
@@ -30,6 +28,12 @@ class UserFollow extends Model
                          ->where('follow_uid', $follow_uid)
                          ->delete();
         return $res;
+    }
+
+    public static function exists($uid, $follow_uid) {
+        return UserFollow::where('uid', $uid)
+                            ->where('follow_uid', $follow_uid)
+                            ->exists();
     }
 
     public static function selectFollowByUid($uid, $last_id) {

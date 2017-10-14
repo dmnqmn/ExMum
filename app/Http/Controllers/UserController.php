@@ -167,15 +167,22 @@ class UserController extends BaseController
     }
 
     public function getUserPage(Request $request, $uid) {
-        $user = User::find($uid);
+        $visiting_user = User::find($uid);
+        $visiting_user_rel = [
+            'following' => UserFollow::exists(\Globals::$user->id, $uid),
+            'followed' => UserFollow::exists($uid, \Globals::$user->id)
+        ];
 
         $jsVars = [
-            ['user', \Globals::$user]
+            ['user', \Globals::$user],
+            ['visiting_user', $visiting_user->publicInfo()],
+            ['visiting_user_rel', $visiting_user_rel]
         ];
 
         return view('user')
             ->with('jsVars', $jsVars)
-            ->with('user', $user);
+            ->with('visiting_user', $visiting_user)
+            ->with('visiting_user_rel', $visiting_user_rel);
     }
 
     public function postFollow(Request $request) {
@@ -186,7 +193,7 @@ class UserController extends BaseController
         }
         $uid = $user_info->id;
         $res = UserFollow::create($uid, $follow_uid);
-        return response()->json($res);
+        return response()->json();
     }
 
     public function postUnFollow(Request $request) {
@@ -198,12 +205,12 @@ class UserController extends BaseController
         $uid = $user_info->id;
         $res = UserFollow::unFollow($uid, $follow_uid);
         if ($res != 0) {
-            return response()->json($res);
+            return response()->json();
         }
-        return response()->json(['error' => 'DELETE_FAIL'], 403);
+        return response()->json(['error' => 'UN_FOLLOW_FAILED'], 400);
     }
 
-    public function getFollow(Request $request) {
+    public function getFollowing(Request $request) {
         $user_info = \Globals::$user;
         $last_id = $request->last_id;
         if (is_null($user_info)) {

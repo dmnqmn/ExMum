@@ -24,16 +24,17 @@ $mainRoutes = function () {
     Route::get('/photos', 'PhotoController@showPhotos');
     Route::get('/photo/{id}', 'PhotoController@getPhotoById');
 
+    Route::get('/user/following', 'UserController@getFollowing');
+    Route::get('/user/followedBy', 'UserController@getFollowedBy');
+    Route::post('/user/follow', 'UserController@postFollow');
+    Route::post('/user/unfollow', 'UserController@postUnFollow');
+
     Route::get('/user/info', 'UserController@getUserInfo');
     Route::get('/user/{id}', 'UserController@getUserPage')->name('user');
 
     Route::get('/activation', 'UserController@getActivation');
     Route::post('/register', 'UserController@postRegister');
     Route::post('/login', 'UserController@postLogin');
-
-    Route::post('/user/follow', 'UserController@postFollow');
-    Route::post('/user/unfollow', 'UserController@postUnFollow');
-    Route::get('/user/follow', 'UserController@getFollow');
 
     Route::post('/gallery','GalleryController@postGallery');
     Route::delete('/gallery', 'GalleryController@deleteGallery');

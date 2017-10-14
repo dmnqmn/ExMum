@@ -10,6 +10,8 @@ class User extends Model
 {
     protected $table = 'user';
 
+    private static $PUBLIC_INFO_KEY = ['id', 'first_name', 'last_name', 'user_name', 'gender'];
+
     // Relationships
 
     public function salt() {
@@ -18,9 +20,25 @@ class User extends Model
 
     // Relationships end
 
+    // Properties
+
     public function url() {
         return route('user', $this->id);
     }
+
+    public function info() {
+        return $this->toArray();
+    }
+
+    public function publicInfo() {
+        $result = [];
+        foreach (static::$PUBLIC_INFO_KEY as $key) {
+            $result[$key] = $this->$key;
+        }
+        return $result;
+    }
+
+    // Properties end
 
     public static function sendActivationMail($user) {
         $link = self::generateLink($user->email, $user->salt);

@@ -34,5 +34,5 @@
             </form>
         </div>
     </nav>
-    <account-manager></account-manager>
+    <account-manager ref="accountManager"></account-manager>
 </header>
