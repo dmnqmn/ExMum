@@ -10,7 +10,7 @@ class User extends Model
 {
     protected $table = 'user';
 
-    private static $PUBLIC_INFO_KEY = ['id', 'first_name', 'last_name', 'user_name', 'gender'];
+    private static $PUBLIC_INFO_KEY = ['id', 'first_name', 'last_name', 'user_name', 'gender', 'description'];
 
     // Relationships
 
@@ -35,6 +35,8 @@ class User extends Model
         foreach (static::$PUBLIC_INFO_KEY as $key) {
             $result[$key] = $this->$key;
         }
+        $result['followedBy'] = UserFollow::total(['follow_uid' => $this->id]);
+        $result['following'] = UserFollow::total(['uid' => $this->id]);
         return $result;
     }
 

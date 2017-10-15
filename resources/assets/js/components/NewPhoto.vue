@@ -3,7 +3,7 @@
     <div class="new-photo-button" @click="newPhotoModalOn = true">
         <span class="icon fa fa-plus"></span>
     </div>
-    <Modal v-model="newPhotoModalOn" title="美图齐分享" :mask-closable="false">
+    <Modal v-model="newPhotoModalOn" title="发布" :mask-closable="false">
         <Form v-model="photo" :label-width="80">
             <FormItem label="上传图片">
                 <Upload

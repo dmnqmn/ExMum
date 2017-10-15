@@ -181,7 +181,7 @@ class UserController extends BaseController
 
         return view('user')
             ->with('jsVars', $jsVars)
-            ->with('visiting_user', $visiting_user)
+            ->with('visiting_user', $visiting_user->publicInfo())
             ->with('visiting_user_rel', $visiting_user_rel);
     }
 

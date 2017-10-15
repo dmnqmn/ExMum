@@ -25,6 +25,11 @@ function setFollowingStatusTo(state) {
     }
 }
 
+function setVisitingUserFollowedByCount(count) {
+    window.visiting_user.followedBy = count
+    $('#followed-by-count').html(window.visiting_user.followedBy)
+}
+
 async function follow() {
     $('#follow').attr('disabled', 'disabled')
     try {
@@ -32,15 +37,16 @@ async function follow() {
             follow_uid: window.visiting_user.id
         })
         setFollowingStatusTo(true)
+        setVisitingUserFollowedByCount(window.visiting_user.followedBy + 1)
     } catch (error) {
         if (error.response.data) {
             switch (error.response.data.error) {
             case 'NOT_LOGGED':
                 headerVm.login()
             default:
+                headerVm.$Message.warning('关注用户失败，请稍后重试')
             }
         }
-        setFollowingStatusTo(false)
     }
     $('#follow').removeAttr('disabled')
 }
@@ -52,15 +58,17 @@ async function unfollow() {
             follow_uid: window.visiting_user.id
         })
         setFollowingStatusTo(false)
+        setVisitingUserFollowedByCount(window.visiting_user.followedBy - 1)
     } catch (error) {
+        console.log(error);
         if (error.response.data) {
             switch (error.response.data.error) {
             case 'NOT_LOGGED':
                 headerVm.login()
             default:
+                headerVm.$Message.warning('取消关注失败，请稍后重试')
             }
         }
-        setFollowingStatusTo(true)
     }
     $('#follow').removeAttr('disabled')
 }
