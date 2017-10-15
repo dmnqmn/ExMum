@@ -10,7 +10,8 @@ class UserFollow extends Model
 {
     protected $table = 'user_follow';
 
-    const FOLLOW_USERS = 10;
+    const PAGE = 1;
+    const RESULTS_PER_PAGE = 10;
 
 	public static function create($uid, $follow_uid) {
         $isExist = static::exists($uid, $follow_uid);
@@ -36,14 +37,8 @@ class UserFollow extends Model
                             ->exists();
     }
 
-    public static function selectFollowByUid($uid, $last_id) {
-        $user_follow = UserFollow::where('uid', $uid)
-                                 ->where('id', '<', $last_id)
-                                 ->select('id', 'follow_uid')
-                                 ->orderBy('id', 'desc')
-                                 ->limit(self::FOLLOW_USERS)
-                                 ->get()
-                                 ->toArray();
+    public static function selectFollowingByUid($uid, $page, $results_per_page) {
+        $user_follow = static::paging(['uid' => $uid], $page, $results_per_page);
         $follow_uids = [];
         foreach ($user_follow as $v) {
             $follow_uids[] = $v['follow_uid'];
@@ -63,5 +58,42 @@ class UserFollow extends Model
             }
         }
         return $res;
+    }
+
+    public static function selectFollowByByUid($uid, $page, $results_per_page) {
+        $user_follow = static::paging(['follow_uid' => $uid], $page, $results_per_page);
+        $follow_uids = [];
+        foreach ($user_follow as $v) {
+            $follow_uids[] = $v['follow_uid'];
+        }
+        $user_name = User::whereIn('id', $follow_uids)
+                         ->select('id', 'user_name')
+                         ->get();
+        $res = [];
+        foreach ($user_name as $value) {
+            foreach ($user_follow as $v) {
+                if ($value['id'] == $v['follow_uid']) {
+                    $res[] = [
+                        'id' => $v['id'],
+                        'user_name' => $value['user_name'],
+                    ];
+                }
+            }
+        }
+        return $res;
+    }
+
+    private static function paging($sql, $page, $results_per_page) {
+        $skip = ($page - 1) * $results_per_page;
+        return UserFollow::where($sql)
+                        ->skip($skip)
+                        ->orderBy('id', 'desc')
+                        ->take($results_per_page)
+                        ->get()
+                        ->toArray();
+    }
+
+    public static function total($sql) {
+        return UserFollow::where($sql)->count();
     }
 }

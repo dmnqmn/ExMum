@@ -173,7 +173,7 @@ class User extends Model
         return $tags;
     }
 
-    public static function isFollowing($tags, $uid = 1) {
+    public static function isFollowingTags($tags, $uid = 1) {
         $userInfo = User::where('id', $uid)
                         ->select('tags')
                         ->get()
