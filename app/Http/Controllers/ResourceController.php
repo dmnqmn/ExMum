@@ -21,7 +21,10 @@ class ResourceController extends BaseController
         $file = $request->file('file');
         $uploadFile = UploadFile::create('image', \Globals::$user->id, $file);
         $uploadFile->saveFile();
-        return response()->json(['id' => $uploadFile->id]);
+        return response()->json([
+            'id' => $uploadFile->id,
+            'url' => $uploadFile->url()
+        ]);
     }
 
     public function postUploadAvatar(Request $request) {

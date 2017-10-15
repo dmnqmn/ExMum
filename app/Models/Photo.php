@@ -25,18 +25,17 @@ class Photo extends Model
 
     // Relationships end
 
-    public static function create($uid, $file_id, $title, $description, $tags) {
+    public static function create($uid, $file_id, $title, $description, $tags, $gallery_id, $original_id = null) {
         $photo = new Photo;
         $photo->uid = $uid;
         $photo->file_id = $file_id;
         $photo->title = $title;
         $photo->description = $description;
-        $tags_name_id = Config::get('tag.tags_name_id');
-        foreach ($tags as $tagName) {
-            $tagId = $tags_name_id[$tagName];
-            if (!is_null($tagId)) {
-                $photo->$tagId = 1;
-            }
+        $photo->gallery_id = $gallery_id;
+        $photo->original_id = $original_id;
+        foreach ($tags as $tagId) {
+            $tag = "tag$tagId";
+            $photo->$tag = 1;
         }
 
         $photo->save();

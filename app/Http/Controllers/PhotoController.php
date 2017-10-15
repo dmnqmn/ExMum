@@ -73,8 +73,9 @@ class PhotoController extends BaseController
         $validate = Validator::make($request->all(), [
             'title' => 'max:20',
             'description' => 'max:300',
-            'tags' => 'array|required|max:5',
-            'fileId' => 'required|integer'
+            'tags' => 'array|required|max:3',
+            'file_id' => 'required|integer',
+            'gallery_id' => 'required|integer',
         ], [
             'title.max' => 'PHOTO_NEW_TITLE_TOO_LANG',
             'description.max' => 'PHOTO_NEW_DESCRIPTION_TOO_LANG',
@@ -83,19 +84,22 @@ class PhotoController extends BaseController
             'tags.required' => 'PHOTO_NEW_TAGS_NEEDED',
             'tags.array' => 'PHOTO_NEW_TAGS_SHOULD_BE_ARRAY',
             'tags.max' => 'PHOTO_NEW_TAGS_TOO_LONG',
+            'gallery_id.required' => 'PHOTO_NEW_GALLERY_ID_NEEDED',
+            'gallery_id.integer' => 'PHOTO_NEW_GALLERY_ID_SHOULD_BE_INTEGER',
         ]);
 
         if ($validate->fails()) {
             return response()->json(['error' => $validate->messages()->first()], 400);
         }
 
-        $fileId = $request->input('fileId');
+        $file_id = $request->input('file_id');
         $title = $request->input('title');
         $description = $request->input('description');
         $tags = $request->input('tags');
+        $gallery_id = $request->input('gallery_id');
         $uid = \Globals::$user->id;
 
-        $uploadFile = UploadFile::find($fileId);
+        $uploadFile = UploadFile::find($file_id);
         if (is_null($uploadFile)) {
             return response()->json(['error' => 'PHOTO_NEW_FILE_NOT_FOUND'], 404);
         }
@@ -104,7 +108,7 @@ class PhotoController extends BaseController
             return response()->json(['error' => 'PHOTO_NEW_FILE_FORBIDDEN'], 403);
         }
 
-        $photo = Photo::create($uid, $fileId, $title, $description, $tags);
+        $photo = Photo::create($uid, $file_id, $title, $description, $tags, $gallery_id);
         $result = Photo::getPhotoInfo($photo);
         return response()->json($result);
     }

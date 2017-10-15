@@ -21,6 +21,8 @@ $mainRoutes = function () {
         Route::post('/photo/new', 'PhotoController@postNewPhoto');
     });
 
+    Route::get('/gallery', 'GalleryController@getGallery');
+
     Route::get('/photos', 'PhotoController@showPhotos');
     Route::get('/photo/{id}', 'PhotoController@getPhotoById');
 
