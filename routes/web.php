@@ -33,6 +33,8 @@ $mainRoutes = function () {
 
     Route::get('/user/info', 'UserController@getUserInfo');
     Route::get('/user/{id}', 'UserController@getUserPage')->name('user');
+    Route::get('/user/{id}/following', 'UserController@getUserFollowing');
+    Route::get('/user/{id}/followedBy', 'UserController@getUserFollowedBy');
 
     Route::get('/activation', 'UserController@getActivation');
     Route::post('/register', 'UserController@postRegister');

@@ -4,6 +4,7 @@ import $ from 'jquery'
 import 'bootstrap'
 
 import headerVm from '@js/common/header'
+import FollowList from '@js/components/FollowList'
 
 import axios from 'axios'
 
@@ -82,3 +83,29 @@ $(() => {
         }
     })
 })
+
+new Vue({
+    el: '#relationship-stat',
+
+    data: {
+        showFollowListModal: false,
+        userListUrl: ''
+    },
+
+    components: {
+        FollowList
+    },
+
+    methods: {
+        showUserFollowedBy() {
+            this.userListUrl = `/user/${visiting_user.id}/followedBy`
+            this.showFollowListModal = true
+        },
+
+        showUserFollowing() {
+            this.userListUrl = `/user/${visiting_user.id}/following`
+            this.showFollowListModal = true
+        }
+    }
+})
+

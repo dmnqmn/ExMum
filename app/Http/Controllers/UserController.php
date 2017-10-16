@@ -168,10 +168,15 @@ class UserController extends BaseController
 
     public function getUserPage(Request $request, $uid) {
         $visiting_user = User::find($uid);
-        $visiting_user_rel = [
-            'following' => UserFollow::exists(\Globals::$user->id, $uid),
-            'followed' => UserFollow::exists($uid, \Globals::$user->id)
-        ];
+
+        if (\Globals::$user) {
+            $visiting_user_rel = [
+                'following' => UserFollow::exists(\Globals::$user->id, $uid),
+                'followed' => UserFollow::exists($uid, \Globals::$user->id)
+            ];
+        } else {
+            $visiting_user_rel = ['following' => false, 'followed' => false];
+        }
 
         $jsVars = [
             ['user', \Globals::$user],
@@ -211,12 +216,28 @@ class UserController extends BaseController
     }
 
     public function getFollowing(Request $request) {
-        $user_info = \Globals::$user;
+        return $this->getFollowingOf($request, \Globals::$user);
+    }
+
+    public function getUserFollowing(Request $request, $uid) {
+        return $this->getFollowingOf($request, User::find($uid));
+    }
+
+    public function getFollowedBy(Request $request) {
+        return $this->getFollowedByOf($request, \Globals::$user);
+    }
+
+    public function getUserFollowedBy(Request $request, $uid) {
+        return $this->getFollowedByOf($request, User::find($uid));
+    }
+
+    private function getFollowingOf(Request $request, $user_info) {
         if (is_null($user_info)) {
             return response()->json(['error' => 'NOT_LOGGED'], 403);
         }
         $page = is_null($request->page) ? UserFollow::PAGE : $request->page;
-        $results_per_page = is_null($request->results_per_page) ? UserFollow::RESULTS_PER_PAGE : $results_per_page;
+        $results_per_page = $request->results_per_page;
+        $results_per_page = is_null($results_per_page) ? UserFollow::RESULTS_PER_PAGE : $results_per_page;
         $uid = $user_info->id;
         $res = UserFollow::selectFollowingByUid($uid, $page, $results_per_page);
         $total = UserFollow::total(['uid' => $uid]);
@@ -229,13 +250,13 @@ class UserController extends BaseController
         ];
     }
 
-    public function getFollowedBy(Request $request) {
-        $user_info = \Globals::$user;
+    private function getFollowedByOf(Request $request, $user_info) {
         if (is_null($user_info)) {
             return response()->json(['error' => 'NOT_LOGGED'], 403);
         }
         $page = is_null($request->page) ? UserFollow::PAGE : $request->page;
-        $results_per_page = is_null($request->results_per_page) ? UserFollow::RESULTS_PER_PAGE : $results_per_page;
+        $results_per_page = $request->results_per_page;
+        $results_per_page = is_null($results_per_page) ? UserFollow::RESULTS_PER_PAGE : $results_per_page;
         $uid = $user_info->id;
         $res = UserFollow::selectFollowByByUid($uid, $page, $results_per_page);
         $total = UserFollow::total(['follow_uid' => $uid]);

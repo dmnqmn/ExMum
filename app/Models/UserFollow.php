@@ -33,29 +33,22 @@ class UserFollow extends Model
 
     public static function exists($uid, $follow_uid) {
         return UserFollow::where('uid', $uid)
-                            ->where('follow_uid', $follow_uid)
-                            ->exists();
+                         ->where('follow_uid', $follow_uid)
+                         ->exists();
     }
 
     public static function selectFollowingByUid($uid, $page, $results_per_page) {
         $user_follow = static::paging(['uid' => $uid], $page, $results_per_page);
         $follow_uids = [];
         foreach ($user_follow as $v) {
-            $follow_uids[] = $v['follow_uid'];
+            $follow_uids[] = $v->follow_uid;
         }
-        $user_name = User::whereIn('id', $follow_uids)
-                         ->select('id', 'user_name')
-                         ->get();
+
+        $users = User::whereIn('id', $follow_uids)
+                     ->get();
         $res = [];
-        foreach ($user_name as $value) {
-            foreach ($user_follow as $v) {
-                if ($value['id'] == $v['follow_uid']) {
-                    $res[] = [
-                        'id' => $v['id'],
-                        'user_name' => $value['user_name'],
-                    ];
-                }
-            }
+        foreach ($users as $user) {
+            $res[] = $user->publicInfo();
         }
         return $res;
     }
@@ -64,21 +57,14 @@ class UserFollow extends Model
         $user_follow = static::paging(['follow_uid' => $uid], $page, $results_per_page);
         $follow_uids = [];
         foreach ($user_follow as $v) {
-            $follow_uids[] = $v['follow_uid'];
+            $follow_uids[] = $v->follow_uid;
         }
-        $user_name = User::whereIn('id', $follow_uids)
-                         ->select('id', 'user_name')
-                         ->get();
+        $users = User::whereIn('id', $follow_uids)
+                     ->get();
+
         $res = [];
-        foreach ($user_name as $value) {
-            foreach ($user_follow as $v) {
-                if ($value['id'] == $v['follow_uid']) {
-                    $res[] = [
-                        'id' => $v['id'],
-                        'user_name' => $value['user_name'],
-                    ];
-                }
-            }
+        foreach ($users as $user) {
+            $res[] = $user->publicInfo();
         }
         return $res;
     }
@@ -89,8 +75,7 @@ class UserFollow extends Model
                         ->skip($skip)
                         ->orderBy('id', 'desc')
                         ->take($results_per_page)
-                        ->get()
-                        ->toArray();
+                        ->get();
     }
 
     public static function total($sql) {

@@ -14,18 +14,23 @@
 <div class="user-container">
     <div class="panel panel-default info-panel">
         <div class="panel-body row">
-            <div class="user-info col-sm-8">
+            <div class="user-info col-sm-9">
                 <h1 class="user-name">{{ $visiting_user['user_name'] }}</h1>
                 <p class="description">{{ $visiting_user['description'] ? $visiting_user['description'] : '这个人什么都没写' }}</p>
             </div>
-            <div class="relationship col-sm-4">
-                <div class="following">
-                    <label>关注了</label>
-                    <span id="following-count">{{ $visiting_user['following'] }}</span>
-                </div>
-                <div class="followedBy">
-                    <label>关注者</label>
-                    <span id="followed-by-count">{{ $visiting_user['followedBy'] }}</span>
+            <div class="relationship col-sm-3">
+                <div class="panel row" id="relationship-stat">
+                    <div class="followed-by col-sm-6" @click="showUserFollowedBy">
+                        <label>关注者</label><br>
+                        <span id="followed-by-count">{{ $visiting_user['followedBy'] }}</span>
+                    </div>
+                    <div class="following col-sm-6" @click="showUserFollowing">
+                        <label>关注了</label><br>
+                        <span id="following-count">{{ $visiting_user['following'] }}</span>
+                    </div>
+                    <Modal :transfer="false" v-model="showFollowListModal" :footer-hide="true">
+                        <follow-list v-if="showFollowListModal" :user-list-url="userListUrl"></follow-list>
+                    </Modal>
                 </div>
                 <div class="follow">
                     @if ($visiting_user_rel['following'])
