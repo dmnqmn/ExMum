@@ -28,7 +28,7 @@
                         <label>关注了</label><br>
                         <span id="following-count">{{ $visiting_user['following'] }}</span>
                     </div>
-                    <Modal :transfer="false" v-model="showFollowListModal" :footer-hide="true">
+                    <Modal :transfer="false" v-model="showFollowListModal" :footer-hide="true" :title="followListTitle">
                         <follow-list v-if="showFollowListModal" :user-list-url="userListUrl"></follow-list>
                     </Modal>
                 </div>

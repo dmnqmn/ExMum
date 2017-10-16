@@ -89,7 +89,8 @@ new Vue({
 
     data: {
         showFollowListModal: false,
-        userListUrl: ''
+        userListUrl: '',
+        followListTitle: ''
     },
 
     components: {
@@ -98,11 +99,13 @@ new Vue({
 
     methods: {
         showUserFollowedBy() {
+            this.followListTitle = '关注者列表'
             this.userListUrl = `/user/${visiting_user.id}/followedBy`
             this.showFollowListModal = true
         },
 
         showUserFollowing() {
+            this.followListTitle = '关注列表'
             this.userListUrl = `/user/${visiting_user.id}/following`
             this.showFollowListModal = true
         }

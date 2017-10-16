@@ -239,7 +239,7 @@ class UserController extends BaseController
         $results_per_page = $request->results_per_page;
         $results_per_page = is_null($results_per_page) ? UserFollow::RESULTS_PER_PAGE : $results_per_page;
         $uid = $user_info->id;
-        $res = UserFollow::selectFollowingByUid($uid, $page, $results_per_page);
+        $res = UserFollow::selectFollowingOfUid($uid, $page, $results_per_page);
         $total = UserFollow::total(['uid' => $uid]);
         $total_page = $total / $results_per_page;
         return [
@@ -258,7 +258,7 @@ class UserController extends BaseController
         $results_per_page = $request->results_per_page;
         $results_per_page = is_null($results_per_page) ? UserFollow::RESULTS_PER_PAGE : $results_per_page;
         $uid = $user_info->id;
-        $res = UserFollow::selectFollowByByUid($uid, $page, $results_per_page);
+        $res = UserFollow::selectFollowedByOfUid($uid, $page, $results_per_page);
         $total = UserFollow::total(['follow_uid' => $uid]);
         $total_page = $total / $results_per_page;
         return [

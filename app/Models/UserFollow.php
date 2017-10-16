@@ -37,7 +37,7 @@ class UserFollow extends Model
                          ->exists();
     }
 
-    public static function selectFollowingByUid($uid, $page, $results_per_page) {
+    public static function selectFollowingOfUid($uid, $page, $results_per_page) {
         $user_follow = static::paging(['uid' => $uid], $page, $results_per_page);
         $follow_uids = [];
         foreach ($user_follow as $v) {
@@ -53,13 +53,13 @@ class UserFollow extends Model
         return $res;
     }
 
-    public static function selectFollowByByUid($uid, $page, $results_per_page) {
+    public static function selectFollowedByOfUid($uid, $page, $results_per_page) {
         $user_follow = static::paging(['follow_uid' => $uid], $page, $results_per_page);
         $follow_uids = [];
         foreach ($user_follow as $v) {
-            $follow_uids[] = $v->follow_uid;
+            $follower_uids[] = $v->uid;
         }
-        $users = User::whereIn('id', $follow_uids)
+        $users = User::whereIn('id', $follower_uids)
                      ->get();
 
         $res = [];
