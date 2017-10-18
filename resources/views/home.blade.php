@@ -16,13 +16,17 @@
         <div class="photo-sizer" id="photo-sizer"></div>
         <div class="photo-gutter" id="photo-gutter"></div>
     @foreach ($photos as $photo)
-    <div class="photo-wrapper">
+    <div class="photo-wrapper photo-panel">
         <a href="/photo/{{ $photo['id'] }}">
             <img class="photo" src="{{ $photo['url'] }}">
         </a>
-        <h5>{{ $photo['title'] }}</h5>
-        <a href="{{ $photo['author']->url() }}">{{ $photo['author']->user_name }}</a>
-        <p>{{ $photo['description'] }}</p>
+        <div class="photo-panel-info">
+            <span class="photo-panel-title">{{ $photo['title'] }}</span> 发布于
+            <a class="photo-panel-author" href="{{ $photo['author']->url() }}">{{ $photo['author']->user_name }}</a>
+        </div>
+        <div class="photo-panel-description">
+            <p>{{ $photo['description'] }}</p>
+        </div>
     </div>
     @endforeach
     </div>

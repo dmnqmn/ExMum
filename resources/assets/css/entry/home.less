@@ -1,11 +1,14 @@
 @import '../common/entry-common';
 @import '../common/header';
 @import '../common/main';
+@import '../common/photo';
 
 .home-container {
     width: 100%;
+    min-height: 100vh;
     padding: 0 50px;
     background-color: #fff;
+    overflow: auto;
 }
 
 .photo-masonry {
@@ -22,20 +25,8 @@
 
     .photo-wrapper {
         float: left;
-        margin-bottom: 7px;
         width: 236px;
-        padding: 8px;
-        overflow: hidden;
-        border-radius: 5px;
-
-        &:hover {
-            background-color: rgb(233, 233, 233);
-        }
-    }
-
-    img {
-        width: 100%;
-        border-radius: 5px;
+        margin-bottom: 16px;
     }
 
     &::after {

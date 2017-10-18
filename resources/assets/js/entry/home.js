@@ -23,7 +23,6 @@ $(() => {
         columnWidth: '#photo-sizer',
         itemSelector: '.photo-wrapper',
         gutter: '#photo-gutter',
-        horizontalOrder: true,
         fitWidth: true,
         visibleStyle: { transform: 'translateY(0)', opacity: 1 },
         hiddenStyle: { transform: 'translateY(100px)', opacity: 0 },
@@ -33,6 +32,7 @@ $(() => {
 
     imagesLoaded('#photo-masonry').on('progress', () => {
         photoMasonry.layout()
+        $('#photo-masonry').show()
     })
 
     let infScroll = new InfiniteScroll( '#photo-masonry', {
@@ -58,7 +58,7 @@ $(() => {
         let photos = response.photos
         lastUpdateId = response.lastUpdateId
         $imageProxy.html(photos.map(({ id, url, name, description }) => `
-            <div class="photo-wrapper">
+            <div class="photo-wrapper photo-panel">
                 <a href="/photo/${id}">
                     <img class="photo" src="${url}">
                     <h5>${name ? name : ''}</h5>

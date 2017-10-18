@@ -27,9 +27,8 @@
                 </a>
             </div>
             <form class="navbar-form header-search" action="javascript:void(0);">
-                <div class="input-group">
+                <div>
                     <input class="form-control" type="text" placeholder="{{ $hotSearch }}">
-                    <span class="input-group-btn"><button class="btn btn-default" type="button"><i class="fa fa-search"></i></button></span>
                 </div>
             </form>
         </div>
