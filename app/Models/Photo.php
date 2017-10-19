@@ -23,6 +23,10 @@ class Photo extends Model
         return $this->hasOne('App\Models\User', 'id', 'uid');
     }
 
+    public function gallery() {
+        return $this->hasOne('App\Models\Gallery', 'id', 'gallery_id');
+    }
+
     // Relationships end
 
     public static function create($uid, $file_id, $title, $description, $tags, $gallery_id, $original_id = null) {
@@ -64,26 +68,19 @@ class Photo extends Model
     }
 
     public static function takePhotoByTags($tags, $size, $lastUpdateId) {
-        $tags_id_name = Config::get('tag.tags_id_name');
-        foreach ($tags as $v) {
-            if (!in_array($v, $tags_id_name)) {
-                return [];
-            }
-            $tag[] = array_search($v, $tags_id_name);
-        }
         $photos = static::take($size);
         if ($lastUpdateId > 0) {
             $photos = $photos->where('id', '<', $lastUpdateId);
         }
-        $photos = $photos->where(function ($query) use ($tag) {
-                            foreach ($tag as $k => $v) {
+        $photos = $photos->where(function ($query) use ($tags) {
+                            foreach ($tags as $k => $v) {
                                 if ($k == 0) {
-                                    $query->where($v, 1);
+                                    $query->where("tag$v", 1);
                                 } else {
-                                    $query->orWhere($v, 1);
+                                    $query->orWhere("tag$v", 1);
                                 }
                             }
-                        }, $tag)->orderBy('id', 'desc')
+                        }, $tags)->orderBy('id', 'desc')
                                 ->get();
         if (empty($photos)) {
             return [];
@@ -122,7 +119,8 @@ class Photo extends Model
             'title' => $photo->title,
             'description' => $photo->description,
             'tags' => self::handleTags($photo),
-            'author' => $photo->author
+            'author' => $photo->author->publicInfo(),
+            'gallery' => $photo->gallery,
         ];
     }
 }

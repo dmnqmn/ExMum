@@ -20,11 +20,20 @@
         <a href="/photo/{{ $photo['id'] }}">
             <img class="photo" src="{{ $photo['url'] }}">
         </a>
-        <div class="photo-panel-info">
-            <span class="photo-panel-title">{{ $photo['title'] }}</span> 发布于
-            <a class="photo-panel-author" href="{{ $photo['author']->url() }}">{{ $photo['author']->user_name }}</a>
+        <div class="photo-panel-meta">
+            <a class="photo-panel-author" href="{{ $photo['author']['url'] }}">{{ $photo['author']['user_name'] }}</a>
+            @if ($photo['gallery'])
+                <span>发布于</span>
+                <a class="photo-panel-gallery" href="{{ $photo['gallery']->url() }}">{{ $photo['gallery']->name }}</a>
+            @endif
         </div>
-        <div class="photo-panel-description">
+        <div class="photo-panel-info">
+            <span class="photo-panel-title">{{ $photo['title'] }}</span>
+            <div class="photo-tag-list">
+                @foreach ($photo['tags'] as $tag)
+                    <span class="photo-tag">{{ $tag }}</span>
+                @endforeach
+            </div>
             <p>{{ $photo['description'] }}</p>
         </div>
     </div>

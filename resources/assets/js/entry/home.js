@@ -57,13 +57,34 @@ $(() => {
 
         let photos = response.photos
         lastUpdateId = response.lastUpdateId
-        $imageProxy.html(photos.map(({ id, url, name, description }) => `
+
+        $imageProxy.html(photos.map(({ id, url, title, name, description, gallery, author, tags }) =>         `
             <div class="photo-wrapper photo-panel">
                 <a href="/photo/${id}">
                     <img class="photo" src="${url}">
-                    <h5>${name ? name : ''}</h5>
-                    <p>${description ? description : ''}</p>
                 </a>
+                <div class="photo-panel-meta">
+                    <a class="photo-panel-author" href="${author.url}">${author.user_name}</a>
+                    ${
+                        gallery ?
+                        `
+                            <span>发布于</span>
+                            <a class="photo-panel-gallery" href="${gallery.url}">${gallery.name}</a>
+                        `
+                        : ''
+                    }
+                </div>
+                <div class="photo-panel-info">
+                    <span class="photo-panel-title">${title}</span>
+                    <div class="photo-tag-list">
+                        ${
+                            tags.map((tag) => `
+                                <span class="photo-tag">${tag}</span>
+                            `).join('')
+                        }
+                    </div>
+                    <p>${description}</p>
+                </div>
             </div>
         `).join('\n'))
         let items = $imageProxy.children('.photo-wrapper').get()

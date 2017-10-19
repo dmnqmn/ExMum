@@ -14,7 +14,6 @@ class PhotoController extends BaseController
 {
     const SIZE = 8;
     const LAST_UPDATE_ID = 0;
-    const TAG = 'Home feed';
 
     public function showPhotos(Request $request) {
         $lastUpdateId = $request->input('lastUpdateId');
@@ -32,8 +31,7 @@ class PhotoController extends BaseController
         }
         $lastUpdateId = is_null($lastUpdateId) ? self::LAST_UPDATE_ID : $lastUpdateId;
         $size = is_null($size) ? self::SIZE : $size;
-        $tag = is_null($tag) ? self::TAG : $tag;
-        $tags = explode(',' , $tag);
+        $tags = is_null($tag) ? config('tag.tags_id') : explode(',', $tag);
         $photos = Photo::takePhotoByTags($tags, $size, $lastUpdateId);
         $photo = end($photos);
         $lastUpdateId = $photo['id'];

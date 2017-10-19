@@ -10,6 +10,10 @@ class Gallery extends Model
 {
     protected $table = 'gallery';
 
+    public function url() {
+        return route('gallery', $this->id);
+    }
+
     public static function createGallery($param) {
     	$gallery = new Gallery;
     	$gallery->uid = $param['uid'];
