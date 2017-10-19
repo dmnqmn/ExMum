@@ -10,7 +10,7 @@ class User extends Model
 {
     protected $table = 'user';
 
-    private static $PUBLIC_INFO_KEY = ['id', 'first_name', 'last_name', 'user_name', 'gender', 'description'];
+    private static $PUBLIC_INFO_KEY = ['id', 'user_name', 'gender', 'description'];
 
     // Relationships
 
@@ -64,8 +64,6 @@ class User extends Model
         list($firstName, $lastName) = self::gennerateName();
         $user = new User();
         $user->email = $email;
-        $user->first_name = $firstName;
-        $user->last_name = $lastName;
         $user->user_name = $firstName . $lastName;
         $user->gender = '0';
         $user->password = '';
@@ -167,6 +165,7 @@ class User extends Model
     }
 
     public static function updateInfoById($id, $param) {
+        dd($param);
         $res = User::where('id', $id)
                    ->update($param);
         return $res;

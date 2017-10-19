@@ -11,7 +11,7 @@ use Validator;
 class SettingController extends BaseController
 {
     public function getSettings() {
-        $param = ['first_name', 'last_name', 'gender', 'description'];
+        $param = ['user_name', 'gender', 'description'];
         $userinfo = User::getInfoByUid(\Globals::$user->id, $param);
 
         $jsVars = [

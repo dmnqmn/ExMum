@@ -1,17 +1,10 @@
 <template>
 <div class="user-settings">
 <Form :model="settingUserinfo">
-    <FormItem label="姓氏" :label-width="80">
-        <Row>
-            <Col span="8">
-                <Input type="text" v-model="settingUserinfo.first_name" placeholder="请输入..."></Input>
-            </Col>
-        </Row>
-    </FormItem>
     <FormItem label="名字" :label-width="80">
         <Row>
             <Col span="8">
-                <Input type="text" v-model="settingUserinfo.last_name" placeholder="请输入..."></Input>
+                <Input type="text" v-model="settingUserinfo.user_name" placeholder="起名是最难的事情了"></Input>
             </Col>
         </Row>
     </FormItem>
@@ -67,21 +60,15 @@ export default {
         },
 
         save() {
-            let { first_name, last_name, gender, description } = this.settingUserinfo
+            let { user_name, gender, description } = this.settingUserinfo
             this.settingUserinfo ={
-                first_name: first_name.trim(),
-                last_name: last_name.trim(),
+                user_name: user_name.trim(),
                 gender,
                 description: description ? description.trim() : ''
             }
 
-            if (this.settingUserinfo.first_name.length > 10) {
-                this.$Message.warning('姓氏最长 10 个字符');
-                return;
-            }
-
-            if (this.settingUserinfo.last_name.length > 10) {
-                this.$Message.warning('名字最长 10 个字符');
+            if (this.settingUserinfo.user_name.length > 20) {
+                this.$Message.warning('名字最长 20 个字符');
                 return;
             }
 

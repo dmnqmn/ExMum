@@ -112,30 +112,26 @@ class UserController extends BaseController
         if (is_null($userInfo)) {
             return response()->json(['error' => 'NOT_LOGGED'], 403);
         }
+        $user_name = $request->input('user_name');
         $uid = $userInfo->id;
-        $firstName = $request->input('first_name');
-        $lastName = $request->input('last_name');
         $gender = $request->input('gender');
         $description = $request->input('description');
         $validate = Validator::make($request->all(), [
-            'first_name'    => 'max:10',
-            'last_name'     => 'max:10',
-            'gender'        => 'nullable|integer|between:0,2',
+            'user_name'     => 'max:50',
+            'gender'        => 'integer|between:0,2',
             'description'   => 'max:255',
         ], [
-            'first_name.max'  => 'USER_INFO_FIRST_NAME_TOO_LONG',
-            'last_name.max'   => 'USER_INFO_LAST_NAME_TOO_LONG',
-            'description.max' => 'USER_INFO_DESCRIPTION_TOO_LONG',
-            'gender.between'  => 'USER_INFO_GENDER_INVALID',
+            'user_name.max'      => 'USER_INFO_USER_NAME_TOO_LONG',
+            'description.max'    => 'USER_INFO_DESCRIPTION_TOO_LONG',
+            'gender.between'     => 'USER_INFO_GENDER_INVALID',
         ]);
         if ($validate->fails()) {
             return response()->json(['error' => $validate->messages()->first()], 400);
         }
 
         $param = [
-            'first_name' => $firstName,
-            'last_name' => $lastName,
-            'gender' => is_null($gender) ? 0 : $gender,
+            'user_name'   => $user_name,
+            'gender'      => is_null($gender) ? 0 : $gender,
             'description' => $description,
         ];
         foreach ($param as $k => $v) {
@@ -144,10 +140,6 @@ class UserController extends BaseController
                 unset($param[$k]);
             }
         }
-        if (!is_null($firstName) || !is_null($lastName)) {
-            $user_name = "$firstName $lastName";
-        }
-        $param['user_name'] = $user_name;
         $res = User::UpdateInfoByUid($uid, $param);
         if ($res !== 0) {
             return response()->json();
@@ -161,7 +153,7 @@ class UserController extends BaseController
             return response()->json(['error' => 'NOT_LOGGED'], 403);
         }
         $uid = $user_info->id;
-        $param = ['first_name', 'last_name', 'gender', 'description'];
+        $param = ['gender', 'description'];
         $res = User::getInfoByUid($uid, $param);
         return response()->json($res);
     }
