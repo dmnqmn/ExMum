@@ -72,7 +72,8 @@ class Photo extends Model
         if ($lastUpdateId > 0) {
             $photos = $photos->where('id', '<', $lastUpdateId);
         }
-        $photos = $photos->where(function ($query) use ($tags) {
+        $photos = $photos->with(['author', 'gallery', 'file'])
+                        ->where(function ($query) use ($tags) {
                             foreach ($tags as $k => $v) {
                                 if ($k == 0) {
                                     $query->where("tag$v", 1);
@@ -80,8 +81,9 @@ class Photo extends Model
                                     $query->orWhere("tag$v", 1);
                                 }
                             }
-                        }, $tags)->orderBy('id', 'desc')
-                                ->get();
+                        }, $tags)
+                        ->orderBy('id', 'desc')
+                        ->get();
         if (empty($photos)) {
             return [];
         }
