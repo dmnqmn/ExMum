@@ -34,4 +34,8 @@ class AccessToken extends Model
                    ->first();
     return $record;
   }
+
+  public static function removeToken($token) {
+    static::where('accessToken', $token)->delete();
+  }
 }

@@ -9,17 +9,17 @@ import axios from 'axios'
 
 import Vue from 'vue'
 import iView from 'iview'
-import UserSettings from '@js/components/UserSettings'
+import SettingTabs from '@js/components/Settings'
 
 import assign from 'object-assign'
 
 Vue.use(iView)
 
 new Vue({
-    el: '.setting-container',
+    el: '.settings-container',
 
     components: {
-        UserSettings
+        SettingTabs
     },
 
     data: {

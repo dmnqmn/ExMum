@@ -27,10 +27,12 @@ class InitGlobals
     $tokenObject = AccessToken::getEffectiveToken($token);
     if (empty($tokenObject)) {
       Globals::$user = null;
+      Globals::$access_token = null;
       return $next($request);
     }
 
     Globals::$user = $tokenObject->user;
+    Globals::$access_token = $token;
 
     return $next($request);
   }

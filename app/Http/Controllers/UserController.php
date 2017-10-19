@@ -81,6 +81,14 @@ class UserController extends BaseController
         return response()->json(['error' => 'LOGIN_WRONG_PASSWORD'], 403);
     }
 
+    public function postLogout(Request $request) {
+        if (is_null(\Globals::$user) || is_null(\Globals::$access_token)) {
+            return response()->json(['error' => 'LOGOUT_NOT_AUTHORIZED'], 403);
+        }
+
+        AccessToken::removeToken(\Globals::$access_token);
+    }
+
     public function postChangePwd(Request $request) {
         $email = $request->input('email');
         $password = $request->input('password');

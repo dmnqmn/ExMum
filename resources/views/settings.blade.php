@@ -11,8 +11,8 @@
 @endsection
 
 @section('main')
-<div class="setting-container">
-    <user-settings :userinfo="userinfo"></user-settings>
+<div class="settings-container">
+    <setting-tabs :userinfo="userinfo"></setting-tabs>
 </div>
 @endsection
 

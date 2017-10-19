@@ -39,6 +39,7 @@ $mainRoutes = function () {
     Route::get('/activation', 'UserController@getActivation');
     Route::post('/register', 'UserController@postRegister');
     Route::post('/login', 'UserController@postLogin');
+    Route::post('/logout', 'UserController@postLogout');
 
     Route::post('/gallery','GalleryController@postGallery');
     Route::delete('/gallery', 'GalleryController@deleteGallery');
