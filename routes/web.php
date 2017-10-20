@@ -44,6 +44,8 @@ $mainRoutes = function () {
 
     Route::post('/gallery','GalleryController@postGallery');
     Route::delete('/gallery', 'GalleryController@deleteGallery');
+
+    Route::get('/hot', 'HomeController@getHot');
 };
 
 Route::domain(env('APP_BASE_DOMAIN'))->group($mainRoutes);
