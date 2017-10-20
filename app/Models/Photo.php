@@ -125,4 +125,21 @@ class Photo extends Model
             'gallery' => $photo->gallery,
         ];
     }
+
+    public static function getHot($size, $lastUpdateId) {
+        $photos = static::take($size);
+        if ($lastUpdateId > 0) {
+            $photos = $photos->where('id', '<', $lastUpdateId);
+        }
+        $photos = $photos->orderBy('id', 'desc')
+                         ->get();
+        if (empty($photos)) {
+            return [];
+        }
+        $res = [];
+        foreach ($photos as $k => $photo) {
+            $res[$k] = self::getPhotoInfo($photo);
+        }
+        return $res;
+    }
 }
