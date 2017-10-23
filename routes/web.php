@@ -12,7 +12,7 @@
 */
 
 $mainRoutes = function () {
-    Route::get('/', 'HomeController@getHome')->name('home');
+    Route::get('/', 'AppController@getApp')->name('app');
 
     Route::group(['middleware' => ['logined']], function () {
         Route::post('/changePwd', 'UserController@postChangePwd');

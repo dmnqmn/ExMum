@@ -27,23 +27,11 @@ class User extends Model
     }
 
     public function info() {
-        return $this->toArray();
-    }
-
-    public function publicInfo() {
         $result = [];
         foreach (static::$PUBLIC_INFO_KEY as $key) {
             $result[$key] = $this->$key;
         }
         $result['url'] = $this->url();
-        $result['followedBy'] = UserFollow::total(['follow_uid' => $this->id]);
-        $result['following'] = UserFollow::total(['uid' => $this->id]);
-        if (\Globals::$user) {
-            $result['relationship'] = [
-                'followingMe' => UserFollow::exists($this->id, \Globals::$user->id),
-                'followedByMe' => UserFollow::exists(\Globals::$user->id, $this->id)
-            ];
-        }
         return $result;
     }
 

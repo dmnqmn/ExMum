@@ -41,7 +41,7 @@ class UserController extends BaseController
         }
         $user = User::create($email, $password);
         $token = AccessToken::create($user->id);
-        return response()->json()->withCookie(makeCookie('EXMUM_U', $token));
+        return response()->json($user->info())->withCookie(makeCookie('EXMUM_U', $token));
     }
 
     public function getActivation(Request $request) {
@@ -76,7 +76,7 @@ class UserController extends BaseController
         $res = User::checkUserPwd($user, $password);
         if ($res) {
             $token = AccessToken::create($user->id);
-            return response()->json()->withCookie(makeCookie('EXMUM_U', $token));
+            return response()->json($user->info())->withCookie(makeCookie('EXMUM_U', $token));
         }
         return response()->json(['error' => 'LOGIN_WRONG_PASSWORD'], 403);
     }
@@ -158,12 +158,12 @@ class UserController extends BaseController
     public function getUserInfo(Request $request) {
         $user_info = \Globals::$user;
         if (is_null($user_info)) {
-            return response()->json(['error' => 'NOT_LOGGED'], 403);
+            return response()->json([ 'success' => false, 'data' => null ]);
         }
         $uid = $user_info->id;
-        $param = ['gender', 'description'];
+        $param = ['user_name', 'gender', 'description'];
         $res = User::getInfoByUid($uid, $param);
-        return response()->json($res);
+        return response()->json(['success' => true, 'data' => $res]);
     }
 
     public function getUserPage(Request $request, $uid) {
@@ -180,13 +180,13 @@ class UserController extends BaseController
 
         $jsVars = [
             ['user', \Globals::$user],
-            ['visiting_user', $visiting_user->publicInfo()],
+            ['visiting_user', $visiting_user->info()],
             ['visiting_user_rel', $visiting_user_rel]
         ];
 
         return view('user')
             ->with('jsVars', $jsVars)
-            ->with('visiting_user', $visiting_user->publicInfo())
+            ->with('visiting_user', $visiting_user->info())
             ->with('visiting_user_rel', $visiting_user_rel);
     }
 

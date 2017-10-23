@@ -9,15 +9,7 @@
     <title>ExMum - @yield('title')</title>
 </head>
 <body>
-@section('header')
-@component('components.header')
-@endcomponent
-@show
-
-<div class="main">
-    @yield('main')
-</div>
-
+@yield('main')
 @php jsVars($sharedJsVars) @endphp
 @php jsVars($jsVars) @endphp
 @php dllJs() @endphp

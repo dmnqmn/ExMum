@@ -121,7 +121,7 @@ class Photo extends Model
             'title' => $photo->title,
             'description' => $photo->description,
             'tags' => self::handleTags($photo),
-            'author' => $photo->author->publicInfo(),
+            'author' => $photo->author->info(),
             'gallery' => $photo->gallery,
         ];
     }

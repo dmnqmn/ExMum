@@ -48,7 +48,7 @@ class UserFollow extends Model
                      ->get();
         $res = [];
         foreach ($users as $user) {
-            $res[] = $user->publicInfo();
+            $res[] = $user->info();
         }
         return $res;
     }
@@ -64,7 +64,7 @@ class UserFollow extends Model
 
         $res = [];
         foreach ($users as $user) {
-            $res[] = $user->publicInfo();
+            $res[] = $user->info();
         }
         return $res;
     }

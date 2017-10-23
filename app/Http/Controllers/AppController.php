@@ -10,21 +10,10 @@ use App\Models\Photo;
 use General;
 use Config;
 
-class HomeController extends BaseController
+class AppController extends BaseController
 {
-    public function getHome(Request $request) {
-        $initPhotos = Photo::takePhotoByTags(config('tag.tags_id'), 20, 0);
-        $lastPhoto = end($initPhotos);
-        $lastUpdateId = $lastPhoto ? $lastPhoto['id'] : null;
-
-        $jsVars = [
-            ['user', \Globals::$user],
-            ['lastUpdateId', $lastUpdateId]
-        ];
-
-        return view('home')
-            ->with('jsVars', $jsVars)
-            ->with('photos', $initPhotos);
+    public function getApp(Request $request) {
+        return view('app')->with('jsVars', []);
     }
 
     public function getHot(Request $request) {
@@ -35,7 +24,7 @@ class HomeController extends BaseController
             ['user', \Globals::$user],
             ['lastUpdateId', $lastUpdateId]
         ];
-        return view('home')
+        return view('app')
             ->with('jsVars', $jsVars)
             ->with('photos', $photos);
     }
