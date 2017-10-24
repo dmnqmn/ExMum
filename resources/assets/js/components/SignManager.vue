@@ -1,13 +1,13 @@
 <template>
-<Form>
+<Form :label-width="40">
     <Form-item label="邮箱">
-        <Input v-model="formItems.account" placeholder="请输入您的邮箱账号"></Input>
+        <Input v-model="formItems.account" placeholder="请输入您的邮箱账号" @on-enter="checkAndLogin"></Input>
     </Form-item>
     <Form-item label="密码">
-        <Input v-model="formItems.password" placeholder="请输入您的密码" type="password"></Input>
+        <Input v-model="formItems.password" placeholder="请输入您的密码" type="password" @on-enter="checkAndLogin"></Input>
     </Form-item>
     <Form-item>
-        <Button type="primary" @click="checkAndRegister">注册</Button>
+        <Button type="primary" @click="checkAndRegister">注册账号</Button>
         <Button type="info" @click="checkAndLogin">直接登录</Button>
     </Form-item>
 </Form>
@@ -58,21 +58,27 @@ export default {
 
             try {
                 await this.register({ email, password })
+                this.$emit('register', true)
             } catch (reason) {
-                console.log(reason)
                 let error = reason.response.data.error
                 switch (error) {
                     case 'REGISTER_EMAIL_NEEDED':
-                        return this.$Message.error('请输入邮箱账号')
+                        this.$Message.error('请输入邮箱账号')
+                        break
                     case 'REGISTER_EMAIL_ILLEGAL':
-                        return this.$Message.error('请输入合法的邮箱账号')
+                        this.$Message.error('请输入合法的邮箱账号')
+                        break
                     case 'REGISTER_EMAIL_EXISTED':
-                        return this.$Message.error('该邮箱已经注册过')
+                        this.$Message.error('该邮箱已经注册过')
+                        break
                     case 'REGISTER_PASSWORD_NEEDED':
-                        return this.$Message.error('请输入合适的密码')
+                        this.$Message.error('请输入合适的密码')
+                        break
                     default:
-                        return this.$Message.error('注册失败，请稍候重试')
+                        this.$Message.error('注册失败，请稍候重试')
                 }
+                this.$emit('register', false)
+                return
             }
         },
 
@@ -86,22 +92,30 @@ export default {
 
             try {
                 await this.login({ email, password })
+                this.$emit('login', true)
             } catch(reason) {
                 let error = reason.response.data.error
                 switch (error) {
                     case 'LOGIN_EMAIL_NEEDED':
-                        return this.$Message.error('请输入邮箱账号')
+                        this.$Message.error('请输入邮箱账号')
+                        break
                     case 'LOGIN_EMAIL_ILLEGAL':
-                        return this.$Message.error('请输入合法的邮箱账号')
+                        this.$Message.error('请输入合法的邮箱账号')
+                        break
                     case 'LOGIN_PASSWORD_NEEDED':
-                        return this.$Message.error('请输入密码')
+                        this.$Message.error('请输入密码')
+                        break
                     case 'LOGIN_USER_NOT_FOUND':
-                        return this.$Message.error('该账号不存在')
+                        this.$Message.error('该账号不存在')
+                        break
                     case 'LOGIN_WRONG_PASSWORD':
-                        return this.$Message.error('账号或密码错误')
+                        this.$Message.error('账号或密码错误')
+                        break
                     default:
-                        return this.$Message.error('登录失败，请稍候重试')
+                        this.$Message.error('登录失败，请稍候重试')
                 }
+                this.$emit('login', false)
+                return
             }
         }
     }
