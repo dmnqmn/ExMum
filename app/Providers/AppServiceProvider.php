@@ -16,7 +16,9 @@ class AppServiceProvider extends ServiceProvider
     {
         View::share('hotSearch', '热门搜索');
         View::share('baseDomain', config('app.base_domain'));
-        View::share('sharedJsVars', [['baseDomain', config('app.base_domain')]]);
+        View::share('sharedJsVars', [
+            ['baseDomain', config('app.base_domain')]
+        ]);
     }
 
     /**

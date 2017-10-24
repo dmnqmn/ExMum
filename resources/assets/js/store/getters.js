@@ -1,11 +1,12 @@
 import Vue from 'vue'
+import { createUserFromBackendUserInfo } from '@js/common/account.js'
 
 export const state = {
     eventBus: new Vue(),
-    identification: null
+    user: window.user ? createUserFromBackendUserInfo(window.user) : null
 }
 
 export const getters = {
     eventBus: (state) => state.eventBus,
-    identification: (state) => state.identification
+    user: (state) => state.user
 }

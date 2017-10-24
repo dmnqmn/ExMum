@@ -148,8 +148,10 @@ class User extends Model
         $res = User::where('id', $uid)
                    ->select($param)
                    ->get()
-                   ->toArray();
-        return current($res);
+                   ->first();
+        $res['url'] = route('user', $uid);
+        $res['id'] = $uid;
+        return $res;
     }
 
     public static function updateInfoById($id, $param) {

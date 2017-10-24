@@ -13,7 +13,9 @@ use Config;
 class AppController extends BaseController
 {
     public function getApp(Request $request) {
-        return view('app')->with('jsVars', []);
+        return view('app')->with('jsVars', [
+            ['user', \Globals::$user ? \Globals::$user->info() : null]
+        ]);
     }
 
     public function getHot(Request $request) {

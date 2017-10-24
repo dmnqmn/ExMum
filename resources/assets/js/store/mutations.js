@@ -1,3 +1,3 @@
-export function SET_IDENTIFICATION(state, identification) {
-    state.identification = identification
+export function SET_USER(state, user) {
+    state.user = user
 }

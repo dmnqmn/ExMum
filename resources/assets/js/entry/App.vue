@@ -26,12 +26,10 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['eventBus', 'identification'])
+        ...mapGetters(['eventBus', 'user'])
     },
 
     methods: {
-        ...mapActions(['fetchIdentification']),
-
         handleLoginAndRegister(success) {
             if (success) {
                 this.signManagerShow = false
@@ -41,8 +39,8 @@ export default {
 
     async created() {
         this.eventBus.$on('message', (type, message) => this.$Message[type](message))
-        await this.fetchIdentification()
-        this.signManagerShow = !this.identification
+        this.eventBus.$on('sign', () => this.signManagerShow = true)
+        this.signManagerShow = !this.user
     }
 }
 </script>
@@ -56,5 +54,6 @@ body {
 <style lang="less" scoped>
 .app {
     display: flex;
+    flex-direction: column;
 }
 </style>
