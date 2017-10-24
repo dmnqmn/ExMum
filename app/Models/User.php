@@ -199,12 +199,6 @@ class User extends Model
                    ->update($param);
     }
 
-    public static function selectUserInfo($uid) {
-        return User::where('id', $uid)
-                        ->get()
-                        ->toArray();
-    }
-
     public static function updateTags($uid, $followTags) {
         return User::where('id', $uid)
                    ->update(['tags' => $followTags]);
