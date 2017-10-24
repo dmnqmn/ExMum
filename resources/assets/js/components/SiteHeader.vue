@@ -25,20 +25,20 @@
                     <Icon class="nav-icon user-icon" type="android-person"></Icon>
                     <span class="nav-text user-text user-text-sign">登录/注册</span>
                 </a>
-                <Dropdown v-else trigger="click">
+                <Dropdown v-else trigger="click" @on-click="handleUserDropdownClick">
                     <a href="javascript:void(0);">
                         <Icon class="nav-icon user-icon" type="android-person"></Icon>
                         <span class="nav-text user-text">{{ user.username }}</span>
                     </a>
                     <DropdownMenu slot="list">
-                        <DropdownItem class="user-dropdown-item">
+                        <DropdownItem class="user-dropdown-item" name="user">
                             <span class="user-dropdown-item-text">个人主页</span>
                         </DropdownItem>
-                        <DropdownItem class="user-dropdown-item">
-                            <router-link class="user-dropdown-item-text" to="/settings">设置</router-link>
+                        <DropdownItem class="user-dropdown-item" name="settings">
+                            <span class="user-dropdown-item-text">设置</span>
                         </DropdownItem>
-                        <DropdownItem class="user-dropdown-item">
-                            <span class="user-dropdown-item-text" @click="logout">退出</span>
+                        <DropdownItem class="user-dropdown-item" name="logout">
+                            <span class="user-dropdown-item-text">退出</span>
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
@@ -75,8 +75,17 @@ export default {
             this.searchPanelShow = !this.searchPanelShow
         },
 
-        logout() {
-            logout()
+        handleUserDropdownClick(name) {
+            switch (name) {
+                case 'user':
+                    this.$router.push(`/user/${user.id}`)
+                    break
+                case 'settings':
+                    this.$router.push(`/settings`)
+                    break
+                case 'logout':
+                    logout()
+            }
         }
     }
 }
@@ -138,6 +147,7 @@ export default {
 
     .nav-link {
         color: @header-normal-text-color;
+        user-select: none;
     }
 
     .search {
