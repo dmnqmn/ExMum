@@ -47,7 +47,7 @@ export default {
         return {
             settingUserInfo: null,
             currentUserInfo: null,
-            defaultAvatar: defaultAvatar
+            defaultAvatar
         }
     },
 

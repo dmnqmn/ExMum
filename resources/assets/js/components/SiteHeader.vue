@@ -28,7 +28,10 @@
                 <Dropdown v-else trigger="click" @on-click="handleUserDropdownClick">
                     <a href="javascript:void(0);">
                         <Icon class="nav-icon user-icon" type="android-person"></Icon>
-                        <span class="nav-text user-text">{{ user.username }}</span>
+                        <div class="user-info">
+                            <img class="avatar" :src="user.avatar || defaultAvatar">
+                            <span class="nav-text user-text">{{ user.username }}</span>
+                        </div>
                     </a>
                     <DropdownMenu slot="list">
                         <DropdownItem class="user-dropdown-item" name="user">
@@ -57,12 +60,14 @@
 <script>
 import { logout } from '@js/common/account'
 import { mapGetters } from 'vuex'
+import defaultAvatar from '@/image/exmum.svg'
 
 export default {
     data() {
         return {
             searchPanelShow: false,
-            searchText: ''
+            searchText: '',
+            defaultAvatar
         }
     },
 
@@ -96,6 +101,7 @@ export default {
 @header-height: 64px;
 @header-content-height: 44px;
 @logo-size: 50px;
+@avatar-size: 36px;
 @header-item-padding-vertical: 10px;
 @header-normal-text-color: #777;
 
@@ -182,6 +188,19 @@ export default {
         .user-dropdown-item-text {
             font-size: 16px;
             color: @header-normal-text-color;
+        }
+
+        .user-info {
+            height: @header-height;
+            // padding-top: (@header-height - @avatar-size) / 2;
+            line-height: @header-height;
+
+            .avatar {
+                width: @avatar-size;
+                height: @avatar-size;
+                border-radius: 50%;
+                vertical-align: middle;
+            }
         }
     }
 
