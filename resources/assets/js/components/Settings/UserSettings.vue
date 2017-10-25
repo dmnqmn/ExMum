@@ -79,9 +79,7 @@ export default {
 
         async save() {
             let { username, gender, description } = this.settingUserInfo
-            this.settingUserInfo = new User({
-                id: this.settingUserInfo.id,
-                url: this.settingUserInfo.url,
+            assign(this.settingUserInfo, {
                 username: username.trim(),
                 gender,
                 description: description ? description.trim() : ''
@@ -98,7 +96,7 @@ export default {
             }
 
             try {
-                await this.changeUserInfo(this.settingUserInfo)
+                await this.changeUserInfo(new User(this.settingUserInfo))
             } catch (error) {
                 this.$Message.warning('未能成功保存到服务器，请检查后重试')
                 return
