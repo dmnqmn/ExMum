@@ -1,6 +1,6 @@
 <template>
 <Row class="settings">
-    <Col span="14" push="5">
+    <Col :lg="{ span: 16, push: 4 }" :md="{ span: 20, push: 2 }">
         <Card dis-hover>
             <Tabs>
                 <TabPane label="个人设置">

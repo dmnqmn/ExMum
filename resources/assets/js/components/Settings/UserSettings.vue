@@ -1,6 +1,12 @@
 <template>
 <div class="user-settings">
 <Form :model="settingUserInfo">
+    <FormItem label="头像" :label-width="80">
+        <div class="avatar">
+            <img :src="user.avatar || defaultAvatar">
+            <div class="avatar-upload"><Icon type="images" class="avatar-upload-icon"></Icon></div>
+        </div>
+    </FormItem>
     <FormItem label="名字" :label-width="80">
         <Row>
             <Col span="8">
@@ -34,12 +40,14 @@
 import assign from 'object-assign'
 import { mapGetters, mapActions } from 'vuex'
 import { User } from '@js/models/account'
+import defaultAvatar from '@/image/exmum.svg'
 
 export default {
     data() {
         return {
             settingUserInfo: null,
-            currentUserInfo: null
+            currentUserInfo: null,
+            defaultAvatar: defaultAvatar
         }
     },
 
@@ -94,7 +102,52 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '../../../css/common/variables.less';
+
 .user-settings {
     padding: 20px;
+
+    .avatar {
+        position: relative;
+        width: 128px;
+        height: 128px;
+        border-radius: 100%;
+
+        img {
+            width: 100%;
+            height: 100%;
+            transition: filter .2s ease-in;
+        }
+
+        .avatar-upload {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 128px;
+            height: 128px;
+            border-radius: 100%;
+            background-color: @primary;
+            opacity: 0;
+            transition: opacity .2s ease-in;
+
+            .avatar-upload-icon {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 26px;
+            }
+        }
+
+        &:hover {
+            img {
+                filter: blur(3px);
+            }
+
+            .avatar-upload {
+                opacity: 0.7;
+            }
+        }
+    }
 }
 </style>

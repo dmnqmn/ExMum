@@ -176,7 +176,7 @@ export default {
         }
 
         .user-text-sign {
-            color: #e59709;
+            color: @secondary;
         }
 
         .user-dropdown-item-text {
