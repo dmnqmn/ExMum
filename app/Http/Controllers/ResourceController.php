@@ -27,17 +27,6 @@ class ResourceController extends BaseController
         ]);
     }
 
-    public function postUploadAvatar(Request $request) {
-        if ($error = $this->checkError($request, 'UPLOAD_AVATAR')) {
-            return response()->json(['error' => $error], 400);
-        }
-
-        $file = $request->file('file');
-        $uploadFile = UploadFile::create('avatar', \Globals::$user->id, $file);
-        $uploadFile->saveFile();
-        return response()->json(['id' => $uploadFile->id]);
-    }
-
     function checkError($request, $apiPrefix) {
         $validate = Validator::make($request->all(), [
             'file' => 'required|file|max:20000'

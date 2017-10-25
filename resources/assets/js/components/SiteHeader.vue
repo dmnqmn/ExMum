@@ -29,7 +29,7 @@
                     <a href="javascript:void(0);">
                         <Icon class="nav-icon user-icon" type="android-person"></Icon>
                         <div class="user-info">
-                            <img class="avatar" :src="user.avatar || defaultAvatar">
+                            <img class="avatar" :src="user.avatar">
                             <span class="nav-text user-text">{{ user.username }}</span>
                         </div>
                     </a>
@@ -60,14 +60,12 @@
 <script>
 import { logout } from '@js/common/account'
 import { mapGetters } from 'vuex'
-import defaultAvatar from '@/image/exmum.svg'
 
 export default {
     data() {
         return {
             searchPanelShow: false,
-            searchText: '',
-            defaultAvatar
+            searchText: ''
         }
     },
 

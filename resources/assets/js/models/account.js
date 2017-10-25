@@ -1,9 +1,12 @@
+import defaultAvatar from '@/image/exmum.svg'
+
 export class User {
-    constructor({ id, username, url, gender, description }) {
+    constructor({ id, username, gender, description, avatar }) {
+        console.log(avatar)
         this.id = id
         this.username = username
-        this.url = url
         this.gender = gender
         this.description = description
+        this.avatar = avatar || defaultAvatar
     }
 }

@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\AccessToken;
 use App\Models\Helper;
 use App\Models\UserFollow;
+use App\Models\UploadFile;
 
 use General;
 use Config;
@@ -166,28 +167,29 @@ class UserController extends BaseController
         return response()->json(['success' => true, 'data' => $res]);
     }
 
-    public function getUserPage(Request $request, $uid) {
-        $visiting_user = User::find($uid);
+    public function postAvatar(Request $request) {
+        $validate = Validator::make($request->all(), [
+            'file' => 'required|file|max:20000'
+        ], [
+            'file.size' => 'AVATAR_TOO_LARGE',
+            'file.required' => 'AVATAR_FILE_NEEDED',
+            'file.file' => 'AVATAR_NOT_A_FILE'
+        ]);
 
-        if (\Globals::$user) {
-            $visiting_user_rel = [
-                'following' => UserFollow::exists(\Globals::$user->id, $uid),
-                'followed' => UserFollow::exists($uid, \Globals::$user->id)
-            ];
-        } else {
-            $visiting_user_rel = ['following' => false, 'followed' => false];
+        if ($validate->fails()) {
+            return $validate->messages()->first();
         }
 
-        $jsVars = [
-            ['user', \Globals::$user],
-            ['visiting_user', $visiting_user->info()],
-            ['visiting_user_rel', $visiting_user_rel]
-        ];
+        $user = \Globals::$user;
 
-        return view('user')
-            ->with('jsVars', $jsVars)
-            ->with('visiting_user', $visiting_user->info())
-            ->with('visiting_user_rel', $visiting_user_rel);
+        $file = $request->file('file');
+        $uploadFile = UploadFile::create('avatar', \Globals::$user->id, $file);
+        $uploadFile->saveFile();
+
+        $user->avatar = $uploadFile->id;
+        $user->save();
+
+        return response()->json(['url' => $uploadFile->url()]);
     }
 
     public function postFollow(Request $request) {

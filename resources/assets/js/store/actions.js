@@ -14,3 +14,8 @@ export async function changeUserInfo({ commit }, user) {
     await account.changeUserInfo(user)
     commit('SET_USER', user)
 }
+
+export async function setAvatar({ commit }, avatar) {
+    let avatarUrl = await account.setAvatar(avatar)
+    commit('SET_USER_AVATAR', avatarUrl)
+}

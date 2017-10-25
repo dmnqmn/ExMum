@@ -6,7 +6,7 @@ export function createUserFromBackendUserInfo(data) {
     return new User({
         id: data.id,
         username: data.user_name,
-        url: data.url,
+        avatar: data.avatar,
         gender: data.gender,
         description: data.description
     })
@@ -56,4 +56,10 @@ export async function changeUserInfo(user) {
         gender: user.gender,
         description: user.description
     })
+}
+
+export async function setAvatar(avatar) {
+    let data = new FormData()
+    data.append('file', avatar)
+    return (await axios.post('/user/avatar', data)).data.url
 }

@@ -18,6 +18,7 @@ $mainRoutes = function () {
         Route::post('/changePwd', 'UserController@postChangePwd');
         Route::get('/settings', 'SettingController@getSettings')->name('settings');
         Route::post('/user/info', 'UserController@postUserInfo');
+        Route::post('/user/avatar', 'UserController@postAvatar');
         Route::post('/photo/new', 'PhotoController@postNewPhoto');
     });
 
@@ -33,7 +34,6 @@ $mainRoutes = function () {
     Route::post('/user/unfollow', 'UserController@postUnFollow');
 
     Route::get('/user/info', 'UserController@getUserInfo');
-    Route::get('/user/{id}', 'UserController@getUserPage')->name('user');
     Route::get('/user/{id}/following', 'UserController@getUserFollowing');
     Route::get('/user/{id}/followedBy', 'UserController@getUserFollowedBy');
 
@@ -54,6 +54,5 @@ Route::domain('www.' . env('APP_BASE_DOMAIN'))->group($mainRoutes);
 Route::domain('resource.' . env('APP_BASE_DOMAIN'))->group(function () {
     Route::group(['middleware' => ['logined']], function () {
         Route::post('/upload/image', 'ResourceController@postUploadImage');
-        Route::post('/upload/avatar', 'ResourceController@postUploadAvatar');
     });
 });

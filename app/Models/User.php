@@ -18,6 +18,10 @@ class User extends Model
         return $this->hasOne('App\Models\Salt', 'uid', 'id');
     }
 
+    public function avatarFile() {
+        return $this->hasOne('App\Models\UploadFile', 'id', 'avatar');
+    }
+
     // Relationships end
 
     // Properties
@@ -31,7 +35,7 @@ class User extends Model
         foreach (static::$PUBLIC_INFO_KEY as $key) {
             $result[$key] = $this->$key;
         }
-        $result['url'] = $this->url();
+        $result['avatar'] = $this->avatarFile ? $this->avatarFile->url() : null;
         return $result;
     }
 
