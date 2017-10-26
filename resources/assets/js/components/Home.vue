@@ -1,35 +1,17 @@
 <template>
 <Row class="home">
     <Col span="22" push="1" class="container">
+        <PhotoMasonry></PhotoMasonry>
     </Col>
 </Row>
 </template>
 
 <script>
-import { getPhotos } from '@js/common/photo'
+import PhotoMasonry from './common/PhotoMasonry'
 
 export default {
-    data() {
-        return {
-            lastUpdateId: null,
-            photos: []
-        };
-    },
-
-    methods: {
-        async loadMore() {
-            try {
-                let result = await getPhotos(this.lastUpdateId, 15)
-                this.lastUpdateId = result.lastUpdateId
-                this.photos = [...this.photos, ...result.photos]
-            } catch (error) {
-                this.$Message.warning('网络开小差了，待会再试试吧')
-            }
-        }
-    },
-
-    created() {
-        this.loadMore()
+    components: {
+        PhotoMasonry
     }
 }
 </script>
@@ -37,6 +19,7 @@ export default {
 <style lang="less" scoped>
 .home {
     flex: 1;
+    overflow: hidden;
 
     .container {
         height: 100%;

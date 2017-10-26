@@ -96,7 +96,6 @@ export default {
 
 <style lang="less" scoped>
 @import '../../css/common/variables.less';
-@header-height: 64px;
 @header-content-height: 44px;
 @logo-size: 50px;
 @avatar-size: 36px;
