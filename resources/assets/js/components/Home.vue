@@ -19,7 +19,8 @@ export default {
 <style lang="less" scoped>
 .home {
     flex: 1;
-    overflow: hidden;
+    overflow: auto;
+    padding-top: 15px;
 
     .container {
         height: 100%;

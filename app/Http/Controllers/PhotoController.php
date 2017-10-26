@@ -13,7 +13,6 @@ use Validator;
 class PhotoController extends BaseController
 {
     const SIZE = 8;
-    const LAST_UPDATE_ID = 0;
 
     public function showPhotos(Request $request) {
         $lastUpdateId = $request->input('lastUpdateId');
@@ -26,7 +25,6 @@ class PhotoController extends BaseController
         if ($validate->fails()) {
             return response()->json(['error' => $validate->messages()], 400);
         }
-        $lastUpdateId = is_null($lastUpdateId) ? self::LAST_UPDATE_ID : $lastUpdateId;
         $size = is_null($size) ? self::SIZE : $size;
         $tags = is_null($tag) ? config('tag.tags_id') : explode(',', $tag);
         $photos = Photo::takePhotoByTags($tags, $size, $lastUpdateId);

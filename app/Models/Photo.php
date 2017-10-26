@@ -69,7 +69,7 @@ class Photo extends Model
 
     public static function takePhotoByTags($tags, $size, $lastUpdateId) {
         $photos = static::take($size);
-        if ($lastUpdateId > 0) {
+        if (!is_null($lastUpdateId)) {
             $photos = $photos->where('id', '<', $lastUpdateId);
         }
         $photos = $photos->with(['author', 'gallery', 'file'])
