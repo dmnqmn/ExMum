@@ -2,14 +2,14 @@ import defaultAvatar from '@/image/exmum.svg'
 import assign from 'object-assign'
 
 export class User {
-    constructor({ id, username, gender, description, avatar }, addition) {
+    constructor({ id, username, gender, description, avatar, user_name }, addition) {
         const props = ['id', 'username', 'gender', 'description', 'avatar']
 
         this.id = id
-        this.username = username
         this.gender = gender
         this.description = description
         this.avatar = avatar || defaultAvatar
+        this.username = username || user_name
 
         if (addition) {
             this.merge(addition)

@@ -45,7 +45,7 @@
 <script>
 import assign from 'object-assign'
 import { mapGetters, mapActions } from 'vuex'
-import { User } from '@js/models/account'
+import { User } from '@js/models/User'
 import Cropper from 'cropperjs'
 
 import 'cropperjs/dist/cropper.css'

@@ -1,16 +1,6 @@
 import axios from 'axios'
 import crypto from 'crypto-js'
-import { User } from '@js/models/account'
-
-export function createUserFromBackendUserInfo(data) {
-    return new User({
-        id: data.id,
-        username: data.user_name,
-        avatar: data.avatar,
-        gender: data.gender,
-        description: data.description
-    })
-}
+import { User } from '@js/models/User'
 
 export async function getUserInfo() {
     let response = await axios.get('/user/info')
@@ -24,7 +14,7 @@ export async function getUserInfo() {
         return null
     }
 
-    return createUserFromBackendUserInfo(data)
+    return new User(data)
 }
 
 export async function register({ email, password }) {
@@ -33,7 +23,7 @@ export async function register({ email, password }) {
         password: crypto.SHA256(password).toString(crypto.enc.Hex).slice(0, 50)
     })).data
 
-    return createUserFromBackendUserInfo(data)
+    return new User(data)
 }
 
 export async function login({ email, password }) {
@@ -42,7 +32,7 @@ export async function login({ email, password }) {
         password: crypto.SHA256(password).toString(crypto.enc.Hex).slice(0, 50)
     })).data
 
-    return createUserFromBackendUserInfo(data)
+    return new User(data)
 }
 
 export async function logout() {
