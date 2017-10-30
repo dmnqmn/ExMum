@@ -27,7 +27,6 @@
                 </a>
                 <Dropdown v-else trigger="click" @on-click="handleUserDropdownClick">
                     <a href="javascript:void(0);">
-                        <Icon class="nav-icon user-icon" type="android-person"></Icon>
                         <div class="user-info">
                             <img class="avatar" :src="user.avatar">
                             <span class="nav-text user-text">{{ user.username }}</span>
