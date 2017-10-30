@@ -51,7 +51,8 @@ export default {
                 itemSelector: '.masonry-item',
                 columnWidth: 236,
                 gutter: 24,
-                fitWidth: true
+                fitWidth: true,
+                transitionDuration: 0
             })
         },
 
