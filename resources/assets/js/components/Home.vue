@@ -1,17 +1,22 @@
 <template>
-<Row class="home">
-    <Col span="22" push="1" class="container">
-        <PhotoMasonry></PhotoMasonry>
-    </Col>
-</Row>
+<div class="home">
+    <Row>
+        <Col span="22" push="1" class="container">
+            <PhotoMasonry></PhotoMasonry>
+        </Col>
+    </Row>
+    <NewPhoto></NewPhoto>
+</div>
 </template>
 
 <script>
 import PhotoMasonry from './common/PhotoMasonry'
+import NewPhoto from './common/NewPhoto'
 
 export default {
     components: {
-        PhotoMasonry
+        PhotoMasonry,
+        NewPhoto
     }
 }
 </script>

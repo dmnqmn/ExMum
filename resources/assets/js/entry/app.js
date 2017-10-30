@@ -3,8 +3,6 @@ import '@css/entry/app'
 import assign from 'object-assign'
 import axios from 'axios'
 
-import NewPhoto from '../components/NewPhoto'
-
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'

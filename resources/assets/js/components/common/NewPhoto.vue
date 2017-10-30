@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { TAG_LIST, MAX_TAGS } from '../common/tags'
+import { TAG_LIST, MAX_TAGS } from '@js/common/tags'
 import Cookie from 'js-cookie'
 import axios from 'axios'
 
@@ -157,10 +157,9 @@ export default {
 
         async shareNewPhoto() {
             try {
-                await axios.post('/photo/new', this.photo).then(({ data: { id } }) => {
-                    this.$Message.info('发布成功！')
-                    window.location.href = `/photo/${id}`
-                })
+                let { id } = (await axios.post('/photo/new', this.photo)).data
+                this.$Message.info('发布成功！')
+                this.newPhotoModalOn = false
             } catch (error) {
                 this.$Message.warning('发布失败，请检查填写的信息再重试')
             }
@@ -192,7 +191,7 @@ export default {
     margin-bottom: 12px;
 
     &-placeholder {
-        background-image: url('../../image/plus.png');
+        background-image: url('../../../image/plus.png');
         background-repeat: no-repeat;
         background-size: 50px 50px;
         background-position: 175px 75px;
