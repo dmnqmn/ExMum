@@ -38,7 +38,7 @@
                 <Select v-model="photo.gallery_id" style="width: 200px">
                     <Option v-for="gallery in galleryList" :value="gallery.id" :key="gallery.id">{{ gallery.name }}</Option>
                 </Select>
-                <Button type="warning" @click="newGalleryModalOn = true"><Icon type="plus"></Icon>创建新相册</Button>
+                <Button class="new-gallery" type="success" @click="newGalleryModalOn = true"><Icon type="plus"></Icon>创建新相册</Button>
             </FormItem>
             <FormItem label="标签">
                 <Select v-model="photo.tags" multiple @on-change="handleTagsChange">
@@ -47,7 +47,7 @@
             </FormItem>
         </Form>
         <div slot="footer">
-            <Button icon="paper-airplane" type="success" style="font-size: 16px;" @click="shareNewPhoto">发布</Button>
+            <Button icon="paper-airplane" type="primary" class="publish" @click="shareNewPhoto">发布</Button>
         </div>
     </Modal>
     <Modal v-model="newGalleryModalOn" title="创建相册" @on-ok="createGallery">
@@ -177,10 +177,16 @@ export default {
 </style>
 
 <style lang="less" scoped>
+@import '../../../css/common/variables.less';
+
 .upload {
     margin: 0 auto 16px;
     width: 400px;
     height: 200px;
+
+    .publish {
+        font-size: 16px;
+    }
 }
 
 .upload-preview {
@@ -212,7 +218,7 @@ export default {
     width: 60px;
     height: 60px;
     border-radius: 100%;
-    background-color: #c88719;
+    background-color: @secondary;
     box-shadow: 0 0 3px 3px rgba(179, 179, 179, 0.5);
     transition: background-color 0.1s ease-in;
 
@@ -225,7 +231,7 @@ export default {
     }
 
     &:hover {
-        background-color: #ca9b52;
+        background-color: lighten(@secondary, 12%);
     }
 }
 </style>
