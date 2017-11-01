@@ -40,6 +40,7 @@ export default {
             initLoading: true,
             initDone: false,
             loadedCount: 0,
+            lastFetchedSize: 0,
             lastLoadTime: 0,
             loading: false
         };
@@ -62,7 +63,7 @@ export default {
             this.loadedCount++
             this.photoLoaded.splice(index, 1, true)
 
-            if (this.initLoading && this.loadedCount === LOAD_SIZE) {
+            if (this.initLoading && this.loadedCount === this.lastFetchedSize) {
                 this.initDone = true
                 this.initLoading = false
             }
@@ -96,6 +97,7 @@ export default {
 
             this.lastPhotoCount = this.photos.length
             this.photos = [...this.photos, ...result.photos]
+            this.lastFetchedSize = result.photos.length
             this.photoLoaded = [...this.photoLoaded, ...new Array(result.photos.length)]
         }
     },
