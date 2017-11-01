@@ -192,4 +192,9 @@ class User extends Model
         return User::where('id', $uid)
                    ->update($param);
     }
+
+    public static function updateTags($uid, $followTags) {
+        return User::where('id', $uid)
+                   ->update(['tags' => $followTags]);
+    }
 }

@@ -270,4 +270,60 @@ class UserController extends BaseController
             'data' => $res,
         ];
     }
+
+    public function postTag(Request $request) {
+        $tag_id = $request->input('tag_id');
+        $uid = \Globals::$user->id;
+        if (is_null($uid)) {
+            return response()->json(['error' => 'NOT_LOGGED'], 403);
+        }
+        $validate = Validator::make($request->all(), [
+            'tag_id' => 'required|integer',
+        ],[
+            'tag_id.required' => 'USER_TAG_ID_NEEDED',
+        ]);
+        if ($validate->fails()) {
+            return response()->json(['error' => $validate->messages()->first()], 400);
+        }
+        $followTags = \Globals::$user->tags . ',' . $tag_id;
+        $res = User::updateTags($uid, $followTags);
+        return response()->json(); 
+    }
+
+    public function deleteTag(Request $request) {
+        $tag_id = $request->input('tag_id');
+        $uid = \Globals::$user->id;
+        if (is_null($uid)) {
+            return response()->json(['error' => 'NOT_LOGGED'], 403);
+        } 
+        $validate = Validator::make($request->all(), [
+            'tag_id' => 'required|integer',
+        ],[
+            'tag_id.required' => 'USER_TAG_ID_NEEDED',
+        ]);
+        if ($validate->fails()) {
+            return response()->json(['error' => $validate->messages()->first()], 400);
+        }
+        $tags = explode(",", \Globals::$user->tags);
+        $tag = explode(" ", $tag_id);
+        $followTags = implode(",", array_diff($tags, $tag));
+        $res = User::updateTags($uid, $followTags);
+        return response()->json(); 
+    }
+
+    public function getTag(Request $request) {
+        $uid = \Globals::$user->id;
+        if (is_null($uid)) {
+            return response()->json(['error' => 'NOT_LOGGED'], 403);
+        }
+        $tags = explode(",", \Globals::$user->tags);
+        $res = [];
+        foreach ($tags as $value) {
+            $tag_id = 'tag' . $value; 
+            $tags_id_name = Config::get('tag.tags_id_name');
+            if (array_key_exists($tag_id, $tags_id_name)) {
+                $res[$tag_id] = $tags_id_name[$tag_id];
+            }
+        }return $res;
+    }
 }

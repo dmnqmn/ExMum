@@ -46,6 +46,10 @@ $mainRoutes = function () {
     Route::delete('/gallery', 'GalleryController@deleteGallery');
 
     Route::get('/hot', 'HomeController@getHot');
+
+    Route::post('/user/follow/tags', 'UserController@postTag');
+    Route::delete('/user/follow/tags', 'UserController@deleteTag');
+    Route::get('/user/follow/tags', 'UserController@getTag');
 };
 
 Route::domain(env('APP_BASE_DOMAIN'))->group($mainRoutes);
