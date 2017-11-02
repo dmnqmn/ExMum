@@ -212,26 +212,42 @@ export default {
 }
 
 .new-photo-button {
+    @size: 120px;
+    @hover-size: 134px;
     position: fixed;
-    right: 12px;
-    bottom: 12px;
-    width: 60px;
-    height: 60px;
+    right: -@size/2;
+    bottom: -@size/2;
+    width: @size;
+    height: @size;
     border-radius: 100%;
     background-color: @secondary;
-    box-shadow: 0 0 3px 3px rgba(179, 179, 179, 0.5);
-    transition: background-color 0.1s ease-in;
+    box-shadow: 0 0 1px 1px @secondary;
+    transition: background-color 0.1s ease-in,
+                right 0.1s ease-in,
+                bottom 0.1s ease-in,
+                width 0.1s ease-in,
+                height 0.1s ease-in;
 
     .icon {
         position: relative;
-        top: 20px;
-        left: 22px;
-        color: white;
-        font-size: 20px;
+        top: 22px;
+        left: 25px;
+        color: #fff;
+        font-size: 24px;
+        transition: top 0.1s ease-in, left 0.1s ease-in;
     }
 
     &:hover {
-        background-color: lighten(@secondary, 12%);
+        right: -@hover-size/2;
+        bottom: -@hover-size/2;
+        width: @hover-size;
+        height: @hover-size;
+        background-color: lighten(@secondary, 10%);
+
+        .icon {
+            top: 26px;
+            left: 29px;
+        }
     }
 }
 </style>
