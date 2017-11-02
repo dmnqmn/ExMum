@@ -220,8 +220,8 @@ export default {
     width: @size;
     height: @size;
     border-radius: 100%;
-    background-color: @secondary;
-    box-shadow: 0 0 1px 1px @secondary;
+    background-color: @primary;
+    box-shadow: 0 0 1px 1px @primary;
     transition: background-color 0.1s ease-in,
                 right 0.1s ease-in,
                 bottom 0.1s ease-in,
@@ -230,8 +230,8 @@ export default {
 
     .icon {
         position: relative;
-        top: 22px;
-        left: 25px;
+        top: 23px;
+        left: 26px;
         color: #fff;
         font-size: 24px;
         transition: top 0.1s ease-in, left 0.1s ease-in;
@@ -242,11 +242,11 @@ export default {
         bottom: -@hover-size/2;
         width: @hover-size;
         height: @hover-size;
-        background-color: lighten(@secondary, 10%);
+        background-color: lighten(@primary, 10%);
 
         .icon {
-            top: 26px;
-            left: 29px;
+            top: 28px;
+            left: 31px;
         }
     }
 }
