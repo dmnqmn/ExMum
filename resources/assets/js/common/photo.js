@@ -17,3 +17,9 @@ export async function getPhotos(lastUpdateId, size, tag) {
         photos
     }
 }
+
+export async function getPhoto(photoId) {
+    let data = (await axios.get(`/photo/${photoId}`)).data
+
+    return new Photo(data)
+}

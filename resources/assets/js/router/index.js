@@ -4,6 +4,7 @@ import Cookie from 'js-cookie'
 import store from '@js/store'
 
 import Home from '@js/components/Home'
+import Photo from '@js/components/Photo'
 import Settings from '@js/components/Settings'
 
 Vue.use(Router)
@@ -13,6 +14,11 @@ const router = new Router({
         name: 'settings',
         path: '/settings',
         component: Settings
+    }, {
+        name: 'photo',
+        path: '/photo/:photoId',
+        component: Photo,
+        props: true
     }, {
         name: 'home',
         path: '*',

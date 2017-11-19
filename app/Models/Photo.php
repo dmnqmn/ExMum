@@ -142,4 +142,20 @@ class Photo extends Model
         }
         return $res;
     }
+
+    public static function getSiblingsInGallery($gallery_id, $photo_id) {
+        $next = static::where('gallery_id', $gallery_id)
+                      ->where('id', '>', $photo_id)
+                      ->select('id')
+                      ->first();
+        $prev = static::where('gallery_id', $gallery_id)
+                      ->where('id', '<', $photo_id)
+                      ->select('id')
+                      ->orderBy('id', 'desc')
+                      ->first();
+        return [
+            'next' => $next->id,
+            'prev' => $prev->id
+        ];
+    }
 }

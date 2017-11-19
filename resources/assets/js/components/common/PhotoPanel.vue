@@ -1,7 +1,7 @@
 <template>
 <div class="photo-panel">
     <div class="photo-image">
-        <img :src="photo.url" @load="onImageLoaded">
+        <router-link :to="`/photo/${photo.id}`"><img :src="photo.url" @load="onImageLoaded"></router-link>
     </div>
     <div class="photo-meta">
         <router-link class="photo-author" :to="`/user/${photo.author.id}`">{{ photo.author.username }}</router-link> 发布于

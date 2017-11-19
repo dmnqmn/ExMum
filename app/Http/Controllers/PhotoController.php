@@ -37,29 +37,17 @@ class PhotoController extends BaseController
     }
 
     public function getPhotoById(Request $request, $id) {
-        // Ajax request get json response
-        if ($request->ajax()) {
-            $photo = Photo::getPhotoById($id);
-            if (empty($photo)) {
-                return response()->json(['error' => 'PHOTO_NOT_FOUND'], 404);
-            }
-            return $photo;
-        }
-
-        // Get a html page if request is not ajax
-        $jsVars = [
-            ['user', \Globals::$user]
-        ];
-
         $photo = Photo::getPhotoById($id);
 
-        if (is_null($photo)) {
-            abort(404);
+        if (empty($photo)) {
+            return response()->json(['error' => 'PHOTO_NOT_FOUND'], 404);
         }
 
-        return view('photo')
-            ->with('jsVars', $jsVars)
-            ->with('photo', Photo::getPhotoInfo($photo));
+        $photoInfo = Photo::getPhotoInfo($photo);
+        $siblings = Photo::getSiblingsInGallery($photo->gallery_id, $id);
+        $photoInfo['siblings'] = $siblings;
+
+        return $photoInfo;
     }
 
     public function postNewPhoto(Request $request) {
